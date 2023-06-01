@@ -52,7 +52,6 @@ public class Test02 {
     
     System.out.println("=> 당신은 비기거나 졌습니다.");
     
-    keyScan.close();
   }
 }
 

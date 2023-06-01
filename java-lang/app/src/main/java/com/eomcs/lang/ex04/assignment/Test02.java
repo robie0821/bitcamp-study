@@ -31,5 +31,6 @@ public class Test02 {
             System.out.printf("%s %d %d %d %d %f\n", 
                 name[i], kor[i], eng[i], math[i], sum[i], average[i]);
         }
+        keyScan.close();
     }
 }

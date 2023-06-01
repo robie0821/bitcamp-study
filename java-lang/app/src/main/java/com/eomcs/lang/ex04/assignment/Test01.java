@@ -35,5 +35,6 @@ public class Test01 {
         System.out.print(" ");
         System.out.print(average);
         System.out.println();
+        keyScan.close();
     }
 }
