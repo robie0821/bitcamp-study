@@ -1,56 +1,111 @@
 package bitcamp.myapp;
 
-import java.util.*;
+import java.util.Scanner;
 
 public class App {
   public static void main(String[] args) {
-    System.out.println("나의 목록 관리 시스템");
-    System.out.println("----------------------------------------");
 
-    // 키보드 스캐너 준비
     Scanner sc = new Scanner(System.in);
 
-    int[] no = new int[3];
-    String[] name = new String[3];
-    int[] age = new int[3];
-    boolean[] working = new boolean[3];
-    char[] gender = new char[3];
-    float[] leftEye = new float[3];
-    float[] rightEye = new float[3];
+    final int MAX_SIZE = 3;
+    int length = 0;
+    int userId = 1;
 
-    for (int i = 0; i < 3; i++) {
-      System.out.printf("번호? ");
-      no[i] = sc.nextInt();
+    int[] no = new int[MAX_SIZE];
+    String[] name = new String[MAX_SIZE];
+    String[] email = new String[MAX_SIZE];
+    String[] password = new String[MAX_SIZE];
+    char[] gender = new char[MAX_SIZE];
 
-      System.out.printf("이름? ");
-      name[i] = sc.next();
+    printTitle();
 
-      System.out.printf("나이? ");
-      age[i] = sc.nextInt();
+    for (int i = 0; i < MAX_SIZE; i++) {
 
-      System.out.printf("재직중(true/false)? ");
-      working[i] = sc.nextBoolean();
+      inputMember(sc, i, no, name, email, password, gender, userId++);
 
-      System.out.printf("성별(남자:M, 여자:W)? ");
-      gender[i] = sc.next().charAt(0);
+      length++;
 
-      System.out.printf("시력(왼쪽, 오른쪽)? ");
-      leftEye[i] = sc.nextFloat();
-      rightEye[i] = sc.nextFloat();
+      sc.nextLine();
+      if (i < MAX_SIZE - 1) {
+        if (promptContinue(sc)) {
+          System.out.println();
+        } else {
+          break;
+        }
+      }
     }
 
-    System.out.println("--------------------------------------------------");
-
-    for (int i = 0; i < 3; i++) {
-      System.out.printf("번호: %d\n", no[i]);
-      System.out.printf("이름: %s\n", name[i]);
-      System.out.printf("나이: %d\n", age[i]);
-      System.out.printf("재직자: %b\n", working[i]);
-      System.out.printf("성별(남자(M), 여자(W)): %c\n", gender[i]);
-      System.out.printf("좌우시력: %.1f, %.1f\n", leftEye[i], rightEye[i]);
-      System.out.println();
-    }
+    printMembers(length, no, name, email, gender);
 
     sc.close();
+  }
+
+  // --------------------------------------------------
+  // --------------------------------------------------
+  // --------------------------------------------------
+
+  static void printTitle() {
+    System.out.println("나의 목록 관리 시스템");
+    System.out.println("------------------------------");
+  }
+
+  static void inputMember(Scanner sc, int i, int[] no, String[] name,
+      String[] email, String[] password, char[] gender, int userId) {
+    System.out.printf("이름? ");
+    name[i] = sc.next();
+
+    System.out.printf("이메일? ");
+    email[i] = sc.next();
+
+    System.out.printf("암호? ");
+    password[i] = sc.next();
+
+    genLoop: while (true) {
+      System.out.printf("성별: \n 1. 남자\n 2. 여자\n> ");
+      String menuNO = sc.next();
+
+      switch (menuNO) {
+        case "1":
+          gender[i] = 'M';
+          break genLoop;
+        case "2":
+          gender[i] = 'W';
+          break genLoop;
+        default:
+          System.out.println("유효하지 않은 입력값");
+      }
+    }
+    no[i] = userId;
+  }
+
+  static boolean promptContinue(Scanner sc) {
+    while (true) {
+      System.out.print("계속 하시겠습니까?(Y/n) ");
+      String str = sc.nextLine();
+      switch (str) {
+        case "Y", "y", "": {
+          return true;
+        }
+        case "N", "n": {
+          return false;
+        }
+        default: {
+          System.out.println("유효하지 않은 입력값");
+        }
+      }
+    }
+  }
+
+  static void printMembers(int length, int[] no,
+      String[] name, String[] email, char[] gender) {
+
+    System.out.println("------------------------------");
+    System.out.println("번호, 이름, 이메일, 성별");
+    System.out.println("------------------------------");
+
+    for (int i = 0; i < length; i++) {
+      System.out.printf("%3d. %s, %s, %c\n", no[i], name[i], email[i], gender[i]);
+      System.out.println();
+    }
   }
 }
