@@ -2,13 +2,14 @@ package project1.system;
 
 import project1.App;
 import project1.prompt;
+import java.util.HashMap;
 
 public class prime {
 
   public static int size = 3;
   static int userId = 1001;
   static int length = 0;
-  static int[] no = new int[size];
+  static int[] index = new int[size];
   static String[] name = new String[size];
   static String[] java = new String[size];
   static String[] linux = new String[size];
@@ -16,6 +17,8 @@ public class prime {
   static String[] linear_algebra = new String[size];
   static double[] grade = new double[size];
   static boolean[] scholarship = new boolean[size];
+
+  static HashMap<String, Integer> map = new HashMap<>();
 
   public static void generate() {
     while(true) {
@@ -27,15 +30,13 @@ public class prime {
       System.out.println("0. 종료");
       switch (prompt.inputString("> ")) {
         case "1":
-          inputGrade();
+          inputData();
           break;
         case "2":
-          printGrade();
-          if (!promptContinue()) {
-            return;
-          }
+          printData();
           break;
         case "3":
+          searchData();
           break;
         case "0":
           return;
@@ -46,9 +47,10 @@ public class prime {
     }
   }
 
-  public static void inputGrade() {
+  public static void inputData() {
     while (true) {
       name[length] = prompt.inputString("이름? ");
+      map.put(name[length], length);
       java[length] = inputScore("자바? ");
       linux[length] = inputScore("리눅스? ");
       data_structure[length] = inputScore("자료구조? ");
@@ -57,7 +59,7 @@ public class prime {
       grade[length] = gradeCal(length);
       scholarship[length] = scholarCal(grade[length]);
 
-      no[length] = userId++;
+      index[length] = userId++;
       length++;
 
       if(!promptContinue()) {
@@ -144,10 +146,9 @@ public class prime {
         }
       }
     }
-    
   }
 
-  public static void printGrade() {
+  public static void printData() {
 
     if (length == 0) {
       System.out.println("입력된 성적이 없습니다.");
@@ -157,9 +158,33 @@ public class prime {
       System.out.println("------------------------------------------------------------");
   
       for (int i = 0; i < length; i++) {
-        System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b", no[i], name[i], java[i], linux[i], data_structure[i], linear_algebra[i], grade[i], scholarship[i]);
-        System.out.println();
+        System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b\n", 
+        index[i], name[i], java[i], linux[i], data_structure[i], linear_algebra[i], grade[i], scholarship[i]);
+      }
+    }
+    System.out.println("계속하려면 아무키나 누르세요");
+    prompt.sc.nextLine();
+    prompt.sc.nextLine();
+    return;
+  }
+  
+  public static void searchData() {
+    while (true) {
+      String str = prompt.inputString("이름? ");
+      if(map.containsKey(str)) {
+        int i = map.get(str);
+        System.out.println("------------------------------------------------------------");
+        System.out.println("학번, 이름, 자바, 리눅스, 자료구조, 선형대수학, 학점, 장학금");
+        System.out.println("------------------------------------------------------------");
+        System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b\n", 
+        index[i], name[i], java[i], linux[i], data_structure[i], linear_algebra[i], grade[i], scholarship[i]);
+      } else {
+        System.out.println("입력된 학생이 존재하지 않습니다.");
+      }
+      if (!promptContinue()) {
+        return;
       }
     }
   }
+  
 }
