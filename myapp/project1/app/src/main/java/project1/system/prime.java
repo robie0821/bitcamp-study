@@ -303,7 +303,7 @@ public class prime {
   }
 
   public static void init() {
-    String[] SCORE = {"A", "B", "C"};
+    String[] SCORE = {"A", "B", "F"};
     String[] NAME = {"Kim", "Lee", "Park"};
 
     for(int i = 0; i < 3; i++) {
