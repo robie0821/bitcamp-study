@@ -1,5 +1,6 @@
 plugins {
     id 'application'
+    id 'eclipse'
 }
 
 repositories {
@@ -32,4 +33,15 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = '17'
 
     targetCompatibility = '17'
+}
+
+eclipse {
+    project {
+        name = "myapp"
+    }
+    jdt {
+      sourceCompatibility = 17
+      targetCompatibility = 17
+      javaRuntimeName = "JavaSE-17"
+    }
 }
