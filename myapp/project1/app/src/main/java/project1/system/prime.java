@@ -1,10 +1,8 @@
 package project1.system;
 
-import project1.App;
+import java.util.HashMap;
 import project1.prompt;
 import project1.vo.Student;
-
-import java.util.HashMap;
 
 public class prime {
 
@@ -56,14 +54,14 @@ public class prime {
   public static void inputData() {
     while (available()) {
       Student std = new Student();
-      std.id = inputId("학번? ");
-      std.name = prompt.inputString("이름? ");
-      std.java = inputScore("자바? ");
-      std.linux = inputScore("리눅스? ");
-      std.data_structure = inputScore("자료구조? ");
-      std.linear_algebra = inputScore("선형대수학? ");
-      std.grade = gradeCal(length, std);
-      std.scholarship = scholarCal(std.grade);
+      std.setId(inputId("학번? "));
+      std.setName(prompt.inputString("이름? "));
+      std.setJava(inputScore("자바? "));
+      std.setLinux(inputScore("리눅스? "));
+      std.setData_structure(inputScore("자료구조? "));
+      std.setLinear_algebra(inputScore("선형대수학? "));
+      std.setGrade(gradeCal(length, std));
+      std.setScholarship(scholarCal(std.getGrade()));
 
       student[length++] = std;
 
@@ -92,47 +90,47 @@ public class prime {
         case "A+", "A", "B+", "B", "C+", "C", "D+", "D", "F":
         case "a+", "a", "b+", "b", "c+", "c", "d+", "d", "f":
           score = score.toUpperCase();
-          return score;
+        return score;
         default:
-        System.out.println("유효하지 않은 입력입니다");
+          System.out.println("유효하지 않은 입력입니다");
           break;
       }
     }
   }
 
   static double gradeCal(int i, Student std) {
-    String[] score = {std.java, std.linux, std.data_structure, std.linear_algebra};
+    String[] score = {std.getJava(), std.getLinux(), std.getData_structure(), std.getLinear_algebra()};
     double sum = 0;
 
     for (int t = 0; t < 4; t++) {
       switch (score[t]) {
         case "A+", "a+":
           sum += 4.5;
-          break;
+        break;
         case "A", "a":
           sum += 4.0;
-          break;
+        break;
         case "B+", "b+":
           sum += 3.5;
-          break;
+        break;
         case "B", "b":
           sum += 3.0;
-          break;
+        break;
         case "C+", "c+":
           sum += 2.5;
-          break;
+        break;
         case "C", "c":
           sum += 2.0;
-          break;
+        break;
         case "D+", "d+":
           sum += 1.5;
-          break;
+        break;
         case "D", "d":
           sum += 1.0;
-          break;
+        break;
         case "F", "f":
           sum += 0;
-          break;
+        break;
       }
     }
     return sum/4;
@@ -183,19 +181,21 @@ public class prime {
       System.out.println("------------------------------------------------------------");
       System.out.println("학번, 이름, 자바, 리눅스, 자료구조, 선형대수학, 학점, 장학금");
       System.out.println("------------------------------------------------------------");
-  
+
       for (int i = 0; i < length; i++) {
         Student std = student[i];
-        System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b\n", 
-        std.id, std.name, std.java, std.linux, std.data_structure, std.linear_algebra,
-        std.grade, std.scholarship);
+        System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b\n",
+            std.getId(), std.getName(),
+            std.getJava(), std.getLinux(),
+            std.getData_structure(), std.getLinear_algebra(),
+            std.getGrade(), std.isScholarship());
       }
     }
     System.out.println("계속하려면 아무키나 누르세요");
     prompt.sc.nextLine();
     return;
   }
-  
+
   public static void searchData() {
     while (true) {
       int index = indexOf();
@@ -206,10 +206,12 @@ public class prime {
       System.out.println("------------------------------------------------------------");
       System.out.println("학번, 이름, 자바, 리눅스, 자료구조, 선형대수학, 학점, 장학금");
       System.out.println("------------------------------------------------------------");
-      System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b\n", 
-      std.id, std.name, std.java, std.linux, std.data_structure,
-      std.linear_algebra,std.grade, std.scholarship);
-      
+      System.out.printf("%2d. %4s, %4s, %6s, %8s, %10s, %4.2f, %6b\n",
+          std.getId(), std.getName(),
+          std.getJava(), std.getLinux(),
+          std.getData_structure(), std.getLinear_algebra(),
+          std.getGrade(), std.isScholarship());
+
       if (!promptContinue()) {
         return;
       }
@@ -223,16 +225,16 @@ public class prime {
         return;
       }
       Student std = student[index];
-      checkId.remove(std.id);
-      std.id = inputId("학번(" + std.id + ")? ");
-      std.name = prompt.inputString("이름(" + std.name + ")? ");
-      std.java = inputScore("자바(" + std.java + ")? ");
-      std.linux = inputScore("리눅스(" + std.linux + ")? ");
-      std.data_structure = inputScore("자료구조(" + std.data_structure + ")? ");
-      std.linear_algebra = inputScore("선형대수학(" + std.linear_algebra + ")? ");
-      std.grade = gradeCal(index, std);
-      std.scholarship = scholarCal(std.grade);
-      
+      checkId.remove(std.getId());
+      std.setId(inputId("학번(" + std.getId() + ")? "));
+      std.setName(prompt.inputString("이름(" + std.getName() + ")? "));
+      std.setJava(inputScore("자바(" + std.getJava() + ")? "));
+      std.setLinux(inputScore("리눅스(" + std.getLinux() + ")? "));
+      std.setData_structure(inputScore("자료구조(" + std.getData_structure() + ")? "));
+      std.setLinear_algebra(inputScore("선형대수학(" + std.getLinear_algebra() + ")? "));
+      std.setGrade(gradeCal(index, std));
+      std.setScholarship(scholarCal(std.getGrade()));
+
       if (!promptContinue()) {
         return;
       }
@@ -268,7 +270,7 @@ public class prime {
           int indexNum = prompt.inputInt("학번 :");
           for (int i = 0; i < length; i++) {
             Student std = student[i];
-            if(std.id == indexNum) {
+            if(std.getId() == indexNum) {
               return i;
             }
           }
@@ -277,12 +279,12 @@ public class prime {
             return -1;
           }
           break;
-        
+
         case "2":
           String indexName = prompt.inputString("이름 :");
           for (int i = 0; i < length; i++) {
             Student std = student[i];
-            if(indexName.equals(std.name)) {
+            if(indexName.equals(std.getName())) {
               return i;
             }
           }
@@ -291,7 +293,7 @@ public class prime {
             return -1;
           }
           break;
-        
+
         case "0":
           return -1;
 
@@ -308,15 +310,15 @@ public class prime {
 
     for(int i = 0; i < 3; i++) {
       Student std = new Student();
-      std.id = 1001 + length;
-      checkId.put(std.id, true);
-      std.name = NAME[i];
-      std.java = SCORE[i];
-      std.linux = SCORE[i];
-      std.data_structure = SCORE[i];  
-      std.linear_algebra = SCORE[i];
-      std.grade = gradeCal(i, std);
-      std.scholarship = scholarCal(std.grade);
+      std.setId(1001 + length);
+      checkId.put(std.getId(), true);
+      std.setName(NAME[i]);
+      std.setJava(SCORE[i]);
+      std.setLinux(SCORE[i]);
+      std.setData_structure(SCORE[i]);
+      std.setLinear_algebra(SCORE[i]);
+      std.setGrade(gradeCal(i, std));
+      std.setScholarship(scholarCal(std.getGrade()));
       student[length++] = std;
     }
   }

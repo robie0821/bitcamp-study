@@ -1,7 +1,6 @@
 package project1;
 
 import project1.system.prime;
-import project1.prompt;
 
 public class App {
 
