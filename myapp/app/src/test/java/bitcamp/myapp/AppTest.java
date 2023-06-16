@@ -1,13 +1,21 @@
 package bitcamp.myapp;
 
-import java.util.HashMap;
+//import java.util.HashMap;
+//import java.util.Queue;
+//import java.util.LinkedList;
+//import java.util.Stack;
 
 class AppTest {
   public static void main(String[] args) {
-    HashMap<Integer, Integer> map = new HashMap<>();
+    String str = "asdf";
+    String num = "1234";
+    int i = 0;
+    long ll = 1234567;
 
-    map.containsKey(1);
-    map.put(1, 1);
+    String temp = String.valueOf(ll);
+
+    str = str.toLowerCase();
+
 
   }
 }

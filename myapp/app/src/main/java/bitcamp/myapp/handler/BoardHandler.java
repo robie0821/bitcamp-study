@@ -3,11 +3,13 @@ package bitcamp.myapp.handler;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.Prompt;
 
-public class BoardHandler implements Handler{
+public class BoardHandler implements Handler {
 
+
+  private ArrayList list = new ArrayList();
   private Prompt prompt;
+
   private String title;
-  private BoardList list = new BoardList();
 
   public BoardHandler(Prompt prompt, String title) {
     this.prompt = prompt;
@@ -18,7 +20,7 @@ public class BoardHandler implements Handler{
     printMenu();
 
     while (true) {
-      String menuNo = prompt.inputString("%s> ", title);
+      String menuNo = prompt.inputString("%s> ", this.title);
       if (menuNo.equals("0")) {
         return;
       } else if (menuNo.equals("menu")) {
@@ -50,10 +52,10 @@ public class BoardHandler implements Handler{
 
   private void inputBoard() {
     Board board = new Board();
-    board.setTitle(prompt.inputString("제목? "));
-    board.setContent(prompt.inputString("내용? "));
-    board.setWriter(prompt.inputString("작성자? "));
-    board.setPassword(prompt.inputString("암호? "));
+    board.setTitle(this.prompt.inputString("제목? "));
+    board.setContent(this.prompt.inputString("내용? "));
+    board.setWriter(this.prompt.inputString("작성자? "));
+    board.setPassword(this.prompt.inputString("암호? "));
 
     this.list.add(board);
   }
@@ -63,8 +65,9 @@ public class BoardHandler implements Handler{
     System.out.println("번호, 제목, 작성자, 조회수, 등록일");
     System.out.println("---------------------------------------");
 
-    Board[] arr = this.list.list();
-    for (Board board :arr) {
+    Object[] arr = this.list.list();
+    for (Object obj : arr) {
+      Board board = (Board)obj;
       System.out.printf("%d, %s, %s, %d, %tY-%5$tm-%5$td\n",
           board.getNo(),
           board.getTitle(),
@@ -75,41 +78,42 @@ public class BoardHandler implements Handler{
   }
 
   private void viewBoard() {
-    int boardNo = prompt.inputInt("번호? ");
-    Board board = this.list.get(boardNo);
-    if (board == null) {
-      System.out.println("해당 번호의 게시글이 없습니다!");
-    } else {
-      System.out.printf("제목: %s\n", board.getTitle());
-      System.out.printf("내용: %s\n", board.getContent());
-      System.out.printf("작성자: %s\n", board.getWriter());
-      System.out.printf("조회수: %s\n", board.getViewCount());
-      System.out.printf("등록일: %tY-%1$tm-%1$td\n", board.getCreatedDate());
-    }
-  }
+    int boardNo = this.prompt.inputInt("번호? ");
 
-
-  private void updateBoard() {
-    int boardNo = prompt.inputInt("번호? ");
-    Board board = this.list.get(boardNo);
+    Board board = (Board)this.list.get(new Board(boardNo));
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");
       return;
     }
 
-    if (!prompt.inputString("암호? ").equals(board.getPassword())) {
+    System.out.printf("제목: %s\n", board.getTitle());
+    System.out.printf("내용: %s\n", board.getContent());
+    System.out.printf("작성자: %s\n", board.getWriter());
+    System.out.printf("조회수: %s\n", board.getViewCount());
+    System.out.printf("등록일: %tY-%1$tm-%1$td\n", board.getCreatedDate());
+    board.setViewCount(board.getViewCount() + 1);
+  }
+
+  private void updateBoard() {
+    int boardNo = this.prompt.inputInt("번호? ");
+
+    Board board = (Board)this.list.get(new Board(boardNo));
+    if (board == null) {
+      System.out.println("해당 번호의 게시글이 없습니다!");
+      return;
+    }
+
+    if (!this.prompt.inputString("암호? ").equals(board.getPassword())) {
       System.out.println("암호가 일치하지 않습니다!");
       return;
     }
 
-    board.setTitle(prompt.inputString("제목(%s)? ", board.getTitle()));
-    board.setContent(prompt.inputString("내용(%s)? ", board.getContent()));
+    board.setTitle(this.prompt.inputString("제목(%s)? ", board.getTitle()));
+    board.setContent(this.prompt.inputString("내용(%s)? ", board.getContent()));
   }
 
-
-
   private void deleteBoard() {
-    if (!this.list.delete(prompt.inputInt("번호? "))) {
+    if (!this.list.delete(new Board(this.prompt.inputInt("번호? ")))) {
       System.out.println("해당 번호의 게시글이 없습니다!");
     }
   }
