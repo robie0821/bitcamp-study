@@ -10,6 +10,32 @@ public class Student {
   private double grade;
   private boolean scholarship;
 
+  public Student() {
+
+  }
+
+  public Student(int id) {
+    this.id = id;
+  }
+
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+
+    Student std = (Student) obj;
+
+    if (this.getId() != std.getId()) {
+      return false;
+    }
+
+    return true;
+  }
+
   public int getId() {
     return id;
   }

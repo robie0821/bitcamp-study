@@ -1,11 +1,10 @@
 package project1.system;
 
 import java.util.HashMap;
-import project1.prompt;
 import project1.vo.Student;
 
-public class prime {
 
+public class GradeManager {
   public static int size = 10;
   static int length = 0;
 
@@ -14,41 +13,7 @@ public class prime {
   static HashMap<Integer, Boolean> checkId = new HashMap<>();
 
   public static void generate() {
-    while(true) {
-      System.out.println("**대학교 학점 관리 시스템");
-      System.out.println("----------------------------------");
-      System.out.println("1. 학점 입력");
-      System.out.println("2. 학점 출력");
-      System.out.println("3. 학점 검색");
-      System.out.println("4. 학점 수정");
-      System.out.println("5. 학점 삭제");
-      System.out.println("0. 종료");
-      switch (prompt.inputString("> ")) {
-        case "99":
-          init();
-          break;
-        case "1":
-          inputData();
-          break;
-        case "2":
-          printData();
-          break;
-        case "3":
-          searchData();
-          break;
-        case "4":
-          updateData();
-          break;
-        case "5":
-          deleteData();
-          break;
-        case "0":
-          return;
-        default:
-          System.out.println("유효하지 않은 입력입니다");
-          break;
-      }
-    }
+
   }
 
   public static void inputData() {

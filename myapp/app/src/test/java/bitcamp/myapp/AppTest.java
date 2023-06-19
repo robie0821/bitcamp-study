@@ -13,6 +13,7 @@ class AppTest {
     long ll = 1234567;
 
     String temp = String.valueOf(ll);
+    int a = Integer.parseInt(str);
 
     str = str.toLowerCase();
 
