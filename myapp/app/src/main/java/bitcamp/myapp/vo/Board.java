@@ -30,15 +30,15 @@ public class Board {
       return false;
     }
 
-    Board board = (Board) obj;
+    Board b = (Board) obj;
 
-    if (this.getNo() != board.getNo()) {
+    if (this.getNo() != b.getNo()) {
       return false;
     }
 
     return true;
-
   }
+
   public int getNo() {
     return no;
   }

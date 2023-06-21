@@ -9,25 +9,25 @@ public class Prompt {
 
   // default constructor 정의
   public Prompt() {
-    this.scanner = new Scanner(System.in);
+    scanner = new Scanner(System.in);
   }
 
   // 다른 입력 도구와 연결한다면
   public Prompt(InputStream in) {
-    this.scanner = new Scanner(in);
+    scanner = new Scanner(in);
   }
 
   public String inputString(String title, Object... args) {
     System.out.printf(title, args);
-    return this.scanner.nextLine();
+    return scanner.nextLine();
   }
 
   public int inputInt(String title, Object... args) {
-    return Integer.parseInt(this.inputString(title, args));
+    return Integer.parseInt(inputString(title, args));
   }
 
   public void close() {
-    this.scanner.close();
+    scanner.close();
   }
 
 }

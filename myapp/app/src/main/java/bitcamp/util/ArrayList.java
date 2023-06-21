@@ -1,17 +1,20 @@
 package bitcamp.util;
 
-public class ArrayList implements List{
+public class ArrayList implements List {
   private static final int DEFAULT_SIZE = 3;
 
   private Object[] list = new Object[DEFAULT_SIZE];
   private int length;
 
   @Override
+  // 컴파일러에게 다음 메서드가 수퍼클래스의 메서드를 재정의한 것인지?
+  // 또는 인터페이스의 메서드를 구현한 것인지?
+  // 검사해달라는 표시다.
   public boolean add(Object obj) {
-    if (this.length == list.length) {
+    if (length == list.length) {
       increase();
     }
-    this.list[this.length++] = obj;
+    list[length++] = obj;
     return true;
   }
 
@@ -26,19 +29,19 @@ public class ArrayList implements List{
 
   @Override
   public Object[] toArray() {
-    Object[] arr = new Object[this.length];
-    for (int i = 0; i < this.length; i++) {
-      arr[i] = this.list[i];
+    Object[] arr = new Object[length];
+    for (int i = 0; i < length; i++) {
+      arr[i] = list[i];
     }
     return arr;
   }
 
   @Override
   public Object get(int index) {
-    if(!isValid(index)) {
+    if (!isValid(index)) {
       return null;
     }
-    return this.list[index];
+    return list[index];
   }
 
   @Override
@@ -48,39 +51,41 @@ public class ArrayList implements List{
       return false;
     }
 
-    for (int i = deletedIndex; i < this.length - 1; i++) {
-      this.list[i] = this.list[i + 1];
+    for (int i = deletedIndex; i < length - 1; i++) {
+      list[i] = list[i + 1];
     }
-    this.list[--this.length] = null;
+    list[--length] = null;
     return true;
   }
 
   @Override
   public Object remove(int index) {
-    if(!isValid(index)) {
+    if (!isValid(index)) {
       return null;
     }
 
-    Object old = this.list[index];
-    for (int i = index; i < this.length - 1; i++) {
-      this.list[i] = this.list[i + 1];
+    Object old = list[index];
+
+    for (int i = index; i < length - 1; i++) {
+      list[i] = list[i + 1];
     }
-    this.list[--this.length] = null;
+    list[--length] = null;
+
     return old;
   }
 
   @Override
   public int size() {
-    return this.length;
+    return length;
   }
 
   private boolean isValid(int index) {
-    return index >= 0 && index < this.length;
+    return index >= 0 && index < length;
   }
 
   private int indexOf(Object obj) {
-    for (int i = 0; i < this.length; i++) {
-      Object item = this.list[i];
+    for (int i = 0; i < length; i++) {
+      Object item = list[i];
       if (item.equals(obj)) {
         return i;
       }
