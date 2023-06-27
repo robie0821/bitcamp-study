@@ -1,22 +1,15 @@
 package bitcamp.myapp;
 
-//import java.util.HashMap;
-//import java.util.Queue;
-//import java.util.LinkedList;
-//import java.util.Stack;
+import java.util.Arrays;
+import java.util.List;
 
 class AppTest {
   public static void main(String[] args) {
-    String str = "asdf";
-    String num = "1234";
-    int i = 0;
-    long ll = 1234567;
+    List<Integer> list = Arrays.asList(1,2,3);
+    System.out.println(list);
 
-    String temp = String.valueOf(ll);
-    int a = Integer.parseInt(str);
-
-    str = str.toLowerCase();
-
-
+    String asdf = "as df";
+    String[] arr = asdf.split(" ");
+    int we = (int) Math.ceil(123.4124);
   }
 }

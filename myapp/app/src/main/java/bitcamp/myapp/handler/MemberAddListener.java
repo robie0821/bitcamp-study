@@ -1,12 +1,12 @@
 package bitcamp.myapp.handler;
 
+import java.util.List;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.BreadcrumbPrompt;
-import bitcamp.util.List;
 
 public class MemberAddListener extends AbstractMemberListener {
 
-  public MemberAddListener(List list) {
+  public MemberAddListener(List<Member> list) {
     super(list);
   }
 
@@ -16,8 +16,8 @@ public class MemberAddListener extends AbstractMemberListener {
     m.setName(prompt.inputString("이름? "));
     m.setEmail(prompt.inputString("이메일? "));
     m.setPassword(prompt.inputString("암호? "));
-    m.setGender(inputGender(prompt, (char)0));
+    m.setGender(inputGender((char)0, prompt));
 
-    list.add(m);
+    this.list.add(m);
   }
 }

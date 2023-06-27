@@ -4,16 +4,15 @@ public class User {
   private String Id;
   private String name;
   private String password;
-  private String accNum;
-  private int balance;
+  private int idNum;
   private Account account;
 
   public User() {
     this.account = new Account();
   }
 
-  public User(String accNum) {
-    this.account = new Account();
+  public User(int idNum) {
+    this.idNum = idNum;
   }
 
   public String getId() {
@@ -34,17 +33,11 @@ public class User {
   public void setPassword(String password) {
     this.password = password;
   }
-  public String getAccNum() {
-    return this.accNum;
+  public int getIdNum() {
+    return idNum;
   }
-  public void setAccNum(String accNum) {
-    this.accNum = accNum;
-  }
-  public int getBalance() {
-    return balance;
-  }
-  public void setBalance(int balance) {
-    this.balance = balance;
+  public void setIdNum(int idNum) {
+    this.idNum = idNum;
   }
 }
 

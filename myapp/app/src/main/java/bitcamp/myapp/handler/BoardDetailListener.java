@@ -1,12 +1,12 @@
 package bitcamp.myapp.handler;
 
+import java.util.List;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.BreadcrumbPrompt;
-import bitcamp.util.List;
 
 public class BoardDetailListener extends AbstractBoardListener {
 
-  public BoardDetailListener(List list) {
+  public BoardDetailListener(List<Board> list) {
     super(list);
   }
 
@@ -14,7 +14,7 @@ public class BoardDetailListener extends AbstractBoardListener {
   public void service(BreadcrumbPrompt prompt) {
     int boardNo = prompt.inputInt("번호? ");
 
-    Board board = findBy(boardNo);
+    Board board = this.findBy(boardNo);
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다!");
       return;
@@ -28,3 +28,14 @@ public class BoardDetailListener extends AbstractBoardListener {
     board.setViewCount(board.getViewCount() + 1);
   }
 }
+
+
+
+
+
+
+
+
+
+
+

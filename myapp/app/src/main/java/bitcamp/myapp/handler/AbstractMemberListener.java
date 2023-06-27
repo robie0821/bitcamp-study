@@ -1,14 +1,15 @@
 package bitcamp.myapp.handler;
 
+import java.util.List;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.ActionListener;
 import bitcamp.util.BreadcrumbPrompt;
-import bitcamp.util.List;
 
 public abstract class AbstractMemberListener implements ActionListener {
-  protected List list;
 
-  public AbstractMemberListener(List list) {
+  protected List<Member> list;
+
+  public AbstractMemberListener(List<Member> list) {
     this.list = list;
   }
 
@@ -16,7 +17,17 @@ public abstract class AbstractMemberListener implements ActionListener {
     return gender == 'M' ? "남성" : "여성";
   }
 
-  protected char inputGender(BreadcrumbPrompt prompt, char gender) {
+  protected Member findBy(int no) {
+    for (int i = 0; i < this.list.size(); i++) {
+      Member m = this.list.get(i);
+      if (m.getNo() == no) {
+        return m;
+      }
+    }
+    return null;
+  }
+
+  protected char inputGender(char gender, BreadcrumbPrompt prompt) {
     String label;
     if (gender == 0) {
       label = "성별?\n";
@@ -41,13 +52,4 @@ public abstract class AbstractMemberListener implements ActionListener {
     }
   }
 
-  protected Member findBy(int no) {
-    for (int i = 0; i < list.size(); i++) {
-      Member m = (Member) list.get(i);
-      if (m.getNo() == no) {
-        return m;
-      }
-    }
-    return null;
-  }
 }

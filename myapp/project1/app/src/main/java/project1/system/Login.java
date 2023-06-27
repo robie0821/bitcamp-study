@@ -11,7 +11,7 @@ public class Login {
   private Prompt prompt;
 
   private HashMap<String,Integer> idCheck = new HashMap<>();
-  private HashMap<String,Integer> accCheck = new HashMap<>();
+  private HashMap<Integer,Integer> idNumCheck = new HashMap<>();
 
   public Login(Prompt prompt, List list) {
     this.prompt = prompt;
@@ -48,8 +48,8 @@ public class Login {
   public void signUp() {
     User user = new User();
     user.setName(prompt.inputString("이름? "));
-    user.setAccNum(accInput());
-    user.setId(idInput());
+    user.setIdNum(idNumInput("아이디? "));
+    user.setId(idInput("주민번호? "));
     user.setPassword(prompt.inputString("비밀번호? "));
 
     list.add(user);
@@ -86,11 +86,11 @@ public class Login {
   }
 
   private void searchId() {
-    String accNum = prompt.inputString("계좌번호: ");
+    int idNum = prompt.inputInt("주민번호: ");
     Object[] arr = list.toArray();
     for(Object obj : arr) {
       User user = (User)obj;
-      if (accNum.equals(user.getAccNum())) {
+      if (idNum == user.getIdNum()) {
         System.out.println("아이디: " + user.getId());
         prompt.inputString("계속하려면 아무키나 입력하세요");
         return;
@@ -101,11 +101,11 @@ public class Login {
   }
 
   private void resetPassword() {
-    String accNum = prompt.inputString("계좌번호: ");
+    int idNum = prompt.inputInt("주민번호: ");
     Object[] arr = list.toArray();
     for(Object obj : arr) {
       User user = (User)obj;
-      if (accNum.equals(user.getAccNum())) {
+      if (idNum == user.getIdNum()) {
         user.setPassword(prompt.inputString("비밀번호? "));
         return;
       }
@@ -114,9 +114,9 @@ public class Login {
     return;
   }
 
-  private String idInput() {
+  private String idInput(String title) {
     while (true) {
-      String str = prompt.inputString("아이디? ");
+      String str = prompt.inputString(title);
       if(!idCheck.containsKey(str)) {
         idCheck.put(str, 1);
         return str;
@@ -126,14 +126,14 @@ public class Login {
     }
   }
 
-  private String accInput() {
+  private int idNumInput(String title) {
     while (true) {
-      String str = prompt.inputString("계좌번호? ");
-      if(!accCheck.containsKey(str)) {
-        accCheck.put(str, 1);
-        return str;
+      int num = prompt.inputInt(title);
+      if(!idNumCheck.containsKey(num)) {
+        idNumCheck.put(num, 1);
+        return num;
       } else {
-        System.out.println("중복된 계좌번호 입니다.");
+        System.out.println("이미 가입된 주민번호 입니다.");
       }
     }
   }

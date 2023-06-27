@@ -1,27 +1,29 @@
 package bitcamp.util;
 
+import java.util.Stack;
+
 public class BreadcrumbPrompt extends Prompt {
 
-  private Stack breadcrumbs = new Stack();
+  private Stack<String> breadcrumbs = new Stack<>();
 
   public void appendBreadcrumb(String title) {
-    breadcrumbs.push(title);
+    this.breadcrumbs.push(title);
   }
 
   public void removeBreadcrumb() {
-    breadcrumbs.pop();
+    this.breadcrumbs.pop();
   }
 
   public String inputMenu() {
     StringBuilder titleBuilder = new StringBuilder(); // 예) 메인/회원>
-    for (int i = 0; i < breadcrumbs.size(); i++) {
+    for (int i = 0; i < this.breadcrumbs.size(); i++) {
       if (titleBuilder.length() > 0) {
         titleBuilder.append("/");
       }
-      titleBuilder.append(breadcrumbs.get(i));
+      titleBuilder.append(this.breadcrumbs.get(i));
     }
     titleBuilder.append("> ");
-    return inputString(titleBuilder.toString());
+    return this.inputString(titleBuilder.toString());
   }
 }
 
