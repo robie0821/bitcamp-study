@@ -1,15 +1,16 @@
 package bitcamp.myapp;
 
-import java.util.Arrays;
-import java.util.List;
+//import java.util.*;
 
 class AppTest {
   public static void main(String[] args) {
-    List<Integer> list = Arrays.asList(1,2,3);
-    System.out.println(list);
+    System.out.println(factorial(15));
+  }
 
-    String asdf = "as df";
-    String[] arr = asdf.split(" ");
-    int we = (int) Math.ceil(123.4124);
+  static int factorial(int value) {
+    if (value == 1) {
+      return 1;
+    }
+    return value * factorial(value - 1);
   }
 }

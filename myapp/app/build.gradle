@@ -8,9 +8,13 @@ repositories {
 }
 
 dependencies {
+    //미디어 파일에서 메타 정보(위도/경도, 해상도 등) 추출
+    implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 
     implementation 'com.google.guava:guava:31.1-jre'
+
 }
 
 java {
