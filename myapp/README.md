@@ -147,11 +147,46 @@
     - App, BoardHandler, MemberHandler 변경
   - MenuPrompt 클래스에 입력한 명령어의 history 기능을 추가
 
-## 23. Observer 디자인 패턴을 활용하여 기본 메뉴 명령의 삽입/삭제를 쉽게 하기
+## 23. Composite, Command, Observer 디자인 패턴, 추상 클래스/메서드 활용하기
 
-- Observer 디자인 패턴의 클래스 구조 및 구동 원리 이해
+- Composite 패턴을 활용하여 메뉴 구현하기
+  - BreadcrumbPrompt에 적용
+  - Menu, MenuGroup 클래스 정의
+- Observer 패턴을 활용하여 메뉴 명령 처리하기
+  - ActionListener 인터페이스 정의
+  - Menu와 리스너 객체 연결
+- Command 패턴을 활용하여 메뉴 기능 구현하기
+  - BoardHandler, MemberHandler에 적용
+  - ActionListener 인터페이스 활용
+  - BoardXxxListener, MemberXxxListener 클래스로 분해
+- Generalization(상속) 수행 
+  - AbstractBoardListener 추상 클래스 정의
+    - 추상 메서드 도입
 
-## 24. Iterator 디자인 패턴을 활용하여 목록 조회 기능을 캡슐화하기
+## 24. 제네릭을 사용하여 타입을 파라미터로 다루기
+
+- ArrayList, LinkedList, Stack, Queue에 제네릭 적용하기
+- T[] toArray(T[]) 메서드 추가하기
+
+## 25. Iterator 디자인 패턴을 활용하여 목록 조회 기능을 캡슐화하기
 
 - GoF의 디자인 패턴 중 Iterator 패턴의 동작원리 이해 및 구현
 - ArrayList, LinkedList, Stack, Queue에 적용
+- 중접 클래스 문법을 이용하여 Iterator 구현하기
+  - static/non-static nested 클래스 문법을 활용하는 방법
+  - local/anonymous 클래스 문법을 활용하는 방법
+
+## 26. 자바 Collection API 사용하기
+
+- 목록을 다루는 기존 클래스를 자바 컬렉션 API 로 교체
+
+## 27. File I/O API를 이용하여 데이터를 바이너리 형식으로 입출력하기
+
+- FileInputStream/FileOutputStream 사용법
+- 바이너리 형식으로 데이터를 입출력하는 방법
+
+## 28. 상속을 이용하여 primitive type과 String 출력 기능을 추가하기
+
+- 상속을 이용하여 바이트 입출력 기능을 확장하기
+  - DataInputStream = FileInputStream 클래스 + primitive type/String 값 읽기
+  - DataOutputStream = FileOutputStream 클래스 + primitive type/String 값 쓰기
