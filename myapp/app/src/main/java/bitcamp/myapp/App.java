@@ -1,10 +1,14 @@
 package bitcamp.myapp;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import bitcamp.io.DataInputStream;
-import bitcamp.io.DataOutputStream;
 import bitcamp.myapp.handler.BoardAddListener;
 import bitcamp.myapp.handler.BoardDeleteListener;
 import bitcamp.myapp.handler.BoardDetailListener;
@@ -103,7 +107,10 @@ public class App {
 
   private void loadMember() {
     try {
-      DataInputStream in = new DataInputStream("member.data");
+      FileInputStream in0 = new FileInputStream("member.data");
+      BufferedInputStream in1 = new BufferedInputStream(in0);
+      DataInputStream in = new DataInputStream(in1);
+
       int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
@@ -112,23 +119,26 @@ public class App {
         member.setName(in.readUTF());
         member.setEmail(in.readUTF());
         member.setPassword(in.readUTF());
-        member.setPassword(in.readUTF());
         member.setGender(in.readChar());
         memberList.add(member);
       }
 
+      // 데이터를 로딩한 이후에 추가할 회원의 번호를 설정한다.
       Member.userId = memberList.get(memberList.size() - 1).getNo() + 1;
 
       in.close();
 
     } catch (Exception e) {
-      System.out.println("회원 정보를 읽는 중 오류 발생!");
+      System.out.println("member.data 파일을 저장하는 중 오류 발생!");
     }
   }
 
   private void loadBoard(String filename, List<Board> list) {
     try {
-      DataInputStream in = new DataInputStream(filename);
+      FileInputStream in0 = new FileInputStream(filename);
+      BufferedInputStream in1 = new BufferedInputStream(in0);
+      DataInputStream in = new DataInputStream(in1);
+
       int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
@@ -156,7 +166,9 @@ public class App {
 
   private void saveMember() {
     try {
-      DataOutputStream out = new DataOutputStream("member.data");
+      FileOutputStream out0 = new FileOutputStream("member.data");
+      BufferedOutputStream out1 = new BufferedOutputStream(out0);
+      DataOutputStream out = new DataOutputStream(out1);
 
       out.writeShort(memberList.size());
 
@@ -170,13 +182,15 @@ public class App {
       out.close();
 
     } catch (Exception e) {
-      System.out.println("회원 정보를 저장하는 중 오류 발생!");
+      System.out.println("member.data 파일을 저장하는 중 오류 발생!");
     }
   }
 
   private void saveBoard(String filename, List<Board> list) {
     try {
-      DataOutputStream out = new DataOutputStream(filename);
+      FileOutputStream out0 = new FileOutputStream(filename);
+      BufferedOutputStream out1 = new BufferedOutputStream(out0);
+      DataOutputStream out = new DataOutputStream(out1);
 
       out.writeShort(list.size());
 
