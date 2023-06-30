@@ -10,8 +10,6 @@ public class App {
 
     int no;
     String name = "홍길동";
-    String C
-
 
     System.out.printf("학번: %d\n", 1001);
     System.out.printf("이름: %s\n", "홍길동");
