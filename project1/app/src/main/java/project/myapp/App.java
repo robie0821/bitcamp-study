@@ -7,30 +7,28 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import project.myapp.handler.BoardAddListener;
-import project.myapp.handler.BoardDeleteListener;
-import project.myapp.handler.BoardDetailListener;
-import project.myapp.handler.BoardListListener;
-import project.myapp.handler.BoardUpdateListener;
-import project.myapp.handler.MemberAddListener;
-import project.myapp.handler.MemberDeleteListener;
-import project.myapp.handler.MemberDetailListener;
-import project.myapp.handler.MemberListListener;
-import project.myapp.handler.MemberUpdateListener;
-import project.myapp.vo.Board;
+import project.myapp.handler.GradeAddListener;
+import project.myapp.handler.GradeListListener;
+import project.myapp.handler.GradeUpdateListener;
+import project.myapp.handler.ReviewAddListener;
+import project.myapp.handler.ReviewListListener;
+import project.myapp.handler.ReviewSearchListener;
+import project.myapp.handler.ReviewUpdateListener;
+import project.myapp.handler.StudentAddListener;
+import project.myapp.handler.StudentDeleteListener;
+import project.myapp.handler.StudentListListener;
+import project.myapp.handler.StudentSearchListener;
+import project.myapp.handler.StudentUpdateListener;
 import project.myapp.vo.CsvObject;
-import project.myapp.vo.Member;
+import project.myapp.vo.Student;
 import project.util.BreadcrumbPrompt;
 import project.util.Menu;
 import project.util.MenuGroup;
 
 public class App {
 
-  ArrayList<Member> memberList = new ArrayList<>();
-  LinkedList<Board> boardList = new LinkedList<>();
-  LinkedList<Board> readingList = new LinkedList<>();
+  ArrayList<Student> studentList = new ArrayList<>();
 
   BreadcrumbPrompt prompt = new BreadcrumbPrompt();
 
@@ -60,41 +58,34 @@ public class App {
   }
 
   private void loadData() {
-    loadCsv("member.csv", memberList, Member.class);
-    loadCsv("board.csv", boardList, Board.class);
-    loadCsv("reading.csv", readingList, Board.class);
+    loadCsv("student.csv", studentList, Student.class);
   }
 
   private void saveData() {
-    saveCsv("member.csv", memberList);
-    saveCsv("board.csv", boardList);
-    saveCsv("reading.csv", readingList);
+    saveCsv("student.csv", studentList);
   }
 
   private void prepareMenu() {
-    MenuGroup memberMenu = new MenuGroup("수강신청");
-    memberMenu.add(new Menu("등록", new MemberAddListener(memberList)));
-    memberMenu.add(new Menu("목록", new MemberListListener(memberList)));
-    memberMenu.add(new Menu("조회", new MemberDetailListener(memberList)));
-    memberMenu.add(new Menu("변경", new MemberUpdateListener(memberList)));
-    memberMenu.add(new Menu("삭제", new MemberDeleteListener(memberList)));
-    mainMenu.add(memberMenu);
+    MenuGroup loginMenu = new MenuGroup("학생 등록");
+    loginMenu.add(new Menu("학생 등록", new StudentAddListener(studentList)));
+    loginMenu.add(new Menu("학생 목록", new StudentListListener(studentList)));
+    loginMenu.add(new Menu("비밀번호 조회", new StudentSearchListener(studentList)));
+    loginMenu.add(new Menu("정보 변경", new StudentUpdateListener(studentList)));
+    loginMenu.add(new Menu("학생 삭제", new StudentDeleteListener(studentList)));
+    mainMenu.add(loginMenu);
 
-    MenuGroup boardMenu = new MenuGroup("학점등록");
-    boardMenu.add(new Menu("등록", new BoardAddListener(boardList)));
-    boardMenu.add(new Menu("목록", new BoardListListener(boardList)));
-    boardMenu.add(new Menu("조회", new BoardDetailListener(boardList)));
-    boardMenu.add(new Menu("변경", new BoardUpdateListener(boardList)));
-    boardMenu.add(new Menu("삭제", new BoardDeleteListener(boardList)));
-    mainMenu.add(boardMenu);
+    MenuGroup gradeMenu = new MenuGroup("학점등록");
+    gradeMenu.add(new Menu("등록", new GradeAddListener(studentList)));
+    gradeMenu.add(new Menu("목록", new GradeListListener(studentList)));
+    gradeMenu.add(new Menu("변경", new GradeUpdateListener(studentList)));
+    mainMenu.add(gradeMenu);
 
-    MenuGroup readingMenu = new MenuGroup("과목평가");
-    readingMenu.add(new Menu("등록", new BoardAddListener(readingList)));
-    readingMenu.add(new Menu("목록", new BoardListListener(readingList)));
-    readingMenu.add(new Menu("조회", new BoardDetailListener(readingList)));
-    readingMenu.add(new Menu("변경", new BoardUpdateListener(readingList)));
-    readingMenu.add(new Menu("삭제", new BoardDeleteListener(readingList)));
-    mainMenu.add(readingMenu);
+    MenuGroup reviewMenu = new MenuGroup("과목평가");
+    reviewMenu.add(new Menu("등록", new ReviewAddListener(studentList)));
+    reviewMenu.add(new Menu("목록", new ReviewListListener(studentList)));
+    reviewMenu.add(new Menu("검색", new ReviewSearchListener(studentList)));
+    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(studentList)));
+    mainMenu.add(reviewMenu);
   }
 
   @SuppressWarnings("unchecked")

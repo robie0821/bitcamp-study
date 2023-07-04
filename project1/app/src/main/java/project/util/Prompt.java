@@ -21,7 +21,12 @@ public class Prompt {
   }
 
   public int inputInt(String title, Object... args) {
-    return Integer.parseInt(this.inputString(title, args));
+    try {
+      return Integer.parseInt(this.inputString(title, args));
+    } catch (Exception e) {
+      System.out.println("유효하지 않은 입력입니다.");
+      return inputInt(title);
+    }
   }
 
   public void close() {

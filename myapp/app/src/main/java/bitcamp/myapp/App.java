@@ -7,8 +7,12 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import bitcamp.myapp.handler.BoardAddListener;
 import bitcamp.myapp.handler.BoardDeleteListener;
 import bitcamp.myapp.handler.BoardDetailListener;
@@ -22,6 +26,7 @@ import bitcamp.myapp.handler.MemberDeleteListener;
 import bitcamp.myapp.handler.MemberDetailListener;
 import bitcamp.myapp.handler.MemberListListener;
 import bitcamp.myapp.handler.MemberUpdateListener;
+import bitcamp.myapp.vo.AutoIncrement;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.CsvObject;
 import bitcamp.myapp.vo.Member;
@@ -63,15 +68,15 @@ public class App {
   }
 
   private void loadData() {
-    loadCsv("member.csv", memberList, Member.class);
-    loadCsv("board.csv", boardList, Board.class);
-    loadCsv("reading.csv", readingList, Board.class);
+    loadJson("member.json", memberList, Member.class);
+    loadJson("board.json", boardList, Board.class);
+    loadJson("reading.json", readingList, Board.class);
   }
 
   private void saveData() {
-    saveCsv("member.csv", memberList);
-    saveCsv("board.csv", boardList);
-    saveCsv("reading.csv", readingList);
+    saveJson("member.json", memberList);
+    saveJson("board.json", boardList);
+    saveJson("reading.json", readingList);
   }
 
   private void prepareMenu() {
@@ -106,6 +111,41 @@ public class App {
     mainMenu.add(helloMenu);
   }
 
+  private <T> void loadJson(String filename, List<T> list, Class<T> clazz) {
+    try {
+      FileReader in0 = new FileReader(filename);
+      BufferedReader in = new BufferedReader(in0); // <== Decorator 역할을 수행!
+
+      StringBuilder strBuilder = new StringBuilder();
+      String line = null;
+
+      while ((line = in.readLine()) != null) {
+        strBuilder.append(line);
+      }
+
+      in.close();
+
+      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+      Collection<T> objects = gson.fromJson(strBuilder.toString(),
+          TypeToken.getParameterized(Collection.class, clazz).getType());
+
+      list.addAll(objects);
+
+      Class<?>[] interfaces = clazz.getInterfaces();
+      for (Class<?> info : interfaces) {
+        if (info == AutoIncrement.class) {
+          AutoIncrement autoiIncrement = (AutoIncrement) list.get(list.size() - 1);
+          autoiIncrement.updateKey();
+          break;
+        }
+      }
+
+    } catch (Exception e) {
+      System.out.println(filename + " 파일을 읽는 중 오류 발생!");
+    }
+  }
+
   @SuppressWarnings("unchecked")
   private <T extends CsvObject> void loadCsv(String filename, List<T> list, Class<T> clazz) {
     try {
@@ -125,6 +165,20 @@ public class App {
 
     } catch (Exception e) {
       System.out.println(filename + " 파일을 읽는 중 오류 발생!");
+    }
+  }
+
+  private void saveJson(String filename, List<?> list) {
+    try {
+      FileWriter out0 = new FileWriter(filename);
+      BufferedWriter out = new BufferedWriter(out0);
+
+      Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+      out.write(gson.toJson(list));
+      out.close();
+    } catch (Exception e) {
+      System.out.println(filename + " 파일을 저장하는 중 오류 발생!");
     }
   }
 
