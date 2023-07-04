@@ -12,7 +12,12 @@ public class ReviewUpdateListener extends AbstractStudentListener {
 
   @Override
   public void service(BreadcrumbPrompt prompt) {
-    Student std = this.findBy(prompt.inputInt("번호? "));
+    Student std = this.findBy(prompt.inputInt("학번? "));
+    if (std == null) {
+      System.out.println("해당 학번의 학생이 없습니다!");
+      return;
+    }
+
     System.out.printf("1. C++\n2. Java\n3. Python\n4.Linux\n");
 
     String str = null;

@@ -13,7 +13,14 @@ public class StudentAddListener extends AbstractStudentListener {
   @Override
   public void service(BreadcrumbPrompt prompt) {
     Student std = new Student();
-    std.setNo(prompt.inputInt("학번? "));
+    while (true) {
+      int no = prompt.inputInt("학번? ");
+      if (this.findBy(no) == null) {
+        std.setNo(no);
+        break;
+      }
+      System.out.println("이미 등록되어있는 학번입니다.");
+    }
     std.setName(prompt.inputString("이름? "));
     std.setPassword(prompt.inputString("비밀번호? "));
     this.list.add(std);

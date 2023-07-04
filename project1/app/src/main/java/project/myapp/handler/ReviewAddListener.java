@@ -20,7 +20,7 @@ public class ReviewAddListener extends AbstractStudentListener {
     std.setCppReview(prompt.inputString("C++ 강의평가? "));
     std.setJavaReview(prompt.inputString("Java 강의평가? "));
     std.setPythonReview(prompt.inputString("Python 강의평가? "));
-    std.setLinuxReview(prompt.inputString("Linux? 강의평가 "));
+    std.setLinuxReview(prompt.inputString("Linux 강의평가? "));
   }
 }
 
