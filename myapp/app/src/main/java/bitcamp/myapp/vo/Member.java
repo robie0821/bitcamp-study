@@ -39,13 +39,6 @@ public class Member implements Serializable, CsvObject, AutoIncrement {
   }
 
   @Override
-  public void updateKey() {
-    if (this.no >= Member.userId) {
-      Member.userId = this.no;
-    }
-  }
-
-  @Override
   public String toCsvString() {
     return String.format("%d,%s,%s,%s,%c",
         this.getNo(),
@@ -53,6 +46,13 @@ public class Member implements Serializable, CsvObject, AutoIncrement {
         this.getEmail(),
         this.getPassword(),
         this.getGender());
+  }
+
+  @Override
+  public void updateKey() {
+    if (Member.userId <= this.no) {
+      Member.userId = this.no + 1;
+    }
   }
 
   public boolean equals(Object obj) {
