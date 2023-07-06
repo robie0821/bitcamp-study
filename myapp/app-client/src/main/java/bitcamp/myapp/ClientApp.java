@@ -3,6 +3,7 @@ package bitcamp.myapp;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import com.google.gson.Gson;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.BoardNetworkDao;
 import bitcamp.myapp.dao.MemberDao;
@@ -20,6 +21,7 @@ import bitcamp.myapp.handler.MemberDeleteListener;
 import bitcamp.myapp.handler.MemberDetailListener;
 import bitcamp.myapp.handler.MemberListListener;
 import bitcamp.myapp.handler.MemberUpdateListener;
+import bitcamp.net.RequestEntity;
 import bitcamp.util.BreadcrumbPrompt;
 import bitcamp.util.Menu;
 import bitcamp.util.MenuGroup;
@@ -38,7 +40,7 @@ public class ClientApp {
 
   MenuGroup mainMenu = new MenuGroup("메인");
 
-  public ClientApp(String ip, int port) throws Exception{
+  public ClientApp(String ip, int port) throws Exception {
 
     this.socket = new Socket(ip, port);
     this.out = new DataOutputStream(socket.getOutputStream());
@@ -51,14 +53,14 @@ public class ClientApp {
     prepareMenu();
   }
 
-  public void close() throws Exception{
+  public void close() throws Exception {
     prompt.close();
     out.close();
     in.close();
     socket.close();
   }
 
-  public static void main(String[] args) throws Exception{
+  public static void main(String[] args) throws Exception {
     if (args.length < 2) {
       System.out.println("실행 예) java ... bitcamp.myapp.ClientApp 서버주소 포트번호");
       return;
@@ -79,7 +81,7 @@ public class ClientApp {
     mainMenu.execute(prompt);
 
     try {
-      out.writeUTF("quit");
+      out.writeUTF(new Gson().toJson(new RequestEntity().command("quit")));
     } catch (Exception e) {
       System.out.println("종료 오류!");
       e.printStackTrace();

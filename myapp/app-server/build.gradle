@@ -8,6 +8,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':app-common')
+    
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 
     implementation 'com.google.guava:guava:31.1-jre'
@@ -22,7 +24,7 @@ java {
 }
 
 application {
-    mainClass = 'bitcamp.App'
+    mainClass = 'bitcamp.myapp.ServerApp'
 }
 
 tasks.named('test') {
@@ -37,7 +39,7 @@ tasks.withType(JavaCompile) {
 
 eclipse {
     project {
-        name = "myapp"
+        name = "myapp-server"
     }
     jdt {
       sourceCompatibility = 17

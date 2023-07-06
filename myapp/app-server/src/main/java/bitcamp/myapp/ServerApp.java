@@ -4,12 +4,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import com.google.gson.Gson;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.BoardListDao;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.dao.MemberListDao;
+import bitcamp.myapp.vo.Board;
+import bitcamp.net.RequestEntity;
+import bitcamp.net.ResponseEntity;
 
 public class ServerApp {
 
@@ -20,15 +22,15 @@ public class ServerApp {
   BoardDao boardDao = new BoardListDao("board.json");
   BoardDao readingDao = new BoardListDao("reading.json");
 
-  public ServerApp(int port) throws Exception{
+  public ServerApp(int port) throws Exception {
     this.port = port;
   }
 
-  public void close() throws Exception{
+  public void close() throws Exception {
     serverSocket.close();
   }
 
-  public static void main(String[] args) throws Exception{
+  public static void main(String[] args) throws Exception {
     if (args.length < 1) {
       System.out.println("실행 예) java ... bitcamp.myapp.ServerApp 포트번호");
       return;
@@ -39,33 +41,72 @@ public class ServerApp {
     app.close();
   }
 
-  public void execute() throws Exception{
+  public void execute() throws Exception {
     System.out.println("[MyList 서버 애플리케이션]");
 
     this.serverSocket = new ServerSocket(port);
-    System.out.println("서버 실행중...");
+    System.out.println("서버 실행 중...");
 
     Socket socket = serverSocket.accept();
-    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
     DataInputStream in = new DataInputStream(socket.getInputStream());
+    DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
     Gson gson = new Gson();
 
     while (true) {
-      String command = in.readUTF();
+      RequestEntity request = RequestEntity.fromJson(in.readUTF());
 
+      String command = request.getCommand();
       System.out.println(command);
 
-      HashMap<String, String> response = new HashMap<>();
+      ResponseEntity response = new ResponseEntity();
 
       if (command.equals("quit")) {
         break;
-      } else if (command.equals("board/list")) {
-        response.put("status", "success");
-        response.put("data", gson.toJson(boardDao.list()));
-      } else {
-        response.put("status", "failur");
-        response.put("message", "nono!");
+      }
+
+      switch (command) {
+        case "board/insert":
+          boardDao.insert(request.getObject(Board.class));
+          response.status(ResponseEntity.SUCCESS);
+          break;
+
+        case "board/list":
+          response.status(ResponseEntity.SUCCESS).result(boardDao.list());
+          break;
+
+        case "board/findby":
+          Board findBoard = boardDao.findBy(request.getObject(Integer.class));
+          if (findBoard != null) {
+            response.status(ResponseEntity.SUCCESS).result(findBoard);
+          } else {
+            response.status(ResponseEntity.FAILURE).result("해당 번호의 게시물이 없습니다.");
+          }
+          break;
+
+
+        case "board/update":
+          int updateResult = boardDao.update(request.getObject(Board.class));
+
+          if (updateResult != 0) {
+            response.status(ResponseEntity.SUCCESS).result(updateResult);
+          } else {
+            response.status(ResponseEntity.FAILURE).result("해당 번호의 게시물이 없습니다.");
+          }
+          break;
+
+        case "board/delete":
+          int deleteResult = boardDao.delete(request.getObject(Integer.class));
+
+          if (deleteResult != 0) {
+            response.status(ResponseEntity.SUCCESS).result(deleteResult);
+          } else {
+            response.status(ResponseEntity.FAILURE).result("해당 번호의 게시물이 없습니다.");
+          }
+          break;
+
+        default:
+          response.status(ResponseEntity.ERROR).result("해당 명령을 지원하지 않습니다.");
       }
 
       out.writeUTF(gson.toJson(response));
@@ -74,7 +115,10 @@ public class ServerApp {
     in.close();
     out.close();
     socket.close();
-
   }
-
 }
+
+
+
+
+

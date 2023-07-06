@@ -1,5 +1,5 @@
 plugins {
-    id 'application'
+    id 'java-library'
     id 'eclipse'
 }
 
@@ -21,10 +21,6 @@ java {
     }
 }
 
-application {
-    mainClass = 'bitcamp.myapp.App'
-}
-
 tasks.named('test') {
     useJUnitPlatform()
 }
@@ -37,7 +33,7 @@ tasks.withType(JavaCompile) {
 
 eclipse {
     project {
-        name = "myapp-app"
+        name = "myapp-common"
     }
     jdt {
       sourceCompatibility = 17
