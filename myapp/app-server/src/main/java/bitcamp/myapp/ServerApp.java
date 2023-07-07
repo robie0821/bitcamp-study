@@ -4,12 +4,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import com.google.gson.Gson;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.BoardListDao;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.dao.MemberListDao;
 import bitcamp.myapp.vo.Board;
+import bitcamp.myapp.vo.Member;
 import bitcamp.net.RequestEntity;
 import bitcamp.net.ResponseEntity;
 
@@ -51,65 +51,93 @@ public class ServerApp {
     DataInputStream in = new DataInputStream(socket.getInputStream());
     DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
-    Gson gson = new Gson();
-
     while (true) {
       RequestEntity request = RequestEntity.fromJson(in.readUTF());
 
       String command = request.getCommand();
       System.out.println(command);
 
-      ResponseEntity response = new ResponseEntity();
-
       if (command.equals("quit")) {
         break;
       }
 
+      ResponseEntity response = new ResponseEntity();
+
       switch (command) {
+        case "board/list":
+          response.status(ResponseEntity.SUCCESS).result(boardDao.list());
+          break;
         case "board/insert":
           boardDao.insert(request.getObject(Board.class));
           response.status(ResponseEntity.SUCCESS);
           break;
-
-        case "board/list":
+        case "board/findBy":
+          Board board = boardDao.findBy(request.getObject(Integer.class));
+          if (board == null) {
+            response.status(ResponseEntity.SUCCESS);
+          } else {
+            response.status(ResponseEntity.SUCCESS).result(board);
+          }
+          break;
+        case "board/update":
+          int value = boardDao.update(request.getObject(Board.class));
+          response.status(ResponseEntity.SUCCESS).result(value);
+          break;
+        case "board/delete":
+          value = boardDao.delete(request.getObject(Integer.class));
+          response.status(ResponseEntity.SUCCESS).result(value);
+          break;
+        case "member/list":
+          response.status(ResponseEntity.SUCCESS).result(memberDao.list());
+          break;
+        case "member/insert":
+          memberDao.insert(request.getObject(Member.class));
+          response.status(ResponseEntity.SUCCESS);
+          break;
+        case "member/findBy":
+          Member member = memberDao.findBy(request.getObject(Integer.class));
+          if (member == null) {
+            response.status(ResponseEntity.SUCCESS);
+          } else {
+            response.status(ResponseEntity.SUCCESS).result(member);
+          }
+          break;
+        case "member/update":
+          value = memberDao.update(request.getObject(Member.class));
+          response.status(ResponseEntity.SUCCESS).result(value);
+          break;
+        case "member/delete":
+          value = memberDao.delete(request.getObject(Integer.class));
+          response.status(ResponseEntity.SUCCESS).result(value);
+          break;
+        case "reading/list":
           response.status(ResponseEntity.SUCCESS).result(boardDao.list());
           break;
-
-        case "board/findby":
-          Board findBoard = boardDao.findBy(request.getObject(Integer.class));
-          if (findBoard != null) {
-            response.status(ResponseEntity.SUCCESS).result(findBoard);
+        case "reading/insert":
+          boardDao.insert(request.getObject(Board.class));
+          response.status(ResponseEntity.SUCCESS);
+          break;
+        case "reading/findBy":
+          board = boardDao.findBy(request.getObject(Integer.class));
+          if (board == null) {
+            response.status(ResponseEntity.SUCCESS);
           } else {
-            response.status(ResponseEntity.FAILURE).result("해당 번호의 게시물이 없습니다.");
+            response.status(ResponseEntity.SUCCESS).result(board);
           }
           break;
-
-
-        case "board/update":
-          int updateResult = boardDao.update(request.getObject(Board.class));
-
-          if (updateResult != 0) {
-            response.status(ResponseEntity.SUCCESS).result(updateResult);
-          } else {
-            response.status(ResponseEntity.FAILURE).result("해당 번호의 게시물이 없습니다.");
-          }
+        case "reading/update":
+          value = boardDao.update(request.getObject(Board.class));
+          response.status(ResponseEntity.SUCCESS).result(value);
           break;
-
-        case "board/delete":
-          int deleteResult = boardDao.delete(request.getObject(Integer.class));
-
-          if (deleteResult != 0) {
-            response.status(ResponseEntity.SUCCESS).result(deleteResult);
-          } else {
-            response.status(ResponseEntity.FAILURE).result("해당 번호의 게시물이 없습니다.");
-          }
+        case "reading/delete":
+          value = boardDao.delete(request.getObject(Integer.class));
+          response.status(ResponseEntity.SUCCESS).result(value);
           break;
-
         default:
-          response.status(ResponseEntity.ERROR).result("해당 명령을 지원하지 않습니다.");
+          response.status(ResponseEntity.ERROR).result("해당 명령을 지원하지 않습니다!");
       }
 
-      out.writeUTF(gson.toJson(response));
+      out.writeUTF(response.toJson());
     }
 
     in.close();

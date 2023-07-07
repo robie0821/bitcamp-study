@@ -1,13 +1,25 @@
 package bitcamp.net;
 
+import java.util.List;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class RequestEntity {
   String command;
   String data;
 
+  @SuppressWarnings("unchecked")
   public <T> T getObject(Class<T> clazz) {
-    return new Gson().fromJson(data,clazz);
+    if (clazz == String.class) {
+      return (T) data;
+    } else {
+      return new Gson().fromJson(data, clazz);
+    }
+  }
+
+  public <T> List<T> getList(Class<T> clazz) {
+    return new Gson().fromJson(data,
+        TypeToken.getParameterized(List.class, clazz).getType());
   }
 
   public String toJson() {
@@ -24,6 +36,10 @@ public class RequestEntity {
   }
 
   public RequestEntity data(Object obj) {
+    if (obj == null) {
+      return this;
+    }
+
     if (obj.getClass() == String.class) {
       this.data = (String) obj;
     } else {
@@ -39,5 +55,4 @@ public class RequestEntity {
   public String getData() {
     return data;
   }
-
 }

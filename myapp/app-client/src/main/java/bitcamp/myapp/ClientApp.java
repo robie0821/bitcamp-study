@@ -3,11 +3,9 @@ package bitcamp.myapp;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import com.google.gson.Gson;
+import bitcamp.dao.DaoBuilder;
 import bitcamp.myapp.dao.BoardDao;
-import bitcamp.myapp.dao.BoardNetworkDao;
 import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.MemberNetworkDao;
 import bitcamp.myapp.handler.BoardAddListener;
 import bitcamp.myapp.handler.BoardDeleteListener;
 import bitcamp.myapp.handler.BoardDetailListener;
@@ -46,9 +44,9 @@ public class ClientApp {
     this.out = new DataOutputStream(socket.getOutputStream());
     this.in = new DataInputStream(socket.getInputStream());
 
-    this.memberDao = new MemberNetworkDao("member", in, out);
-    this.boardDao = new BoardNetworkDao("board", in, out);
-    this.readingDao = new BoardNetworkDao("reading", in, out);
+    this.memberDao = new DaoBuilder(in,out).build("member", MemberDao.class);
+    this.boardDao = new DaoBuilder(in,out).build("board", BoardDao.class);
+    this.readingDao = new DaoBuilder(in,out).build("reading", BoardDao.class);
 
     prepareMenu();
   }
@@ -81,7 +79,8 @@ public class ClientApp {
     mainMenu.execute(prompt);
 
     try {
-      out.writeUTF(new Gson().toJson(new RequestEntity().command("quit")));
+      out.writeUTF(new RequestEntity().command("quit").toJson());
+
     } catch (Exception e) {
       System.out.println("종료 오류!");
       e.printStackTrace();
