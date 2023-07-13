@@ -7,5 +7,6 @@ class AppTest {
     HashMap<Integer, Integer> map = new HashMap<>();
 
     map.clear();
+
   }
 }
