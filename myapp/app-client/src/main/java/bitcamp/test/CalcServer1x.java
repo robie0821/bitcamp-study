@@ -9,7 +9,9 @@ import java.net.Socket;
 public class CalcServer1x {
   public static void main(String[] args) throws Exception {
     class RequestAgent extends Thread {
+
       Socket socket;
+
       public RequestAgent(Socket socket) {
         this.socket = socket;
       }
