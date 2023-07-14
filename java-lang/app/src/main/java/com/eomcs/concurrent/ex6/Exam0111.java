@@ -34,7 +34,7 @@ public class Exam0111 {
         break;
       }
 
-      // 사용자가 카운트 값을 입력하면, 
+      // 사용자가 카운트 값을 입력하면,
       int count = Integer.parseInt(str);
 
       // 기존에 생성한 스레드에 카운트 값을 설정한 후 실행을 시작시킨다.
