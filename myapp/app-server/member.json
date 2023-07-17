@@ -40,5 +40,12 @@
     "email": "asdf.com",
     "password": "2",
     "gender": "W"
+  },
+  {
+    "no": 7,
+    "name": "asdf",
+    "email": "asdf@com",
+    "password": "123",
+    "gender": "M"
   }
 ]
