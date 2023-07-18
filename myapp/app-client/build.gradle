@@ -10,6 +10,8 @@ repositories {
 dependencies {
     implementation project(':app-common')
 
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 
     implementation 'com.google.guava:guava:31.1-jre'
