@@ -23,7 +23,7 @@ public class BoardListListener implements ActionListener {
     List<Board> list = boardDao.list();
 
     for (Board board : list) {
-      System.out.printf("%d, %s, %s, %d, %tY-%5$tm-%5$td\n",
+      System.out.printf("%d, %s, %s, %d, %s\n",
           board.getNo(),
           board.getTitle(),
           board.getWriter(),
