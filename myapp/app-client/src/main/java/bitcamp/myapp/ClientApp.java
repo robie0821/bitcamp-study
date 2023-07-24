@@ -37,7 +37,7 @@ public class ClientApp {
 
   MenuGroup mainMenu = new MenuGroup("메인");
 
-  public ClientApp(String ip, int port) throws Exception {
+  public ClientApp() throws Exception {
 
     Connection con = DriverManager.getConnection(
         "jdbc:mysql://study:1111@localhost:3306/studydb" // JDBC URL
@@ -55,12 +55,8 @@ public class ClientApp {
   }
 
   public static void main(String[] args) throws Exception {
-    if (args.length < 2) {
-      System.out.println("실행 예) java ... bitcamp.myapp.ClientApp 서버주소 포트번호");
-      return;
-    }
 
-    ClientApp app = new ClientApp(args[0], Integer.parseInt(args[1]));
+    ClientApp app = new ClientApp();
     app.execute();
     app.close();
   }

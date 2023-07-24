@@ -8,8 +8,15 @@ repositories {
 }
 
 dependencies {
+    implementation project(':app-common')
+
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+
     implementation 'com.google.guava:guava:31.1-jre'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 java {
@@ -19,7 +26,7 @@ java {
 }
 
 application {
-    mainClass = 'project1.App'
+    mainClass = 'project.app.ClientApp'
 }
 
 tasks.named('test') {
@@ -34,7 +41,7 @@ tasks.withType(JavaCompile) {
 
 eclipse {
     project {
-        name = "project1"
+        name = "project1-client"
     }
     jdt {
       sourceCompatibility = 17

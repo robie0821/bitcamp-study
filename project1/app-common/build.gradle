@@ -1,5 +1,5 @@
 plugins {
-    id 'application'
+    id 'java-library'
     id 'eclipse'
 }
 
@@ -9,17 +9,16 @@ repositories {
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+
     implementation 'com.google.guava:guava:31.1-jre'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
-}
-
-application {
-    mainClass = 'project1.App'
 }
 
 tasks.named('test') {
@@ -34,7 +33,7 @@ tasks.withType(JavaCompile) {
 
 eclipse {
     project {
-        name = "project1"
+        name = "project1-common"
     }
     jdt {
       sourceCompatibility = 17
