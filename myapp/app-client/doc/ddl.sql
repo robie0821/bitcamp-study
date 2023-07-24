@@ -11,7 +11,7 @@ create table myapp_board(
 alter table myapp_board
   add constraint primary key (board_no),
   modify column board_no int not null auto_increment;
-
+  
 create table myapp_member(
   member_no int not null,
   name varchar(20) not null,
@@ -24,6 +24,12 @@ alter table myapp_member
   add constraint primary key (member_no),
   modify column member_no int not null auto_increment;
   
+  
 -- 게시판에 카테고리 컬럼 추가
 alter table myapp_board
   add column category int not null;
+  
+  
+  
+  
+  
