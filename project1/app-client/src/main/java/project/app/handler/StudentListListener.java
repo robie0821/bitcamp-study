@@ -1,40 +1,30 @@
 package project.app.handler;
 
-import java.util.Iterator;
 import java.util.List;
+import project.app.dao.StudentDao;
 import project.app.vo.Student;
 import project.util.BreadcrumbPrompt;
 
-public class StudentListListener extends AbstractStudentListener {
+public class StudentListListener implements StudentActionListener {
 
-  public StudentListListener(List<Student> list) {
-    super(list);
+  StudentDao studentDao;
+
+  public StudentListListener(StudentDao studentDao) {
+    this.studentDao = studentDao;
   }
 
   @Override
   public void service(BreadcrumbPrompt prompt) {
     System.out.println("---------------------------------------");
-    System.out.println("학번, 이름");
+    System.out.println("학번, 이름, 이메일");
     System.out.println("---------------------------------------");
 
-    Iterator<Student> iterator = list.iterator();
-
-    while (iterator.hasNext()) {
-      Student std = iterator.next();
-      System.out.printf("%d, %s\n",
+    List<Student> list = studentDao.list();
+    for (Student std : list) {
+      System.out.printf("%d, %s, %s\n",
           std.getNo(),
-          std.getName());
+          std.getName(),
+          std.getEmail());
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-

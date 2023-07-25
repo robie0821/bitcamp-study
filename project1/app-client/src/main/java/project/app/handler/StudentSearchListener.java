@@ -1,20 +1,24 @@
 package project.app.handler;
 
-import java.util.List;
+import project.app.dao.StudentDao;
 import project.app.vo.Student;
 import project.util.BreadcrumbPrompt;
 
-public class StudentSearchListener extends AbstractStudentListener {
+public class StudentSearchListener implements StudentActionListener {
 
-  public StudentSearchListener(List<Student> list) {
-    super(list);
+  StudentDao studentDao;
+
+  public StudentSearchListener(StudentDao studentDao) {
+    this.studentDao = studentDao;
   }
 
   @Override
   public void service(BreadcrumbPrompt prompt) {
-    Student std = this.findBy(prompt.inputInt("학번? "));
+    int studentNo = prompt.inputInt("학번? ");
+
+    Student std = studentDao.findBy(studentNo);
     if (std == null) {
-      System.out.println("해당 학번의 학생이 없습니다!");
+      System.out.println("존재하지 않는 이메일주소입니다.");
       return;
     }
 

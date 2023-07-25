@@ -2,7 +2,8 @@ create table student(
   student_no int not null,
   name varchar(20) not null,
   email varchar(20) not null,
-  password varchar(100) null
+  password varchar(100) null,
+  score boolean default 0
 );
   
 create table score(
@@ -26,7 +27,7 @@ create table review(
 -- Primary Key 설정
 alter table student
   add constraint primary key(student_no),
-  modify column student_no int not null auto_increment;
+  modify column student_no int not null auto_increment = 1001;
   
 alter table score
   add constraint primary key(student_no);

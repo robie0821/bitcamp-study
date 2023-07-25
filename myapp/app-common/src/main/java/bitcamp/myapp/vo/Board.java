@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Board implements Serializable{
+public class Board implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private int no;
@@ -14,6 +14,7 @@ public class Board implements Serializable{
   private String password;
   private int viewCount;
   private Timestamp createdDate;
+  private int category;
 
   @Override
   public int hashCode() {
@@ -71,5 +72,11 @@ public class Board implements Serializable{
   }
   public void setPassword(String password) {
     this.password = password;
+  }
+  public int getCategory() {
+    return category;
+  }
+  public void setCategory(int category) {
+    this.category = category;
   }
 }

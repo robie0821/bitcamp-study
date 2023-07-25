@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Member implements Serializable{
+public class Member implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public static final char MALE = 'M';

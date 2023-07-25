@@ -5,23 +5,24 @@ import java.io.Serializable;
 public class Review implements Serializable{
   private static final long serialVersionUID = 1L;
 
+  private Student student;
+
   private int no;
-  private int studentId;
   private int subjectId;
   private int rate;
   private String content;
 
+  public Student getStudentId() {
+    return student;
+  }
+  public void setStudentId(Student student) {
+    this.student = student;
+  }
   public int getNo() {
     return no;
   }
   public void setNo(int no) {
     this.no = no;
-  }
-  public int getStudentId() {
-    return studentId;
-  }
-  public void setStudentId(int studentId) {
-    this.studentId = studentId;
   }
   public int getSubjectId() {
     return subjectId;
