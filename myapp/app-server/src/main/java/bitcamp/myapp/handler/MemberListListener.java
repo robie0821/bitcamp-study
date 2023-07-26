@@ -27,4 +27,5 @@ public class MemberListListener implements ActionListener {
           m.getGender() == 'M' ? "남성" : "여성");
     }
   }
+
 }

@@ -4,17 +4,20 @@ import java.io.IOException;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.BreadcrumbPrompt;
+import bitcamp.util.DataSource;
 
 public class MemberUpdateListener implements MemberActionListener {
 
   MemberDao memberDao;
+  DataSource ds;
 
-  public MemberUpdateListener(MemberDao memberDao) {
+  public MemberUpdateListener(MemberDao memberDao, DataSource ds) {
     this.memberDao = memberDao;
+    this.ds = ds;
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt)  throws IOException {
+  public void service(BreadcrumbPrompt prompt) throws IOException {
     int memberNo = prompt.inputInt("번호? ");
 
     Member m = memberDao.findBy(memberNo);
@@ -28,6 +31,14 @@ public class MemberUpdateListener implements MemberActionListener {
     m.setPassword(prompt.inputString("새암호? "));
     m.setGender(MemberActionListener.inputGender(m.getGender(), prompt));
 
-    memberDao.update(m);
+    try {
+      memberDao.update(m);
+      ds.getConnection().commit();
+
+    } catch (Exception e) {
+      try {ds.getConnection().rollback();} catch (Exception e2) {}
+      throw new RuntimeException(e);
+    }
   }
+
 }

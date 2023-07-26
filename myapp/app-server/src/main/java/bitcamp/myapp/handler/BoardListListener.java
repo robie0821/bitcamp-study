@@ -34,4 +34,16 @@ public class BoardListListener implements ActionListener {
           dateFormatter.format(board.getCreatedDate()));
     }
   }
+
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -17,12 +17,8 @@ public class ClientApp {
   }
 
   public static void main(String[] args) throws Exception {
-    if (args.length < 2) {
-      System.out.println("실행 예) java ... bitcamp.myapp.ClientApp 서버주소 포트번호");
-      return;
-    }
 
-    ClientApp app = new ClientApp(args[0], Integer.parseInt(args[1]));
+    ClientApp app = new ClientApp("localhost", 8888);
     app.execute();
   }
 
