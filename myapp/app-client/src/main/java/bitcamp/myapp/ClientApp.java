@@ -17,7 +17,6 @@ public class ClientApp {
   }
 
   public static void main(String[] args) throws Exception {
-
     ClientApp app = new ClientApp("localhost", 8888);
     app.execute();
   }
