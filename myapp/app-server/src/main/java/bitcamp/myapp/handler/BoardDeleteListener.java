@@ -1,21 +1,23 @@
 package bitcamp.myapp.handler;
 
 import java.io.IOException;
+import org.apache.ibatis.session.SqlSessionFactory;
 import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.ActionListener;
 import bitcamp.util.BreadcrumbPrompt;
-import bitcamp.util.DataSource;
 
 public class BoardDeleteListener implements ActionListener {
 
+  int category;
   BoardDao boardDao;
-  DataSource ds;
+  SqlSessionFactory sqlSessionFactory;
 
-  public BoardDeleteListener(BoardDao boardDao, DataSource ds) {
+  public BoardDeleteListener(int category, BoardDao boardDao, SqlSessionFactory sqlSessionFactory) {
+    this.category = category;
     this.boardDao = boardDao;
-    this.ds = ds;
+    this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
@@ -24,6 +26,7 @@ public class BoardDeleteListener implements ActionListener {
     Board b = new Board();
     b.setNo(prompt.inputInt("번호? "));
     b.setWriter((Member) prompt.getAttribute("loginUser"));
+    b.setCategory(category);
 
     try {
       if (boardDao.delete(b) == 0) {
@@ -31,10 +34,10 @@ public class BoardDeleteListener implements ActionListener {
       } else {
         prompt.println("삭제했습니다.");
       }
-      ds.getConnection().commit();
+      sqlSessionFactory.openSession(false).commit();
 
     } catch (Exception e) {
-      try {ds.getConnection().rollback();} catch (Exception e2) {}
+      sqlSessionFactory.openSession(false).rollback();
       throw new RuntimeException(e);
     }
   }

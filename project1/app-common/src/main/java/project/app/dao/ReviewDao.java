@@ -5,7 +5,7 @@ import project.app.vo.Review;
 
 public interface ReviewDao {
   void insert(Review board);
-  List<Review> list();
+  List<Review> findAll();
   Review findBy(int no);
   int update(Review board);
   int delete(Review board);

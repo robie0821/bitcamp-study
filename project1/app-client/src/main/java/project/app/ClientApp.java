@@ -1,88 +1,50 @@
 package project.app;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import project.app.dao.ReviewDao;
-import project.app.dao.ScoreDao;
-import project.app.dao.StudentDao;
-import project.app.handler.StudentAddListener;
-import project.app.handler.StudentDeleteListener;
-import project.app.handler.StudentListListener;
-import project.app.handler.StudentSearchListener;
-import project.app.handler.StudentUpdateListener;
-import project.app.vo.Student;
-import project.dao.MySQLReviewDao;
-import project.dao.MySQLStudentDao;
-import project.util.BreadcrumbPrompt;
-import project.util.Menu;
-import project.util.MenuGroup;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+import java.util.Scanner;
+import project.net.NetProtocol;
 
 public class ClientApp {
 
-  public static Student loginUser;
+  String ip;
+  int port;
 
-  StudentDao studentDao;
-  ScoreDao scoreDao;
-  ReviewDao reviewDao;
-
-  BreadcrumbPrompt prompt = new BreadcrumbPrompt();
-
-  MenuGroup mainMenu = new MenuGroup("메인");
-
-  public ClientApp() throws Exception{
-    Connection con = DriverManager.getConnection(
-        "jdbc:mysql://study:1111@localhost:3306/project1" // JDBC URL
-        );
-
-    this.studentDao = new MySQLStudentDao(con);
-    this.scoreDao = null;
-    this.reviewDao = new MySQLReviewDao(con);
-
-    prepareMenu();
-  }
-
-  public void close() throws Exception {
-    prompt.close();
+  public ClientApp(String ip, int port) throws Exception {
+    this.ip = ip;
+    this.port = port;
   }
 
   public static void main(String[] args) throws Exception {
-    ClientApp app = new ClientApp();
+    ClientApp app = new ClientApp("localhost", 8888);
     app.execute();
-    app.close();
-  }
-
-  static void printTitle() {
-    System.out.println("**대학교 정보 관리 시스템");
-    System.out.println("----------------------------------");
   }
 
   public void execute() {
-    printTitle();
+    try (Scanner keyscan = new Scanner(System.in);
+        Socket socket = new Socket(this.ip, this.port);
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        DataInputStream in = new DataInputStream(socket.getInputStream())) {
 
-    mainMenu.execute(prompt);
-  }
+      System.out.println(in.readUTF());
 
+      while (true) {
+        String response = in.readUTF();
+        if (response.equals(NetProtocol.RESPONSE_END)) {
+          continue;
+        } else if (response.equals(NetProtocol.PROMPT)) {
+          out.writeUTF(keyscan.nextLine());
+          continue;
+        } else if (response.equals(NetProtocol.NET_END)) {
+          break;
+        }
+        System.out.print(response);
+      }
 
-  private void prepareMenu() {
-    MenuGroup loginMenu = new MenuGroup("학생 등록");
-    loginMenu.add(new Menu("학생 등록", new StudentAddListener(studentDao)));
-    loginMenu.add(new Menu("학생 목록", new StudentListListener(studentDao)));
-    loginMenu.add(new Menu("비밀번호 조회", new StudentSearchListener(studentDao)));
-    loginMenu.add(new Menu("정보 변경", new StudentUpdateListener(studentDao)));
-    loginMenu.add(new Menu("학생 삭제", new StudentDeleteListener(studentDao)));
-    mainMenu.add(loginMenu);
-
-    //    MenuGroup gradeMenu = new MenuGroup("학점등록");
-    //    gradeMenu.add(new Menu("등록", new GradeAddListener(studentList)));
-    //    gradeMenu.add(new Menu("목록", new GradeListListener(studentList)));
-    //    gradeMenu.add(new Menu("변경", new GradeUpdateListener(studentList)));
-    //    mainMenu.add(gradeMenu);
-    //
-    //    MenuGroup reviewMenu = new MenuGroup("과목평가");
-    //    reviewMenu.add(new Menu("등록", new ReviewAddListener(studentList)));
-    //    reviewMenu.add(new Menu("목록", new ReviewListListener(studentList)));
-    //    reviewMenu.add(new Menu("검색", new ReviewSearchListener(studentList)));
-    //    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(studentList)));
-    //    mainMenu.add(reviewMenu);
+    } catch (Exception e) {
+      System.out.println("서버 통신 오류!");
+      e.printStackTrace();
+    }
   }
 }

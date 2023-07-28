@@ -31,5 +31,4 @@ public interface MemberActionListener extends ActionListener {
       }
     }
   }
-
 }
