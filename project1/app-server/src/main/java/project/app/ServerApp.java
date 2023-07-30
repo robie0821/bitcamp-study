@@ -11,9 +11,19 @@ import java.util.concurrent.Executors;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import project.app.dao.MySQLReviewDao;
+import project.app.dao.MySQLScoreDao;
+import project.app.dao.MySQLStudentDao;
 import project.app.dao.ReviewDao;
 import project.app.dao.ScoreDao;
 import project.app.dao.StudentDao;
+import project.app.handler.ScoreAddListener;
+import project.app.handler.ScoreListListener;
+import project.app.handler.ScoreUpdateListener;
+import project.app.handler.ReviewAddListener;
+import project.app.handler.ReviewListListener;
+import project.app.handler.ReviewSearchListener;
+import project.app.handler.ReviewUpdateListener;
 import project.app.handler.StudentAddListener;
 import project.app.handler.StudentDeleteListener;
 import project.app.handler.StudentListListener;
@@ -47,9 +57,9 @@ public class ServerApp {
     SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
     sqlSessionFactory = new SqlSessionFactoryProxy(builder.build(mybatisConfigIn));
 
-    //    this.studentDao = new MySQLStudentDao(sqlSessionFactory);
-    //    this.scoreDao = new MySQLScoreDao(sqlSessionFactory);
-    //    this.reviewDao = new MySQLReviewDao(sqlSessionFactory);
+    this.studentDao = new MySQLStudentDao(sqlSessionFactory);
+    this.scoreDao = new MySQLScoreDao(sqlSessionFactory);
+    this.reviewDao = new MySQLReviewDao(sqlSessionFactory);
 
     prepareMenu();
   }
@@ -97,7 +107,7 @@ public class ServerApp {
       out.writeUTF("[**대학교 정보 관리 시스템]\n"
           + "----------------------------------------");
 
-      //new LoginListener(studentDao).service(prompt);
+      new LoginListener(studentDao).service(prompt);
 
       mainMenu.execute(prompt);
       out.writeUTF(NetProtocol.NET_END);
@@ -114,24 +124,24 @@ public class ServerApp {
 
   private void prepareMenu() {
     MenuGroup loginMenu = new MenuGroup("학생 등록");
-    loginMenu.add(new Menu("학생 등록", new StudentAddListener(studentDao)));
+    loginMenu.add(new Menu("학생 등록", new StudentAddListener(studentDao, sqlSessionFactory)));
     loginMenu.add(new Menu("학생 목록", new StudentListListener(studentDao)));
     loginMenu.add(new Menu("비밀번호 조회", new StudentSearchListener(studentDao)));
-    loginMenu.add(new Menu("정보 변경", new StudentUpdateListener(studentDao)));
-    loginMenu.add(new Menu("학생 삭제", new StudentDeleteListener(studentDao)));
+    loginMenu.add(new Menu("정보 변경", new StudentUpdateListener(studentDao, sqlSessionFactory)));
+    loginMenu.add(new Menu("학생 삭제", new StudentDeleteListener(studentDao, sqlSessionFactory)));
     mainMenu.add(loginMenu);
 
-    //    MenuGroup gradeMenu = new MenuGroup("학점등록");
-    //    gradeMenu.add(new Menu("등록", new GradeAddListener(studentList)));
-    //    gradeMenu.add(new Menu("목록", new GradeListListener(studentList)));
-    //    gradeMenu.add(new Menu("변경", new GradeUpdateListener(studentList)));
-    //    mainMenu.add(gradeMenu);
-    //
-    //    MenuGroup reviewMenu = new MenuGroup("과목평가");
-    //    reviewMenu.add(new Menu("등록", new ReviewAddListener(studentList)));
-    //    reviewMenu.add(new Menu("목록", new ReviewListListener(studentList)));
-    //    reviewMenu.add(new Menu("검색", new ReviewSearchListener(studentList)));
-    //    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(studentList)));
-    //    mainMenu.add(reviewMenu);
+    MenuGroup gradeMenu = new MenuGroup("학점등록");
+    gradeMenu.add(new Menu("등록", new ScoreAddListener(studentList)));
+    gradeMenu.add(new Menu("목록", new ScoreListListener(studentList)));
+    gradeMenu.add(new Menu("변경", new ScoreUpdateListener(studentList)));
+    mainMenu.add(gradeMenu);
+
+    MenuGroup reviewMenu = new MenuGroup("과목평가");
+    reviewMenu.add(new Menu("등록", new ReviewAddListener(studentList)));
+    reviewMenu.add(new Menu("목록", new ReviewListListener(studentList)));
+    reviewMenu.add(new Menu("검색", new ReviewSearchListener(studentList)));
+    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(studentList)));
+    mainMenu.add(reviewMenu);
   }
 }

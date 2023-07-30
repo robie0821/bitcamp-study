@@ -12,10 +12,10 @@ public class Review implements Serializable{
   private int rate;
   private String content;
 
-  public Student getStudentId() {
+  public Student getStudent() {
     return student;
   }
-  public void setStudentId(Student student) {
+  public void setStudent(Student student) {
     this.student = student;
   }
   public int getNo() {

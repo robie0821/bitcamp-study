@@ -1,10 +1,12 @@
 package project.app.handler;
 
+import java.io.IOException;
 import project.app.dao.StudentDao;
 import project.app.vo.Student;
+import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class StudentSearchListener implements StudentActionListener {
+public class StudentSearchListener implements ActionListener {
 
   StudentDao studentDao;
 
@@ -13,7 +15,7 @@ public class StudentSearchListener implements StudentActionListener {
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt) {
+  public void service(BreadcrumbPrompt prompt) throws IOException {
     int studentNo = prompt.inputInt("학번? ");
 
     Student std = studentDao.findBy(studentNo);

@@ -3,9 +3,10 @@ package project.app.handler;
 import java.io.IOException;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.dao.StudentDao;
+import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class StudentDeleteListener implements StudentActionListener {
+public class StudentDeleteListener implements ActionListener {
 
   StudentDao studentDao;
   SqlSessionFactory sqlSessionFactory;

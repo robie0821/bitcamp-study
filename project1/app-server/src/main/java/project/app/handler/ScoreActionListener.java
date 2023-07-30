@@ -1,11 +1,12 @@
 package project.app.handler;
 
+import java.io.IOException;
 import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public interface StudentActionListener extends ActionListener {
+public interface ScoreActionListener extends ActionListener {
 
-  static String inputScore(BreadcrumbPrompt prompt, String title) {
+  static String inputScore(BreadcrumbPrompt prompt, String title) throws IOException {
     while(true) {
       String temp = prompt.inputString(title);
       switch (temp) {

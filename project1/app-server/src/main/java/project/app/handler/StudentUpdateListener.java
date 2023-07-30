@@ -4,9 +4,10 @@ import java.io.IOException;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.dao.StudentDao;
 import project.app.vo.Student;
+import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class StudentUpdateListener implements StudentActionListener {
+public class StudentUpdateListener implements ActionListener {
 
   StudentDao studentDao;
   SqlSessionFactory sqlSessionFactory;

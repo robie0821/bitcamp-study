@@ -3,9 +3,10 @@ package project.app.handler;
 import java.util.List;
 import project.app.dao.StudentDao;
 import project.app.vo.Student;
+import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class StudentListListener implements StudentActionListener {
+public class StudentListListener implements ActionListener {
 
   StudentDao studentDao;
 
