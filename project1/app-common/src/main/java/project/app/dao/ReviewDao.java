@@ -4,9 +4,9 @@ import java.util.List;
 import project.app.vo.Review;
 
 public interface ReviewDao {
-  void insert(Review board);
-  List<Review> findAll();
-  Review findBy(int no);
-  int update(Review board);
-  int delete(Review board);
+  void insert(Review review);
+  List<Review> findAll(int no);
+  Review findBy(int no1, int no2);
+  int update(Review review);
+  int delete(Review review);
 }

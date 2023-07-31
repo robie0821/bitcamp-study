@@ -1,6 +1,8 @@
 package project.app.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Review;
@@ -20,15 +22,20 @@ public class MySQLReviewDao implements ReviewDao {
   }
 
   @Override
-  public List<Review> findAll() {
+  public List<Review> findAll(int no) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectList("project.app.dao.ReviewDao.findAll");
+    return sqlSession.selectList("project.app.dao.ReviewDao.findAll", no);
   }
 
   @Override
-  public Review findBy(int no) {
+  public Review findBy(int student, int subject) {
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    return sqlSession.selectOne("project.app.dao.ReviewDao.findBy", no);
+
+    Map<String,Object> paramMap = new HashMap<>();
+    paramMap.put("StudentNo", student);
+    paramMap.put("subjectNo", subject);
+
+    return sqlSession.selectOne("project.app.dao.ReviewDao.findBy", paramMap);
   }
 
   @Override

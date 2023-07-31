@@ -1,73 +1,44 @@
 package project.app.handler;
 
-import java.util.List;
-import project.app.vo.Student;
+import java.io.IOException;
+import org.apache.ibatis.session.SqlSessionFactory;
+import project.app.dao.ReviewDao;
+import project.app.vo.Review;
+import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class ReviewUpdateListener extends AbstractStudentListener {
+public class ReviewUpdateListener implements ActionListener {
 
-  public ReviewUpdateListener(List<Student> list) {
-    super(list);
+  ReviewDao reviewDao;
+  SqlSessionFactory sqlSessionFactory;
+
+  public ReviewUpdateListener(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
+    this.reviewDao = reviewDao;
+    this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt) {
-    Student std = this.findBy(prompt.inputInt("학번? "));
-    if (std == null) {
-      System.out.println("해당 학번의 학생이 없습니다!");
+  public void service(BreadcrumbPrompt prompt) throws IOException {
+    Review rev = reviewDao.findBy(prompt.inputInt("학번? "), prompt.inputInt("1. C++\\n2. Java\\n3. Python\\n4.Linux\\n과목코드? "));
+    if (rev == null) {
+      System.out.println("입력한 정보의 리뷰가 없습니다.");
       return;
     }
 
-    System.out.printf("1. C++\n2. Java\n3. Python\n4.Linux\n");
+    rev.setRate(prompt.inputInt("평점(%d)? ", rev.getRate()));
+    rev.setContent(prompt.inputString("내용(%s)? ", rev.getContent()));
 
-    String str = null;
+    try {
+      if (reviewDao.update(rev) == 0) {
+        prompt.println("게시글 변경 권한이 없습니다.");
+      } else {
+        prompt.println("변경했습니다!");
+      }
+      sqlSessionFactory.openSession(false).commit();
 
-    switch(prompt.inputInt("과목? ")) {
-      case 1:
-        str = prompt.inputString("(%s)\nC++ 강의평가? ", std.getCppReview());
-        if (str != null) {
-          std.setCppReview(str);
-        }
-        str = null;
-        break;
-
-      case 2:
-        str = prompt.inputString("(%s)\nJava 강의평가? ", std.getJavaReview());
-        if (str != null) {
-          std.setJavaReview(str);
-        }
-        str = null;
-        break;
-
-      case 3:
-        str = prompt.inputString("(%s)\nPython 강의평가? ", std.getPythonReview());
-        if (str != null) {
-          std.setPythonReview(str);
-        }
-        str = null;
-        break;
-
-      case 4:
-        str = prompt.inputString("(%s)\nLinux 강의평가? ", std.getLinuxReview());
-        if (str != null) {
-          std.setLinuxReview(str);
-        }
-        str = null;
-        break;
-
-      default :
-        System.out.println("잘못된 입력입니다.");
+    } catch (Exception e) {
+      sqlSessionFactory.openSession(false).rollback();
+      throw new RuntimeException(e);
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-

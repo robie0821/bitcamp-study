@@ -17,13 +17,14 @@ import project.app.dao.MySQLStudentDao;
 import project.app.dao.ReviewDao;
 import project.app.dao.ScoreDao;
 import project.app.dao.StudentDao;
-import project.app.handler.ScoreAddListener;
-import project.app.handler.ScoreListListener;
-import project.app.handler.ScoreUpdateListener;
+import project.app.handler.LoginListener;
 import project.app.handler.ReviewAddListener;
 import project.app.handler.ReviewListListener;
 import project.app.handler.ReviewSearchListener;
 import project.app.handler.ReviewUpdateListener;
+import project.app.handler.ScoreAddListener;
+import project.app.handler.ScoreListListener;
+import project.app.handler.ScoreUpdateListener;
 import project.app.handler.StudentAddListener;
 import project.app.handler.StudentDeleteListener;
 import project.app.handler.StudentListListener;
@@ -121,7 +122,6 @@ public class ServerApp {
     }
   }
 
-
   private void prepareMenu() {
     MenuGroup loginMenu = new MenuGroup("학생 등록");
     loginMenu.add(new Menu("학생 등록", new StudentAddListener(studentDao, sqlSessionFactory)));
@@ -132,16 +132,16 @@ public class ServerApp {
     mainMenu.add(loginMenu);
 
     MenuGroup gradeMenu = new MenuGroup("학점등록");
-    gradeMenu.add(new Menu("등록", new ScoreAddListener(studentList)));
-    gradeMenu.add(new Menu("목록", new ScoreListListener(studentList)));
-    gradeMenu.add(new Menu("변경", new ScoreUpdateListener(studentList)));
+    gradeMenu.add(new Menu("등록", new ScoreAddListener(scoreDao, sqlSessionFactory)));
+    gradeMenu.add(new Menu("목록", new ScoreListListener(scoreDao)));
+    gradeMenu.add(new Menu("변경", new ScoreUpdateListener(scoreDao, sqlSessionFactory)));
     mainMenu.add(gradeMenu);
 
     MenuGroup reviewMenu = new MenuGroup("과목평가");
-    reviewMenu.add(new Menu("등록", new ReviewAddListener(studentList)));
-    reviewMenu.add(new Menu("목록", new ReviewListListener(studentList)));
-    reviewMenu.add(new Menu("검색", new ReviewSearchListener(studentList)));
-    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(studentList)));
+    reviewMenu.add(new Menu("등록", new ReviewAddListener(reviewDao, sqlSessionFactory)));
+    reviewMenu.add(new Menu("목록", new ReviewListListener(reviewDao)));
+    reviewMenu.add(new Menu("검색", new ReviewSearchListener(reviewDao)));
+    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(reviewDao, sqlSessionFactory)));
     mainMenu.add(reviewMenu);
   }
 }

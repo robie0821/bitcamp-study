@@ -1,70 +1,34 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.util.List;
-import project.app.vo.Student;
+import project.app.dao.ReviewDao;
+import project.app.vo.Review;
+import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class ReviewListListener extends AbstractStudentListener {
+public class ReviewListListener implements ActionListener {
 
-  public ReviewListListener(List<Student> list) {
-    super(list);
+  ReviewDao reviewDao;
+
+  public ReviewListListener(ReviewDao reviewDao) {
+    this.reviewDao = reviewDao;
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt) {
+  public void service(BreadcrumbPrompt prompt) throws IOException {
     System.out.printf("1. C++\n2. Java\n3. Python\n4. Linux\n");
+    List<Review> list = reviewDao.findAll(prompt.inputInt("과목?"));
 
-    switch(prompt.inputInt("과목? ")) {
-      case 1:
-        if (list.isEmpty()) {
-          System.out.println("강의평가가 없습니다.");
-        } else {
-          for (Student std:list) {
-            if (std.getCppReview() != null && !std.getCppReview().equals("null")) {
-              System.out.printf("*** : %s\n", std.getCppReview());
-            }
-          }
-        }
-        break;
-
-      case 2:
-        if (list.isEmpty()) {
-          System.out.println("강의평가가 없습니다.");
-        } else {
-          for (Student std:list) {
-            if (std.getJavaReview() != null && !std.getJavaReview().equals("null")) {
-              System.out.printf("*** : %s\n", std.getJavaReview());
-            }
-          }
-        }
-        break;
-
-      case 3:
-        if (list.isEmpty()) {
-          System.out.println("강의평가가 없습니다.");
-        } else {
-          for (Student std:list) {
-            if (std.getPythonReview() != null && !std.getPythonReview().equals("null")) {
-              System.out.printf("*** : %s\n", std.getPythonReview());
-            }
-          }
-        }
-        break;
-
-      case 4:
-        if (list.isEmpty()) {
-          System.out.println("강의평가가 없습니다.");
-        } else {
-          for (Student std:list) {
-            if (std.getLinuxReview() != null && !std.getLinuxReview().equals("null")) {
-              System.out.printf("*** : %s\n", std.getLinuxReview());
-            }
-          }
-        }
-        break;
-
-      default :
-        System.out.println("잘못된 입력입니다.");
+    for (Review rev : list) {
+      prompt.printf("평점 : ");
+      for (int i = 0; i < rev.getRate(); i++) {
+        prompt.printf("★");
+      }
+      for (int i = 0; i < 5 - rev.getRate(); i++) {
+        prompt.printf("★");
+      }
+      prompt.printf("\n평가 : %s\n", rev.getContent());
     }
   }
 }

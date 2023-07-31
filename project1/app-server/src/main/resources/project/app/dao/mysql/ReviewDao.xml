@@ -23,7 +23,7 @@
     values(#{no},#{student.no},#{subjectId},#{rate},#{content})
   </insert>
   
-  <select id="findAll" resultMap="reviewMap">
+  <select id="findAll" parameterType="int" resultMap="reviewMap">
     select
       t.student_no,
       t.name,
@@ -32,6 +32,7 @@
       r.content,
     from
       review r inner join student t on r.student_id=t.student_no
+    where subjectId=#{no}
   </select>
   
   <select id="findBy" parameterType="int" resultMap="reviewMap">
@@ -44,7 +45,8 @@
     from
       score r inner join student t on r.student_id=t.student_no
     where
-      student_id=#{no}
+      student_id=#{StudentNo}
+      and subject_id=#{subjectNo}
   </select>
   
   <update id="update" parameterType="review">

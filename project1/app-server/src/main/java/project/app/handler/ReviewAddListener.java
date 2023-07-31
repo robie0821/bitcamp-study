@@ -1,7 +1,6 @@
 package project.app.handler;
 
 import java.io.IOException;
-import java.util.List;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.dao.ReviewDao;
 import project.app.vo.Review;
@@ -13,7 +12,7 @@ public class ReviewAddListener implements ActionListener {
 
   ReviewDao reviewDao;
   SqlSessionFactory sqlSessionFactory;
-  
+
   public ReviewAddListener(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
     this.reviewDao = reviewDao;
     this.sqlSessionFactory = sqlSessionFactory;
@@ -21,15 +20,21 @@ public class ReviewAddListener implements ActionListener {
 
   @Override
   public void service(BreadcrumbPrompt prompt) throws IOException {
-    Review rev = reviewDao.findBy(prompt.inputInt("학번? "));
-    if (rev == null) {
-      System.out.println("해당 학번의 학생이 없습니다!");
-      return;
-    }
+    Review rev = new Review();
+    rev.setSubjectId(prompt.inputInt("과목코드?\n1. C++\n2. 자바\n3. 파이썬\n4. 리눅스\n"));
+    rev.setRate(prompt.inputInt("평점?"));
+    rev.setContent(prompt.inputString("내용?"));
     rev.setStudent((Student) prompt.getAttribute("loginUser"));
-    rev.setSubjectId(prompt.inputInt("Java 강의평가? "));
-    rev.setRate(prompt.inputInt("Python 강의평가? "));
-    rev.setContent(prompt.inputString("Linux 강의평가? "));
+
+    try {
+      reviewDao.insert(rev);
+
+      sqlSessionFactory.openSession(false).commit();
+
+    } catch (Exception e) {
+      sqlSessionFactory.openSession(false).rollback();
+      throw new RuntimeException(e);
+    }
   }
 }
 
