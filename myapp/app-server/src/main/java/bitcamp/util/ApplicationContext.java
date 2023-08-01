@@ -5,17 +5,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import bitcamp.myapp.config.AppConfig;
 
+// IoC 컨테이너 = Bean 컨테이너
+// - 자바 설정 클래스(예: AppConfig)에서 @Bean 애노테이션이 붙은 메서드를 찾아 호출하고,
+//   그 리턴 값을 컨테이너에 보관한다.
+// - 자바 설정 클래스(예: AppConfig)에서 @ComponentScan 애노테이션을 찾아서 패키지 정보를 알아낸다.
+//   패키지에 소속된 모든 클래스에 대해 인스턴스를 생성하여 컨테이너에 보관한다.
+//
 public class ApplicationContext {
   // 객체 보관소
   Map<String,Object> beanContainer = new HashMap<>();
 
-  public ApplicationContext(Class<?> configClass) throws Exception{
+  public ApplicationContext(Class<?> configClass) throws Exception {
+
     processBeanAnnotation(configClass);
 
     ComponentScan componentScan = configClass.getAnnotation(ComponentScan.class);
@@ -25,6 +35,8 @@ public class ApplicationContext {
   }
 
   private void processBeanAnnotation(Class<?> configClass) throws Exception {
+    System.out.println("@Bean --------------------------------");
+
     // 클래스의 기본 생성자를 알아낸다.
     Constructor<?> constructor = configClass.getConstructor();
 
@@ -40,7 +52,7 @@ public class ApplicationContext {
         continue;
       }
 
-      // @Bean 애노테이션을 붙이지 않았다면 무시한다.
+      // @Bean 애노테이션이 붙지 않은 메서드라면 무시한다.
       Bean beanAnnotation = m.getAnnotation(Bean.class);
       if (beanAnnotation == null) {
         continue;
@@ -48,22 +60,23 @@ public class ApplicationContext {
 
       // 메서드 중에서 리턴 값이 있는 메서드를 호출한다.
       // 즉 오직 값을 리턴하는 메서드만 호출한다.
-      Object returnVaue = m.invoke(obj);
+      Object returnValue = m.invoke(obj);
 
       // 메서드가 리턴한 값을 컨테이너에 저장한다.
       if (beanAnnotation.value().length() > 0) {
         // 애노테이션에 객체 이름이 지정되어 있다면 그 이름으로 객체를 저장한다.
-        beanContainer.put(beanAnnotation.value(), returnVaue);
+        beanContainer.put(beanAnnotation.value(), returnValue);
       } else {
         // 애노테이션에 설정된 이름이 없다면 메서드 이름을 사용하여 객체를 저장한다.
-        beanContainer.put(m.getName(), returnVaue);
+        beanContainer.put(m.getName(), returnValue);
       }
+      System.out.printf("%s() 객체 생성\n", m.getName());
     }
   }
 
   private void processComponentScanAnnotation(ComponentScan componentScan) throws Exception {
     for (String basePackage : componentScan.basePackages()) {
-      System.out.println(basePackage + "------------------------------");
+      System.out.println(basePackage + "---------------------------------");
       createBeans(basePackage);
     }
   }
@@ -73,7 +86,7 @@ public class ApplicationContext {
     // 1) 패키지 이름을 파일 경로로 변환한다(. --> /)
     String packagePath = basePackage.replaceAll("[.]", "/");
 
-    // 2) 클래스 경로를 관리하는 객체를 준비한다.
+    // 2) 클래스 경로(CLASSPATH)를 관리하는 객체를 준비한다.
     ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
 
     // 3) 클래스로더에게 패키지 경로에 해당하는 디렉토리 정보를 읽을 수 있는 도구를 달라고 요구한다.
@@ -86,6 +99,8 @@ public class ApplicationContext {
     BufferedReader dirReader = new BufferedReader(new InputStreamReader(dirInputStream));
 
     // 5) 디렉토리 리더를 통해 해당 디렉토리에 들어 있는 하위 디렉토리 또는 파일 이름을 알아낸다.
+    //    .class 파일을 로딩하여 Class 객체를 준비한다.
+    //
     // ==> 전통적인 컬렉션 데이터 가공 방식
     //    - 한 줄씩 읽으면 된다.
     //    Set<Class<?>> classes = new HashSet<>();
@@ -139,9 +154,66 @@ public class ApplicationContext {
         })
         .collect(Collectors.toSet());
 
+    // 6) 로딩된 클래스 정보를 활용하여 객체를 생성한다.
     for (Class<?> clazz : classes) {
-      System.out.println("##### " + clazz.getName());
+      System.out.println(clazz.getName());
+      if (clazz.isEnum() || clazz.isInterface() || clazz.isLocalClass() || clazz.isMemberClass()) {
+        // 패키지 멤버 클래스가 아닌 경우 객체 생성 대상에서 제외한다.
+        continue;
+      }
+
+      Component compAnno = clazz.getAnnotation(Component.class);
+      if (compAnno == null) {
+        // @Component 애노테이션이 붙지 않았다면 객체 생성 대상에서 제외한다.
+        continue;
+      }
+
+      // - 클래스 정보를 가지고 클래스의 생성자를 알아낸다.
+      Constructor<?> constructor = clazz.getConstructors()[0];
+
+      // - 생성자의 파라미터 정보를 알아낸다.
+      Parameter[] params = constructor.getParameters();
+
+      // - 생성자를 파라미터를 가지고 호출할 때 넘겨 줄 아규먼트를 준비한다.
+      Object[] args = prepareArguments(params);
+
+      // - 준비한 아규먼트를 가지고 생성자를 통해 객체를 생성한다.
+      Object obj = constructor.newInstance(args);
+
+      // - 생성된 객체를 컨테이너에 저장한다.
+      if (compAnno.value().length() > 0) {
+        // @Component 애노테이션에 객체 이름이 지정되어 있다면 그 이름으로 객체를 저장한다.
+        beanContainer.put(compAnno.value(), obj);
+      } else {
+        // 그렇지 않다면, 클래스 이름으로 객체를 저장한다.
+        beanContainer.put(clazz.getSimpleName(), obj);
+      }
+
+      System.out.printf("%s 객체 생성!\n", clazz.getName());
     }
+  }
+
+  private Object[] prepareArguments(Parameter[] params) {
+    // 아규먼트를 담을 컬렉션을 준비한다.
+    ArrayList<Object> args = new ArrayList<>();
+
+    for (Parameter param : params) {
+      // - 파라미터 타입에 해당하는 객체를 컨테이너에서 찾는다.
+      args.add(getBean(param.getType()));
+    }
+
+    return args.toArray();
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> T getBean(Class<T> type) {
+    Collection<?> list = beanContainer.values();
+    for (Object obj : list) {
+      if (type.isInstance(obj)) {
+        return (T) obj;
+      }
+    }
+    return null;
   }
 
   public Object getBean(String name) {
@@ -154,6 +226,8 @@ public class ApplicationContext {
 
   public static void main(String[] args) throws Exception {
     ApplicationContext applicationContext = new ApplicationContext(AppConfig.class);
+
+    System.out.println("생성된 객체 목록:");
     for (String name : applicationContext.getBeanNames()) {
       System.out.println(name);
     }

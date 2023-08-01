@@ -5,12 +5,14 @@ import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.ActionListener;
 import bitcamp.util.BreadcrumbPrompt;
+import bitcamp.util.Component;
 
-public class MemberListListener implements ActionListener {
+@Component("/member/list")
+public class MemberListServlet implements ActionListener {
 
   MemberDao memberDao;
 
-  public MemberListListener(MemberDao memberDao) {
+  public MemberListServlet(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 
@@ -26,4 +28,5 @@ public class MemberListListener implements ActionListener {
           m.getNo(), m.getName(), m.getEmail());
     }
   }
+
 }
