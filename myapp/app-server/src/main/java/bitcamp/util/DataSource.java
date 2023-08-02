@@ -84,12 +84,4 @@ public class DataSource {
       System.out.printf("[%s] - 스레드에서 커넥션 제거!\n", Thread.currentThread().getName());
     }
   }
-
 }
-
-
-
-
-
-
-

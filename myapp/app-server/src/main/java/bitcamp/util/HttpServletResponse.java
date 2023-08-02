@@ -303,6 +303,4 @@ public class HttpServletResponse {
   public NettyOutbound then(Publisher<Void> other, Runnable onCleanup) {
     return original.then(other, onCleanup);
   }
-
-
 }

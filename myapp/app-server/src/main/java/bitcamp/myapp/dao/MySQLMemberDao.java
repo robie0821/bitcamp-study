@@ -50,5 +50,4 @@ public class MySQLMemberDao implements MemberDao {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
     return sqlSession.delete("bitcamp.myapp.dao.MemberDao.delete", no);
   }
-
 }
