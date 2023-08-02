@@ -56,13 +56,17 @@ public class ServerApp {
       // HTTP 응답 프로토콜의 헤더 설정
       response.addHeader("Content-Type", response2.getContentType());
 
-      // 서블릿이 출력한 문자열을 꺼내 HTTP 프로토콜에 맞춰 응답한다.
+      // 서블릿이 출력한 문자열을 버퍼에서 꺼내 HTTP 프로토콜에 맞춰 응답한다.
       return response.sendString(Mono.just(response2.getContent()));
+
     } catch (Exception e) {
       e.printStackTrace();
       return response.sendString(Mono.just("Error!"));
 
     } finally {
+      //      SqlSessionFactoryProxy sqlSessionFactoryProxy =
+      //          (SqlSessionFactoryProxy) iocContainer.getBean(SqlSessionFactory.class);
+      //      sqlSessionFactoryProxy.clean();
     }
   }
 }

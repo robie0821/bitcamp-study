@@ -8,11 +8,11 @@ import bitcamp.util.BreadcrumbPrompt;
 import bitcamp.util.Component;
 
 @Component("/member/list")
-public class MemberListServlet implements ActionListener {
+public class MemberListListener implements ActionListener {
 
   MemberDao memberDao;
 
-  public MemberListServlet(MemberDao memberDao) {
+  public MemberListListener(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

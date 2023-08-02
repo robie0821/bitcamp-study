@@ -29,7 +29,8 @@ import reactor.netty.http.server.WebsocketServerSpec;
 import reactor.netty.http.websocket.WebsocketInbound;
 import reactor.netty.http.websocket.WebsocketOutbound;
 
-public class HttpServletResponse{
+public class HttpServletResponse {
+
   HttpServerResponse original;
 
   // 서블릿이 클라이언트에게 응답할 때 사용할 출력 스트림 도구
@@ -302,4 +303,6 @@ public class HttpServletResponse{
   public NettyOutbound then(Publisher<Void> other, Runnable onCleanup) {
     return original.then(other, onCleanup);
   }
+
+
 }
