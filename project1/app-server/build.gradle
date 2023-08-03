@@ -10,6 +10,10 @@ repositories {
 dependencies {
     implementation project(':app-common')
 
+    implementation platform('io.projectreactor:reactor-bom:2022.0.9')
+    implementation 'io.projectreactor.netty:reactor-netty-core'
+    implementation 'io.projectreactor.netty:reactor-netty-http'
+
     implementation 'mysql:mysql-connector-java:8.0.33'
 
     implementation 'com.google.code.gson:gson:2.10.1'

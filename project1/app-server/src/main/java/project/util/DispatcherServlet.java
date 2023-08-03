@@ -1,4 +1,4 @@
-package bitcamp.util;
+package project.util;
 
 import java.io.PrintWriter;
 
@@ -13,7 +13,6 @@ public class DispatcherServlet implements Servlet {
   @Override
   public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
     try {
-      // 서블릿의 실행을 요구할 경우,
       Servlet servlet = (Servlet) iocContainer.getBean(request.getServletPath());
       if (servlet == null) {
         throw new Exception("요청한 URL이 유효하지 않습니다.");
@@ -38,10 +37,3 @@ public class DispatcherServlet implements Servlet {
     }
   }
 }
-
-
-
-
-
-
-

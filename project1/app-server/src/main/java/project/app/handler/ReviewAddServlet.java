@@ -8,12 +8,12 @@ import project.app.vo.Student;
 import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class ReviewAddListener implements ActionListener {
+public class ReviewAddServlet implements ActionListener {
 
   ReviewDao reviewDao;
   SqlSessionFactory sqlSessionFactory;
 
-  public ReviewAddListener(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
+  public ReviewAddServlet(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
     this.reviewDao = reviewDao;
     this.sqlSessionFactory = sqlSessionFactory;
   }

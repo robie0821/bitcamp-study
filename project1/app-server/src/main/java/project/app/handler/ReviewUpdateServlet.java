@@ -7,12 +7,12 @@ import project.app.vo.Review;
 import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class ReviewUpdateListener implements ActionListener {
+public class ReviewUpdateServlet implements ActionListener {
 
   ReviewDao reviewDao;
   SqlSessionFactory sqlSessionFactory;
 
-  public ReviewUpdateListener(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
+  public ReviewUpdateServlet(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
     this.reviewDao = reviewDao;
     this.sqlSessionFactory = sqlSessionFactory;
   }

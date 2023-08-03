@@ -4,7 +4,9 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Student;
+import project.util.Component;
 
+@Component
 public class MySQLStudentDao implements StudentDao {
 
   SqlSessionFactory sqlSessionFactory;
@@ -21,7 +23,7 @@ public class MySQLStudentDao implements StudentDao {
 
   @Override
   public List<Student> findAll() {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
+    SqlSession sqlSession = sqlSessionFactory.openSession(false);
     return sqlSession.selectList("project.app.dao.StudentDao.findAll");
   }
 

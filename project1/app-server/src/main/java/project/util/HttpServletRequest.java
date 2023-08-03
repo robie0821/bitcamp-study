@@ -1,4 +1,4 @@
-package bitcamp.util;
+package project.util;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -43,7 +43,6 @@ public class HttpServletRequest {
   }
 
   public void parseFormBody(String body) {
-    // POST 요청으로 넘어온 파라미터 값을 기존 파라미터 맵에 보관한다.
     QueryStringDecoder decoder = new QueryStringDecoder("/dumy?" + body, Charset.forName("UTF-8"));
     Map<String,List<String>> bodyParams = decoder.parameters();
     for (Entry<String,List<String>> entry : bodyParams.entrySet()) {

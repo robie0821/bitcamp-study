@@ -6,7 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Review;
+import project.util.Component;
 
+@Component
 public class MySQLReviewDao implements ReviewDao {
 
   SqlSessionFactory sqlSessionFactory;

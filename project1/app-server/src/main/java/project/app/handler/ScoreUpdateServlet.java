@@ -6,12 +6,12 @@ import project.app.dao.ScoreDao;
 import project.app.vo.Score;
 import project.util.BreadcrumbPrompt;
 
-public class ScoreUpdateListener implements ScoreActionListener {
+public class ScoreUpdateServlet implements ScoreActionServlet {
 
   ScoreDao scoreDao;
   SqlSessionFactory sqlSessionFactory;
   
-  public ScoreUpdateListener(ScoreDao scoreDao, SqlSessionFactory sqlSessionFactory) {
+  public ScoreUpdateServlet(ScoreDao scoreDao, SqlSessionFactory sqlSessionFactory) {
     this.scoreDao = scoreDao;
     this.sqlSessionFactory = sqlSessionFactory;
   }
@@ -24,10 +24,10 @@ public class ScoreUpdateListener implements ScoreActionListener {
       return;
     }
 
-    s.setSub1(ScoreActionListener.inputScore(prompt, "C++(" + s.getSub1() + ")? "));
-    s.setSub2(ScoreActionListener.inputScore(prompt, "Java(" + s.getSub2() + ")? "));
-    s.setSub3(ScoreActionListener.inputScore(prompt, "Python(" + s.getSub3() + ")? "));
-    s.setSub4(ScoreActionListener.inputScore(prompt, "Linux(" + s.getSub4() + ")? "));
+    s.setSub1(ScoreActionServlet.inputScore(prompt, "C++(" + s.getSub1() + ")? "));
+    s.setSub2(ScoreActionServlet.inputScore(prompt, "Java(" + s.getSub2() + ")? "));
+    s.setSub3(ScoreActionServlet.inputScore(prompt, "Python(" + s.getSub3() + ")? "));
+    s.setSub4(ScoreActionServlet.inputScore(prompt, "Linux(" + s.getSub4() + ")? "));
     s.compute();
     
     try {

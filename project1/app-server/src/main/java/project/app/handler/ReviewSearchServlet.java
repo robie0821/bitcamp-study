@@ -6,11 +6,11 @@ import project.app.vo.Review;
 import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class ReviewSearchListener implements ActionListener {
+public class ReviewSearchServlet implements ActionListener {
 
   ReviewDao reviewDao;
 
-  public ReviewSearchListener(ReviewDao reviewDao) {
+  public ReviewSearchServlet(ReviewDao reviewDao) {
     this.reviewDao = reviewDao;
   }
 

@@ -4,10 +4,9 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.app.dao.StudentDao">
 
-  <!-- 결과 레코드의 컬럼 값을 자바 객체에 어떻게 담을 것인지 설정한다. -->
   <resultMap type="student" id="studentMap">
-    <id     column="student_no"       property="no"/>
-    <result column="name"          property="name"/>
+    <id     column="student_no"   property="no"/>
+    <result column="name"         property="name"/>
     <result column="email"        property="email"/>
     <result column="password"     property="password"/>
   </resultMap>
@@ -22,7 +21,8 @@
       student_no,
       name,
       email
-    from student
+    from 
+      student
   </select>
   
   <select id="findBy" parameterType="int" resultMap="studentMap">
@@ -50,7 +50,7 @@
 	  update student set
 	    name=#{name},
 	    email=#{email},
-	    password=sha1(#{password}),
+	    password=sha1(#{password})
 	  where
 	    student_no=#{no}
   </update>

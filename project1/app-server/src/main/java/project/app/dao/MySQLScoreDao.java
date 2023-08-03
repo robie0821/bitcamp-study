@@ -4,7 +4,9 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Score;
+import project.util.Component;
 
+@Component
 public class MySQLScoreDao implements ScoreDao {
 
   SqlSessionFactory sqlSessionFactory;
@@ -27,7 +29,7 @@ public class MySQLScoreDao implements ScoreDao {
 
   @Override
   public Score findBy(int no) {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
+    SqlSession sqlSession = sqlSessionFactory.openSession(false);
     return sqlSession.selectOne("project.app.dao.ScoreDao.findBy", no);
   }
 

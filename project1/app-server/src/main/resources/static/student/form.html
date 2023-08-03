@@ -2,12 +2,15 @@
 <html>
 <head>
 <meta charset='UTF-8'>
-<title>비트캠프</title>
+<title>**대학교</title>
 </head>
 <body>
-<h1>로그인</h1>
-<form action='/auth/login' method="post">
+<h1>학생</h1>
+<form action='/student/add'>
 <table border="1">
+<tr>
+  <th>이름</th> <td style="width:200px;"><input type='text' name='name'></td>
+</tr>
 <tr>
   <th>이메일</th> <td><input type='email' name='email'></td>
 </tr>
@@ -15,13 +18,7 @@
   <th>암호</th> <td><input type='password' name='password'></td>
 </tr>
 </table>
-<button>로그인</button>
+<button>등록</button>
 </form>
 </body>
 </html>
-
-
-
-
-
-

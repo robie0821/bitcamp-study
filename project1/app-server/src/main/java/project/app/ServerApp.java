@@ -1,68 +1,41 @@
 package project.app;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import org.apache.ibatis.io.Resources;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import project.app.dao.MySQLReviewDao;
-import project.app.dao.MySQLScoreDao;
-import project.app.dao.MySQLStudentDao;
-import project.app.dao.ReviewDao;
-import project.app.dao.ScoreDao;
-import project.app.dao.StudentDao;
-import project.app.handler.LoginListener;
-import project.app.handler.ReviewAddListener;
-import project.app.handler.ReviewListListener;
-import project.app.handler.ReviewSearchListener;
-import project.app.handler.ReviewUpdateListener;
-import project.app.handler.ScoreAddListener;
-import project.app.handler.ScoreListListener;
-import project.app.handler.ScoreUpdateListener;
-import project.app.handler.StudentAddListener;
-import project.app.handler.StudentDeleteListener;
-import project.app.handler.StudentListListener;
-import project.app.handler.StudentSearchListener;
-import project.app.handler.StudentUpdateListener;
-import project.net.NetProtocol;
-import project.util.BreadcrumbPrompt;
-import project.util.Menu;
-import project.util.MenuGroup;
+import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
+import project.app.config.AppConfig;
+import project.util.ApplicationContext;
+import project.util.DispatcherServlet;
+import project.util.HttpServletRequest;
+import project.util.HttpServletResponse;
+import project.util.HttpSession;
 import project.util.SqlSessionFactoryProxy;
+import reactor.core.publisher.Mono;
+import reactor.netty.DisposableServer;
+import reactor.netty.NettyOutbound;
+import reactor.netty.http.server.HttpServer;
+import reactor.netty.http.server.HttpServerRequest;
+import reactor.netty.http.server.HttpServerResponse;
 
 public class ServerApp {
 
-  ExecutorService threadPool = Executors.newFixedThreadPool(2);
+  public static final String MYAPP_SESSION_ID = "myapp_session_id";
 
-  SqlSessionFactory sqlSessionFactory;
-
-  StudentDao studentDao;
-  ScoreDao scoreDao;
-  ReviewDao reviewDao;
-
-
-  MenuGroup mainMenu = new MenuGroup("메인");
+  ApplicationContext iocContainer;
+  DispatcherServlet dispatcherServlet;
+  Map<String,HttpSession> sessionMap = new HashMap<>();
 
   int port;
 
-  public ServerApp(int port) throws Exception{
+  public ServerApp(int port) throws Exception {
     this.port = port;
-
-    InputStream mybatisConfigIn = Resources.getResourceAsStream("bitcamp/myapp/config/mybatis-config.xml");
-    SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-    sqlSessionFactory = new SqlSessionFactoryProxy(builder.build(mybatisConfigIn));
-
-    this.studentDao = new MySQLStudentDao(sqlSessionFactory);
-    this.scoreDao = new MySQLScoreDao(sqlSessionFactory);
-    this.reviewDao = new MySQLReviewDao(sqlSessionFactory);
-
-    prepareMenu();
+    iocContainer = new ApplicationContext(AppConfig.class);
+    dispatcherServlet = new DispatcherServlet(iocContainer);
   }
 
   public void close() throws Exception {
@@ -75,73 +48,107 @@ public class ServerApp {
     app.close();
   }
 
-  static void printTitle() {
-    System.out.println("**대학교 정보 관리 시스템");
-    System.out.println("----------------------------------");
+  public void execute() throws Exception {
+    DisposableServer server = HttpServer
+        .create()
+        .port(8888)
+        .handle((request, response) -> processRequest(request, response))
+        .bindNow();
+    System.out.println("서버 실행됨!");
+
+    server.onDispose().block();
+    System.out.println("서버 종료됨!");
   }
 
-  public void execute() {
-    try (ServerSocket serverSocket = new ServerSocket(this.port)) {
-      System.out.println("서버 실행 중...");
+  private NettyOutbound processRequest(HttpServerRequest request, HttpServerResponse response) {
 
-      while (true) {
-        Socket socket = serverSocket.accept();
-        threadPool.execute(() -> processRequest(socket));
+    HttpServletRequest request2 = new HttpServletRequest(request);
+    HttpServletResponse response2 = new HttpServletResponse(response);
+
+    try {
+      // 클라이언트 세션 ID 알아내기
+      String sessionId = null;
+      boolean firstVisit = false;
+
+      // 클라이언트가 보낸 쿠키들 중에서 세션ID가 있는지 확인한다.
+      List<Cookie> cookies = request2.allCookies().get(MYAPP_SESSION_ID);
+      if (cookies != null) {
+        // 세션ID가 있으면 이 값을 가지고 클라이언트를 구분한다.
+        sessionId = cookies.get(0).value();
+      } else {
+        // 세션ID가 없으면 이 클라이언트를 구분하기 위해 새 세션ID를 발급한다.
+        sessionId = UUID.randomUUID().toString();
+        firstVisit = true;
       }
+
+      // 세션ID로 클라이언트에게 배정된 HttpSession 객체를 찾는다.
+      HttpSession session = sessionMap.get(sessionId);
+      if (session == null) {
+        // 현재 클라이언트가 사용할 HttpSession 객체가 배정되지 않았다면, 새로 만든다.
+        session = new HttpSession(sessionId);
+
+        // 새로 만든 세션 객체를 세션ID를 사용하여 맵에 보관한다.
+        sessionMap.put(sessionId, session);
+      }
+
+      // 서블릿에서 HttpSession 보관소를 사용할 수 있도록 HttpServletRequest에 담아 둔다.
+      request2.setSession(session);
+
+      if (firstVisit) {
+        // 세션ID가 없는 클라이언트를 위해 새로 발급한 세션ID를 쿠키로 보낸다.
+        // 웹브라우저는 이 값을 내부 메모리에 저장할 것이다.
+        response.addCookie(new DefaultCookie(MYAPP_SESSION_ID, sessionId));
+      }
+
+      String servletPath = request2.getServletPath();
+
+      // favicon.ico 요청에 대한 응답
+      if (servletPath.equals("/favicon.ico")) {
+        response.addHeader("Content-Type", "image/vnd.microsoft.icon");
+        return response.sendFile(Path.of(ServerApp.class.getResource("/static/favicon.ico").toURI()));
+      }
+
+      // welcome 파일 또는 HTML 파일을 요청할 때
+      if (servletPath.endsWith("/") || servletPath.endsWith(".html")) {
+        String resourcePath = String.format("/static%s%s",
+            servletPath,
+            (servletPath.endsWith("/") ? "index.html" : ""));
+
+        response.addHeader("Content-Type", "text/html;charset=UTF-8");
+        return response.sendFile(Path.of(ServerApp.class.getResource(resourcePath).toURI()));
+      }
+
+      if (request.isFormUrlencoded()) {
+        return response.sendString(request.receive()
+            .aggregate()
+            .asString()
+            .map(body -> {
+              try {
+                System.out.println("test..ok");
+                request2.parseFormBody(body);
+                dispatcherServlet.service(request2, response2);
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+              response.addHeader("Content-Type", response2.getContentType());
+              return response2.getContent();
+            }));
+
+      } else {
+
+        dispatcherServlet.service(request2, response2);
+        response.addHeader("Content-Type", response2.getContentType());
+        return response.sendString(Mono.just(response2.getContent()));
+      }
+
     } catch (Exception e) {
-      System.out.println("서버 실행 오류!");
       e.printStackTrace();
-    }
-  }
-
-  private void processRequest(Socket socket) {
-    try (Socket s = socket;
-        DataInputStream in = new DataInputStream(socket.getInputStream());
-        DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
-
-      BreadcrumbPrompt prompt = new BreadcrumbPrompt(in, out);
-
-      InetSocketAddress clientAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
-      System.out.printf("%s 클라이언트 접속함!\n", clientAddress.getHostString());
-
-
-      out.writeUTF("[**대학교 정보 관리 시스템]\n"
-          + "----------------------------------------");
-
-      new LoginListener(studentDao).service(prompt);
-
-      mainMenu.execute(prompt);
-      out.writeUTF(NetProtocol.NET_END);
-
-    } catch (Exception e) {
-      System.out.println("클라이언트 통신 오류!");
-      e.printStackTrace();
+      return response.sendString(Mono.just(response2.getContent()));
 
     } finally {
-      ((SqlSessionFactoryProxy) sqlSessionFactory).clean();
+      SqlSessionFactoryProxy sqlSessionFactoryProxy =
+          (SqlSessionFactoryProxy) iocContainer.getBean(SqlSessionFactory.class);
+      sqlSessionFactoryProxy.clean();
     }
-  }
-
-  private void prepareMenu() {
-    MenuGroup loginMenu = new MenuGroup("학생 등록");
-    loginMenu.add(new Menu("학생 등록", new StudentAddListener(studentDao, sqlSessionFactory)));
-    loginMenu.add(new Menu("학생 목록", new StudentListListener(studentDao)));
-    loginMenu.add(new Menu("비밀번호 조회", new StudentSearchListener(studentDao)));
-    loginMenu.add(new Menu("정보 변경", new StudentUpdateListener(studentDao, sqlSessionFactory)));
-    loginMenu.add(new Menu("학생 삭제", new StudentDeleteListener(studentDao, sqlSessionFactory)));
-    mainMenu.add(loginMenu);
-
-    MenuGroup gradeMenu = new MenuGroup("학점등록");
-    gradeMenu.add(new Menu("등록", new ScoreAddListener(scoreDao, sqlSessionFactory)));
-    gradeMenu.add(new Menu("목록", new ScoreListListener(scoreDao)));
-    gradeMenu.add(new Menu("변경", new ScoreUpdateListener(scoreDao, sqlSessionFactory)));
-    mainMenu.add(gradeMenu);
-
-    MenuGroup reviewMenu = new MenuGroup("과목평가");
-    reviewMenu.add(new Menu("등록", new ReviewAddListener(reviewDao, sqlSessionFactory)));
-    reviewMenu.add(new Menu("목록", new ReviewListListener(reviewDao)));
-    reviewMenu.add(new Menu("검색", new ReviewSearchListener(reviewDao)));
-    reviewMenu.add(new Menu("변경", new ReviewUpdateListener(reviewDao, sqlSessionFactory)));
-    mainMenu.add(reviewMenu);
   }
 }

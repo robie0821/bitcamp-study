@@ -7,11 +7,11 @@ import project.app.vo.Review;
 import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
 
-public class ReviewListListener implements ActionListener {
+public class ReviewListServlet implements ActionListener {
 
   ReviewDao reviewDao;
 
-  public ReviewListListener(ReviewDao reviewDao) {
+  public ReviewListServlet(ReviewDao reviewDao) {
     this.reviewDao = reviewDao;
   }
 
