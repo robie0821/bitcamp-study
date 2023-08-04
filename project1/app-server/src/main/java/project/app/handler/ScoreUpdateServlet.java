@@ -1,46 +1,62 @@
 package project.app.handler;
 
-import java.io.IOException;
+import java.io.PrintWriter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.dao.ScoreDao;
 import project.app.vo.Score;
-import project.util.BreadcrumbPrompt;
+import project.util.Component;
+import project.util.HttpServletRequest;
+import project.util.HttpServletResponse;
+import project.util.Servlet;
 
-public class ScoreUpdateServlet implements ScoreActionServlet {
+@Component("/score/update")
+public class ScoreUpdateServlet implements Servlet {
 
   ScoreDao scoreDao;
   SqlSessionFactory sqlSessionFactory;
-  
+
   public ScoreUpdateServlet(ScoreDao scoreDao, SqlSessionFactory sqlSessionFactory) {
     this.scoreDao = scoreDao;
     this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt) throws IOException {
-    Score s = scoreDao.findBy(prompt.inputInt("학번? "));
-    if (s == null) {
-      System.out.println("해당 학번의 학생이 없습니다!");
-      return;
-    }
+  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Score s = new Score();
 
-    s.setSub1(ScoreActionServlet.inputScore(prompt, "C++(" + s.getSub1() + ")? "));
-    s.setSub2(ScoreActionServlet.inputScore(prompt, "Java(" + s.getSub2() + ")? "));
-    s.setSub3(ScoreActionServlet.inputScore(prompt, "Python(" + s.getSub3() + ")? "));
-    s.setSub4(ScoreActionServlet.inputScore(prompt, "Linux(" + s.getSub4() + ")? "));
+
+    s.setSub1(request.getParameter("sub1"));
+    s.setSub2(request.getParameter("sub2"));
+    s.setSub3(request.getParameter("sub3"));
+    s.setSub4(request.getParameter("sub4"));
     s.compute();
-    
+
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<meta charset='UTF-8'>");
+    out.println("<meta http-equiv='refresh' content='1;url=/score/list'>");
+    out.println("<title>학점</title>");
+    out.println("</head>");
+    out.println("<body>");
+    out.println("<h1>학점 변경</h1>");
+
     try {
       if (scoreDao.update(s) == 0) {
-        prompt.println("게시글 변경 권한이 없습니다.");
+        out.println("<p>변경 권한이 없습니다.</p>");
       } else {
-        prompt.println("변경했습니다!");
+        out.println("<p>변경했습니다!</p>");
       }
       sqlSessionFactory.openSession(false).commit();
 
     } catch (Exception e) {
       sqlSessionFactory.openSession(false).rollback();
-      throw new RuntimeException(e);
+      out.println("<p>변경 실패입니다!</p>");
+      e.printStackTrace();
     }
+    out.println("</body>");
+    out.println("</html>");
   }
 }

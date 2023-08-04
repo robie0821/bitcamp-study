@@ -1,32 +1,28 @@
 package bitcamp.myapp.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import bitcamp.myapp.dao.BoardDao;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 import bitcamp.myapp.vo.Board;
-import bitcamp.util.Component;
-import bitcamp.util.HttpServletRequest;
-import bitcamp.util.HttpServletResponse;
-import bitcamp.util.Servlet;
+import bitcamp.util.AbstractServlet;
 
-@Component("/board/list")
-public class BoardListServlet implements Servlet {
+@WebServlet("/board/list")
+public class BoardListServlet extends AbstractServlet {
 
-  BoardDao boardDao;
   SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-
-  public BoardListServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
-  }
-
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  public void service(ServletRequest req, ServletResponse res)
+      throws ServletException, IOException {
 
-    int category = Integer.parseInt(request.getParameter("category"));
+    int category = Integer.parseInt(req.getParameter("category"));
 
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
+    res.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = res.getWriter();
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -43,7 +39,7 @@ public class BoardListServlet implements Servlet {
     out.println("  <tr><th>번호</th> <th>제목</th> <th>작성자</th> <th>조회수</th> <th>등록일</th></tr>");
     out.println("</thead>");
 
-    List<Board> list = boardDao.findAll(category);
+    List<Board> list = InitServlet.boardDao.findAll(category);
 
     out.println("<tbody>");
     for (Board board : list) {

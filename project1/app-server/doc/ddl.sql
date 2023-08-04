@@ -27,10 +27,13 @@ create table review(
 -- Primary Key 설정
 alter table student
   add constraint primary key(student_no),
-  modify column student_no int not null auto_increment = 1001;
+  modify column student_no int not null auto_increment;
+
+alter table student
+  auto_increment=1001;
   
 alter table score
-  add constraint primary key(student_no);
+  add constraint primary key(student_id);
 
 alter table review
   add constraint primary key(review_no),

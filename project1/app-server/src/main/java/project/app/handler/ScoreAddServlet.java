@@ -31,11 +31,14 @@ public class ScoreAddServlet implements Servlet {
     }
 
     Score s = new Score();
+    s.setStudent(loginUser);
     s.setSub1(request.getParameter("sub1"));
     s.setSub2(request.getParameter("sub2"));
     s.setSub3(request.getParameter("sub3"));
     s.setSub4(request.getParameter("sub4"));
     s.compute();
+
+    System.out.println("현재 로그인:" + s.getStudent().getNo());
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();

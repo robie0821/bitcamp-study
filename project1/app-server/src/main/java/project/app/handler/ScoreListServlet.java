@@ -31,11 +31,11 @@ public class ScoreListServlet implements Servlet {
     out.println("<body>");
     out.println("<h1>학점 목록</h1>");
     out.println("<div style='margin:5px;'>");
-    out.println("<a href='/student/form.html'>학점 등록</a>");
+    out.println("<a href='/score/form.html'>학점 등록</a>");
     out.println("</div>");
     out.println("<table border='1'>");
     out.println("<thead>");
-    out.println("  <tr><th>번호</th> <th>제목</th> <th>작성자</th> <th>조회수</th> <th>등록일</th></tr>");
+    out.println("  <tr><th>번호</th> <th>이름</th> <th>학점</th> <th>장학금</th></tr>");
     out.println("</thead>");
 
     List<Score> list = scoreDao.findAll();
@@ -46,13 +46,13 @@ public class ScoreListServlet implements Servlet {
           + " <td>%d</td>"
           + " <td><a href='/score/detail?no=%d'>%s</a></td>"
           + " <td>%s</td>"
-          + " <td>%.2f</td>"
-          + " <td>%b</td></tr>\n",
+          + " <td>%s</td>"
+          + " <td>%s</td></tr>\n",
           s.getStudent().getNo(),
           s.getStudent().getNo(),
           (s.getStudent().getName().length() > 0 ? s.getStudent().getName() : "이름없음"),
           s.getGrade(),
-          s.isScholar());
+          (s.isScholar() ? "O" : "X"));
     }
     out.println("</tbody>");
     out.println("</table>");

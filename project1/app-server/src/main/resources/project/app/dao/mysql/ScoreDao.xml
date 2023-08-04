@@ -33,7 +33,7 @@
       s.sub3,
       s.sub4,
       s.grade,
-      s.scholar,
+      s.scholar
     from
       score s inner join student t on s.student_id=t.student_no
   </select>
@@ -47,7 +47,7 @@
       s.sub3,
       s.sub4,
       s.grade,
-      s.scholar,
+      s.scholar
     from
       score s inner join student t on s.student_id=t.student_no
     where
