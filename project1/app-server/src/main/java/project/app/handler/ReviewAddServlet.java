@@ -7,8 +7,11 @@ import project.app.vo.Review;
 import project.app.vo.Student;
 import project.util.ActionListener;
 import project.util.BreadcrumbPrompt;
+import project.util.HttpServletRequest;
+import project.util.HttpServletResponse;
+import project.util.Servlet;
 
-public class ReviewAddServlet implements ActionListener {
+public class ReviewAddServlet implements Servlet {
 
   ReviewDao reviewDao;
   SqlSessionFactory sqlSessionFactory;
@@ -19,12 +22,18 @@ public class ReviewAddServlet implements ActionListener {
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt) throws IOException {
+  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      response.sendRedirect("/auth/form.html");
+      return;
+    }
+    
     Review rev = new Review();
-    rev.setSubjectId(prompt.inputInt("과목코드?\n1. C++\n2. 자바\n3. 파이썬\n4. 리눅스\n"));
-    rev.setRate(prompt.inputInt("평점?"));
-    rev.setContent(prompt.inputString("내용?"));
-    rev.setStudent((Student) prompt.getAttribute("loginUser"));
+    rev.setSubjectId(Integer.parseInt(request.getParameter("subjectId")));
+    rev.setRate(Integer.parseInt(request.getParameter("rate")));
+    rev.setContent(request.getParameter("content"));
+    rev.setStudent(loginUser);
 
     try {
       reviewDao.insert(rev);
