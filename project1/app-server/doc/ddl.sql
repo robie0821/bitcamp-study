@@ -2,11 +2,11 @@ create table student(
   student_no int not null,
   name varchar(20) not null,
   email varchar(20) not null,
-  password varchar(100) null,
-  score boolean default 0
+  password varchar(100) null
 );
   
 create table score(
+  score_no int not null,
   student_id int not null,
   sub1 varchar(2) not null,
   sub2 varchar(2) not null,
@@ -33,15 +33,25 @@ alter table student
   auto_increment=1001;
   
 alter table score
-  add constraint primary key(student_id);
+  add constraint primary key(score_no),
+  modify column score_no int not null auto_increment;
+  
+  alter table score
+  auto_increment=11;
 
 alter table review
   add constraint primary key(review_no),
   modify column review_no int not null auto_increment;
+  
+  alter table review
+  auto_increment=101;
 
 -- Unique 설정
 alter table student
   add constraint student_uk unique (email);
+  
+alter table score
+  add constraint score_uk unique (student_id);
   
 alter table review
   add constraint review_uk unique (student_id, subject_id);
@@ -50,6 +60,5 @@ alter table review
 alter table score
   add constraint score_fk foreign key (student_id) references student (student_no);
 
-  alter table review
+alter table review
   add constraint review_fk foreign key (student_id) references student (student_no);
-  

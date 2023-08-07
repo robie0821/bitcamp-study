@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.dao.ScoreDao;
 import project.app.vo.Score;
+import project.app.vo.Student;
 import project.util.Component;
 import project.util.HttpServletRequest;
 import project.util.HttpServletResponse;
@@ -22,9 +23,15 @@ public class ScoreUpdateServlet implements Servlet {
 
   @Override
   public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      response.sendRedirect("/auth/form.html");
+      return;
+    }
+
     Score s = new Score();
-
-
+    s.setStudent(loginUser);
+    s.setNo(Integer.parseInt(request.getParameter("no")));
     s.setSub1(request.getParameter("sub1"));
     s.setSub2(request.getParameter("sub2"));
     s.setSub3(request.getParameter("sub3"));

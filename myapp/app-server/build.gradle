@@ -54,7 +54,7 @@ eclipse {
             //facet name: 'jst.java', version: '4.0'
         }
         component {
-            //contextPath = '/web'
+            contextPath = '/'
             //deployName = 'web'
         }
     }

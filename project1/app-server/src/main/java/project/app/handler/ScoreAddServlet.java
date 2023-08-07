@@ -38,8 +38,6 @@ public class ScoreAddServlet implements Servlet {
     s.setSub4(request.getParameter("sub4"));
     s.compute();
 
-    System.out.println("현재 로그인:" + s.getStudent().getNo());
-
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     out.println("<!DOCTYPE html>");

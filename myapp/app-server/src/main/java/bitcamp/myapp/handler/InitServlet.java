@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -14,15 +15,18 @@ import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.dao.MySQLBoardDao;
 import bitcamp.myapp.dao.MySQLMemberDao;
-import bitcamp.util.AbstractServlet;
 import bitcamp.util.SqlSessionFactoryProxy;
 
-@WebServlet(value="/init", loadOnStartup = 1)
-public class InitServlet extends AbstractServlet {
+@WebServlet(
+    value="/init",
+    loadOnStartup = 1
+    )
+public class InitServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   public static SqlSessionFactory sqlSessionFactory;
-  public static MemberDao memberDao;
   public static BoardDao boardDao;
+  public static MemberDao memberDao;
 
   @Override
   public void init(ServletConfig config) throws ServletException {
@@ -34,20 +38,20 @@ public class InitServlet extends AbstractServlet {
           new SqlSessionFactoryBuilder().build(
               Resources.getResourceAsStream("bitcamp/myapp/config/mybatis-config.xml")));
 
-      memberDao = new MySQLMemberDao(sqlSessionFactory);
       boardDao = new MySQLBoardDao(sqlSessionFactory);
+      memberDao = new MySQLMemberDao(sqlSessionFactory);
+
     } catch (Exception e) {
-      System.out.println("InitServlet.init() 호출도중 에러발생");
+      System.out.println("InitServlet.init() 실행 중 오류 발생!");
       e.printStackTrace();
     }
   }
 
   @Override
-  public void service(ServletRequest req, ServletResponse res)
+  public void service(ServletRequest request, ServletResponse response)
       throws ServletException, IOException {
-
-    res.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = res.getWriter();
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -55,7 +59,7 @@ public class InitServlet extends AbstractServlet {
     out.println("<title>준비</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>애플리케이션 준비!</h1>");
+    out.println("<h1>애플리케이션 준비</h1>");
     out.println("<p>애플리케이션을 실행할 준비를 완료했습니다!</p>");
     out.println("</body>");
     out.println("</html>");

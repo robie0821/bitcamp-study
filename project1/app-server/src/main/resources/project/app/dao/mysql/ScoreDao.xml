@@ -5,6 +5,7 @@
 <mapper namespace="project.app.dao.ScoreDao">
 
   <resultMap type="score" id="scoreMap">
+    <result column="score_no"   property="no"/>
     <result column="sub1"       property="sub1"/>
     <result column="sub2"       property="sub2"/>
     <result column="sub3"       property="sub3"/>
@@ -26,7 +27,8 @@
   
   <select id="findAll" resultMap="scoreMap">
     select
-      t.student_no,
+      s.score_no,
+      s.student_id,
       t.name,
       s.sub1,
       s.sub2,
@@ -36,11 +38,14 @@
       s.scholar
     from
       score s inner join student t on s.student_id=t.student_no
+    order by 
+      s.student_id
   </select>
   
   <select id="findBy" parameterType="int" resultMap="scoreMap">
     select
-      t.student_no,
+      s.score_no,
+      s.student_id,
       t.name,
       s.sub1,
       s.sub2,
@@ -51,7 +56,7 @@
     from
       score s inner join student t on s.student_id=t.student_no
     where
-      student_id=#{no}
+      score_no=#{no}
   </select>
   
   <update id="update" parameterType="score">
@@ -63,6 +68,7 @@
 	    grade=#{grade},
 	    scholar=#{scholar}
 	  where 
-	    student_id=#{student.no}
+	    score_no=#{no}
+	    and student_id=#{student.no}
   </update>
 </mapper>

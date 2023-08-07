@@ -7,6 +7,7 @@ public class Score implements Serializable{
 
   private Student student;
 
+  private int no;
   private String sub1;
   private String sub2;
   private String sub3;
@@ -20,6 +21,12 @@ public class Score implements Serializable{
   }
   public void setStudent(Student student) {
     this.student = student;
+  }
+  public int getNo() {
+    return no;
+  }
+  public void setNo(int no) {
+    this.no = no;
   }
   public String getSub1() {
     return sub1;

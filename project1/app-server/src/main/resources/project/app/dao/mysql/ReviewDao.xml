@@ -18,46 +18,60 @@
   </resultMap>
 
   <insert id="insert" parameterType="review">
-    insert into review(review_no,student_id,subject_id,rate,content)
-    values(#{no},#{student.no},#{subjectId},#{rate},#{content})
+    insert into review(student_id,subject_id,rate,content)
+    values(#{student.no},#{subjectId},#{rate},#{content})
   </insert>
   
-  <select id="findAll" parameterType="int" resultMap="reviewMap">
+  <select id="findAll" resultMap="reviewMap">
     select
-      t.student_no,
-      t.name,
-      r.subjectId,
-      r.rate,
-      r.content,
+      r.subject_id
     from
       review r inner join student t on r.student_id=t.student_no
-    where subjectId=#{no}
+    group by
+      r.subject_id
+    order by 
+      r.subject_id
+  </select>
+  
+  <select id="findBySubject" parameterType="int" resultMap="reviewMap">
+    select
+      r.review_no,
+      r.subject_id,
+      r.rate,
+      r.content
+    from
+      review r inner join student t on r.student_id=t.student_no
+    where
+      subject_id=#{subjectNo}
+    order by
+      r.rate
   </select>
   
   <select id="findBy" parameterType="int" resultMap="reviewMap">
     select
-      t.student_no,
+      r.review_no,
+      r.student_id,
       t.name,
-      r.subjectId,
+      r.subject_id,
       r.rate,
-      r.content,
+      r.content
     from
-      score r inner join student t on r.student_id=t.student_no
+      review r inner join student t on r.student_id=t.student_no
     where
-      student_id=#{StudentNo}
-      and subject_id=#{subjectNo}
+      review_no=#{reviewNo}
   </select>
   
   <update id="update" parameterType="review">
-	  update score set
+	  update review set
 	    rate=#{rate},
-	    content=#{content},
+	    content=#{content}
 	  where 
-	    student_id=#{student.no}
+	    review_no=#{no}
+	    and student_id=#{student.no}
   </update>
   
-  <delete id="delete" parameterType="review">
-    delete from myapp_board
+  <delete id="delete" parameterType="int">
+    delete from review
     where 
       review_no=#{no}
   </delete>

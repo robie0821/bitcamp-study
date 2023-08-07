@@ -1,8 +1,6 @@
 package project.app.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Review;
@@ -24,20 +22,22 @@ public class MySQLReviewDao implements ReviewDao {
   }
 
   @Override
-  public List<Review> findAll(int no) {
+  public List<Review> findAll() {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectList("project.app.dao.ReviewDao.findAll", no);
+    return sqlSession.selectList("project.app.dao.ReviewDao.findAll");
   }
 
   @Override
-  public Review findBy(int student, int subject) {
+  public List<Review> findBySubject(int subject) {
     SqlSession sqlSession = sqlSessionFactory.openSession();
 
-    Map<String,Object> paramMap = new HashMap<>();
-    paramMap.put("StudentNo", student);
-    paramMap.put("subjectNo", subject);
+    return sqlSession.selectList("project.app.dao.ReviewDao.findBySubject", subject);
+  }
 
-    return sqlSession.selectOne("project.app.dao.ReviewDao.findBy", paramMap);
+  @Override
+  public Review findBy(int no) {
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    return sqlSession.selectOne("project.app.dao.ReviewDao.findBy", no);
   }
 
   @Override
@@ -47,8 +47,8 @@ public class MySQLReviewDao implements ReviewDao {
   }
 
   @Override
-  public int delete(Review review) {
+  public int delete(int no) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.delete("project.app.dao.ReviewDao.delete", review);
+    return sqlSession.delete("project.app.dao.ReviewDao.delete", no);
   }
 }

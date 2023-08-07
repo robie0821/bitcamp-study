@@ -1,13 +1,17 @@
 package project.app.handler;
 
-import java.io.IOException;
+import java.io.PrintWriter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.dao.ReviewDao;
 import project.app.vo.Review;
-import project.util.ActionListener;
-import project.util.BreadcrumbPrompt;
+import project.app.vo.Student;
+import project.util.Component;
+import project.util.HttpServletRequest;
+import project.util.HttpServletResponse;
+import project.util.Servlet;
 
-public class ReviewUpdateServlet implements ActionListener {
+@Component("/review/update")
+public class ReviewUpdateServlet implements Servlet {
 
   ReviewDao reviewDao;
   SqlSessionFactory sqlSessionFactory;
@@ -18,21 +22,35 @@ public class ReviewUpdateServlet implements ActionListener {
   }
 
   @Override
-  public void service(BreadcrumbPrompt prompt) throws IOException {
-    Review rev = reviewDao.findBy(prompt.inputInt("학번? "), prompt.inputInt("1. C++\\n2. Java\\n3. Python\\n4.Linux\\n과목코드? "));
-    if (rev == null) {
-      System.out.println("입력한 정보의 리뷰가 없습니다.");
+  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      response.sendRedirect("/auth/form.html");
       return;
     }
 
-    rev.setRate(prompt.inputInt("평점(%d)? ", rev.getRate()));
-    rev.setContent(prompt.inputString("내용(%s)? ", rev.getContent()));
+    Review rev = new Review();
+    rev.setStudent(loginUser);
+    rev.setNo(Integer.parseInt(request.getParameter("no")));
+    rev.setRate(Integer.parseInt(request.getParameter("rate")));
+    rev.setContent(request.getParameter("content"));
 
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<meta charset='UTF-8'>");
+    out.println("<meta http-equiv='refresh' content='1;url=/review/list'>");
+    out.println("<title>강의평가</title>");
+    out.println("</head>");
+    out.println("<body>");
+    out.println("<h1>강의평가 변경</h1>");
     try {
       if (reviewDao.update(rev) == 0) {
-        prompt.println("게시글 변경 권한이 없습니다.");
+        out.println("<p>변경 권한이 없습니다.</p>");
       } else {
-        prompt.println("변경했습니다!");
+        out.println("<p>변경했습니다!</p>");
       }
       sqlSessionFactory.openSession(false).commit();
 
@@ -40,5 +58,7 @@ public class ReviewUpdateServlet implements ActionListener {
       sqlSessionFactory.openSession(false).rollback();
       throw new RuntimeException(e);
     }
+    out.println("</body>");
+    out.println("</html>");
   }
 }
