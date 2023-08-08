@@ -1,35 +1,29 @@
 package project.app.handler;
 
-import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.dao.ReviewDao;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-@Component("/review/delete")
-public class ReviewDeleteServlet implements Servlet {
-
-  ReviewDao reviewDao;
-  SqlSessionFactory sqlSessionFactory;
-
-  public ReviewDeleteServlet(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
-    this.reviewDao = reviewDao;
-    this.sqlSessionFactory = sqlSessionFactory;
-  }
+@WebServlet("/review/delete")
+public class ReviewDeleteServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     try {
-      if (reviewDao.delete(Integer.parseInt(request.getParameter("no"))) == 0) {
+      if (InitServlet.reviewDao.delete(Integer.parseInt(request.getParameter("no"))) == 0) {
         throw new Exception("해당 강의평가가 없습니다.");
       } else {
         response.sendRedirect("/review/list");
       }
-      sqlSessionFactory.openSession(false).commit();
+      InitServlet.sqlSessionFactory.openSession(false).commit();
 
     } catch (Exception e) {
-      sqlSessionFactory.openSession(false).rollback();
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
       throw new RuntimeException(e);
     }
   }

@@ -1,28 +1,22 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.dao.ReviewDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Review;
 import project.app.vo.Student;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/review/update")
-public class ReviewUpdateServlet implements Servlet {
-
-  ReviewDao reviewDao;
-  SqlSessionFactory sqlSessionFactory;
-
-  public ReviewUpdateServlet(ReviewDao reviewDao, SqlSessionFactory sqlSessionFactory) {
-    this.reviewDao = reviewDao;
-    this.sqlSessionFactory = sqlSessionFactory;
-  }
+@WebServlet("/review/update")
+public class ReviewUpdateServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     Student loginUser = (Student) request.getSession().getAttribute("loginUser");
     if (loginUser == null) {
       response.sendRedirect("/auth/form.html");
@@ -47,15 +41,15 @@ public class ReviewUpdateServlet implements Servlet {
     out.println("<body>");
     out.println("<h1>강의평가 변경</h1>");
     try {
-      if (reviewDao.update(rev) == 0) {
+      if (InitServlet.reviewDao.update(rev) == 0) {
         out.println("<p>변경 권한이 없습니다.</p>");
       } else {
         out.println("<p>변경했습니다!</p>");
       }
-      sqlSessionFactory.openSession(false).commit();
+      InitServlet.sqlSessionFactory.openSession(false).commit();
 
     } catch (Exception e) {
-      sqlSessionFactory.openSession(false).rollback();
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
       throw new RuntimeException(e);
     }
     out.println("</body>");

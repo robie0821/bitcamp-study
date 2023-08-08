@@ -22,9 +22,11 @@
     values(#{student.no},#{subjectId},#{rate},#{content})
   </insert>
   
-  <select id="findAll" resultMap="reviewMap">
+  <select id="list" resultType="Map">
     select
-      r.subject_id
+      r.subject_id as sub,
+      avg(r.rate) as avg,
+      count(*) as count
     from
       review r inner join student t on r.student_id=t.student_no
     group by

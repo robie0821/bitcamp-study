@@ -1,28 +1,22 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.dao.ScoreDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Score;
 import project.app.vo.Student;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/score/update")
-public class ScoreUpdateServlet implements Servlet {
-
-  ScoreDao scoreDao;
-  SqlSessionFactory sqlSessionFactory;
-
-  public ScoreUpdateServlet(ScoreDao scoreDao, SqlSessionFactory sqlSessionFactory) {
-    this.scoreDao = scoreDao;
-    this.sqlSessionFactory = sqlSessionFactory;
-  }
+@WebServlet("/score/update")
+public class ScoreUpdateServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     Student loginUser = (Student) request.getSession().getAttribute("loginUser");
     if (loginUser == null) {
       response.sendRedirect("/auth/form.html");
@@ -51,15 +45,15 @@ public class ScoreUpdateServlet implements Servlet {
     out.println("<h1>학점 변경</h1>");
 
     try {
-      if (scoreDao.update(s) == 0) {
+      if (InitServlet.scoreDao.update(s) == 0) {
         out.println("<p>변경 권한이 없습니다.</p>");
       } else {
         out.println("<p>변경했습니다!</p>");
       }
-      sqlSessionFactory.openSession(false).commit();
+      InitServlet.sqlSessionFactory.openSession(false).commit();
 
     } catch (Exception e) {
-      sqlSessionFactory.openSession(false).rollback();
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
       out.println("<p>변경 실패입니다!</p>");
       e.printStackTrace();
     }

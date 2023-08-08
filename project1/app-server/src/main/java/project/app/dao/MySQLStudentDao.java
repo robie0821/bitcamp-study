@@ -4,9 +4,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Student;
-import project.util.Component;
 
-@Component
 public class MySQLStudentDao implements StudentDao {
 
   SqlSessionFactory sqlSessionFactory;

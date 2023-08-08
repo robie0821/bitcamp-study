@@ -1,27 +1,21 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.dao.StudentDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Student;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/student/update")
-public class StudentUpdateServlet implements Servlet {
-
-  StudentDao studentDao;
-  SqlSessionFactory sqlSessionFactory;
-
-  public StudentUpdateServlet(StudentDao studentDao, SqlSessionFactory sqlSessionFactory) {
-    this.studentDao = studentDao;
-    this.sqlSessionFactory = sqlSessionFactory;
-  }
+@WebServlet("/student/update")
+public class StudentUpdateServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
     Student std = new Student();
     std.setNo(Integer.parseInt(request.getParameter("no")));
@@ -42,15 +36,15 @@ public class StudentUpdateServlet implements Servlet {
     out.println("<h1>학생 정보 변경</h1>");
 
     try {
-      if (studentDao.update(std) == 0) {
+      if (InitServlet.studentDao.update(std) == 0) {
         out.println("<p>학생이 없습니다.</p>");
       } else {
-        sqlSessionFactory.openSession(false).commit();
+        InitServlet.sqlSessionFactory.openSession(false).commit();
         out.println("<p>변경했습니다!</p>");
       }
 
     } catch (Exception e) {
-      sqlSessionFactory.openSession(false).rollback();
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
       out.println("<p>변경 실패입니다!</p>");
       e.printStackTrace();
     }
@@ -59,14 +53,3 @@ public class StudentUpdateServlet implements Servlet {
     out.println("</html>");
   }
 }
-
-
-
-
-
-
-
-
-
-
-

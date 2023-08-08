@@ -15,7 +15,7 @@ public class MemberListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
     response.setContentType("text/html;charset=UTF-8");
@@ -42,7 +42,7 @@ public class MemberListServlet extends HttpServlet {
           + " <td>%d</td>"
           + " <td><a href='/member/detail?no=%d'>%s</a></td>"
           + " <td>%s</td></tr>\n",
-          m.getNo(), m.getNo(), m.getName(), m.getEmail());
+          m.getNo(), m.getNo(), (m.getName().length() == 0 ? "이름없음" : m.getName()), m.getEmail());
     }
 
     out.println("</tbody>");

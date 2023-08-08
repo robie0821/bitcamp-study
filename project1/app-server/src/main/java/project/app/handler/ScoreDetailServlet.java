@@ -1,25 +1,22 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import project.app.dao.ScoreDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Score;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/score/detail")
-public class ScoreDetailServlet implements Servlet {
-
-  ScoreDao scoreDao;
-
-  public ScoreDetailServlet(ScoreDao scoreDao) {
-    this.scoreDao = scoreDao;
-  }
+@WebServlet("/score/detail")
+public class ScoreDetailServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    Score score = scoreDao.findBy(Integer.parseInt(request.getParameter("no")));
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    Score score = InitServlet.scoreDao.findBy(Integer.parseInt(request.getParameter("no")));
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();

@@ -1,27 +1,25 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import project.app.dao.ReviewDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Review;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/review/detail")
-public class ReviewDetailServlet implements Servlet {
+@WebServlet("/review/detail")
+public class ReviewDetailServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
-  ReviewDao reviewDao;
   String[] sub = {"C++", "Java", "Python", "Linux"};
   String[] rate = {"★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
 
-  public ReviewDetailServlet(ReviewDao reviewDao) {
-    this.reviewDao = reviewDao;
-  }
-
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    Review rev = reviewDao.findBy(Integer.parseInt(request.getParameter("no")));
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    Review rev = InitServlet.reviewDao.findBy(Integer.parseInt(request.getParameter("no")));
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();

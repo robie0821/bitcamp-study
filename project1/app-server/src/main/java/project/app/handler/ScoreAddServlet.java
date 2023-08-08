@@ -1,29 +1,22 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.dao.ScoreDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Score;
 import project.app.vo.Student;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/score/add")
-public class ScoreAddServlet implements Servlet {
-
-  ScoreDao scoreDao;
-  SqlSessionFactory sqlSessionFactory;
-
-  public ScoreAddServlet(ScoreDao scoreDao, SqlSessionFactory sqlSessionFactory) {
-    this.scoreDao = scoreDao;
-    this.sqlSessionFactory = sqlSessionFactory;
-  }
+@WebServlet("/score/add")
+public class ScoreAddServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     Student loginUser = (Student) request.getSession().getAttribute("loginUser");
     if (loginUser == null) {
       response.sendRedirect("/auth/form.html");
@@ -50,12 +43,12 @@ public class ScoreAddServlet implements Servlet {
     out.println("<body>");
     out.println("<h1>학점 등록</h1>");
     try {
-      scoreDao.insert(s);
-      sqlSessionFactory.openSession(false).commit();
+      InitServlet.scoreDao.insert(s);
+      InitServlet.sqlSessionFactory.openSession(false).commit();
       out.println("<p>등록 성공입니다!</p>");
 
     } catch (Exception e) {
-      sqlSessionFactory.openSession(false).rollback();
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
       out.println("<p>등록 실패입니다!</p>");
       e.printStackTrace();
     }

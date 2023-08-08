@@ -1,27 +1,21 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.dao.StudentDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Student;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/student/add")
-public class StudentAddServlet implements Servlet {
-
-  StudentDao studentDao;
-  SqlSessionFactory sqlSessionFactory;
-
-  public StudentAddServlet(StudentDao studentDao, SqlSessionFactory sqlSessionFactory) {
-    this.studentDao = studentDao;
-    this.sqlSessionFactory = sqlSessionFactory;
-  }
+@WebServlet("/student/add")
+public class StudentAddServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
     Student student = new Student();
     student.setName(request.getParameter("name"));
@@ -41,12 +35,12 @@ public class StudentAddServlet implements Servlet {
     out.println("<h1>학생 등록</h1>");
 
     try {
-      studentDao.insert(student);
-      sqlSessionFactory.openSession(false).commit();
+      InitServlet.studentDao.insert(student);
+      InitServlet.sqlSessionFactory.openSession(false).commit();
       out.println("<p>등록 성공입니다!</p>");
 
     } catch (Exception e) {
-      sqlSessionFactory.openSession(false).rollback();
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
       out.println("<p>등록 실패입니다!</p>");
       e.printStackTrace();
     }

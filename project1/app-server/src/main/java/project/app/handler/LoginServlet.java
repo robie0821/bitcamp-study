@@ -1,29 +1,26 @@
 package project.app.handler;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import project.app.dao.StudentDao;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Student;
-import project.util.Component;
-import project.util.HttpServletRequest;
-import project.util.HttpServletResponse;
-import project.util.Servlet;
 
-@Component("/auth/login")
-public class LoginServlet implements Servlet {
-
-  StudentDao studentDao;
-
-  public LoginServlet(StudentDao studentDao) {
-    this.studentDao = studentDao;
-  }
+@WebServlet("/auth/login")
+public class LoginServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+  protected void service(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     Student std = new Student();
     std.setEmail(request.getParameter("email"));
     std.setPassword(request.getParameter("password"));
 
-    Student loginUser = studentDao.findByEmailAndPassword(std);
+    Student loginUser = InitServlet.studentDao.findByEmailAndPassword(std);
     if (loginUser != null) {
       request.getSession().setAttribute("loginUser", loginUser);
       response.sendRedirect("/");

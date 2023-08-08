@@ -1,12 +1,11 @@
 package project.app.dao;
 
 import java.util.List;
+import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Review;
-import project.util.Component;
 
-@Component
 public class MySQLReviewDao implements ReviewDao {
 
   SqlSessionFactory sqlSessionFactory;
@@ -22,9 +21,9 @@ public class MySQLReviewDao implements ReviewDao {
   }
 
   @Override
-  public List<Review> findAll() {
+  public List<Map<String,Object>> list() {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectList("project.app.dao.ReviewDao.findAll");
+    return sqlSession.selectList("project.app.dao.ReviewDao.list");
   }
 
   @Override
