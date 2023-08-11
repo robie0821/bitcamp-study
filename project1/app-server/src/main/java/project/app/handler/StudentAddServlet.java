@@ -14,16 +14,23 @@ public class StudentAddServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-    Student student = new Student();
-    student.setName(request.getParameter("name"));
-    student.setEmail(request.getParameter("email"));
-    student.setPassword(request.getParameter("password"));
-
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
+
+    Student student = new Student();
+    String name = request.getParameter("name");
+    String email = request.getParameter("email");
+    if (name.length() == 0 || email.length() == 0) {
+      out.println("<p>이름이나 이메일에는 공백이 올 수 없습니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/student/list'>");
+      return;
+    }
+    student.setName(name);
+    student.setEmail(email);
+    student.setPassword(request.getParameter("password"));
+
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");

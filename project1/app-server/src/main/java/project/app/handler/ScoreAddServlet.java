@@ -15,11 +15,15 @@ public class ScoreAddServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+
     Student loginUser = (Student) request.getSession().getAttribute("loginUser");
     if (loginUser == null) {
-      response.sendRedirect("/auth/form.html");
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
       return;
     }
 
@@ -31,8 +35,6 @@ public class ScoreAddServlet extends HttpServlet {
     s.setSub4(request.getParameter("sub4"));
     s.compute();
 
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");

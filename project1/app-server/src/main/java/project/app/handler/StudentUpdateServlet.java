@@ -14,8 +14,23 @@ public class StudentUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
+      return;
+    }
+
+    if (loginUser.getNo() != Integer.parseInt(request.getParameter("student")) ) {
+      out.println("<p>본인 정보만 변경 가능합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/index.html'>");
+      return;
+    }
 
     Student std = new Student();
     std.setNo(Integer.parseInt(request.getParameter("no")));
@@ -23,8 +38,6 @@ public class StudentUpdateServlet extends HttpServlet {
     std.setEmail(request.getParameter("email"));
     std.setPassword(request.getParameter("password"));
 
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");

@@ -15,11 +15,14 @@ public class ReviewAddServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
     Student loginUser = (Student) request.getSession().getAttribute("loginUser");
     if (loginUser == null) {
-      response.sendRedirect("/auth/form.html");
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
       return;
     }
 
@@ -29,8 +32,6 @@ public class ReviewAddServlet extends HttpServlet {
     rev.setRate(Integer.parseInt(request.getParameter("rate")));
     rev.setContent(request.getParameter("content"));
 
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -49,7 +50,8 @@ public class ReviewAddServlet extends HttpServlet {
 
     } catch (Exception e) {
       InitServlet.sqlSessionFactory.openSession(false).rollback();
-      throw new RuntimeException(e);
+      out.println("<p>등록 실패입니다!</p>");
+      e.printStackTrace();
     }
     out.println("</body>");
     out.println("</html>");

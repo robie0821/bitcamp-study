@@ -8,21 +8,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Review;
+import project.app.vo.Student;
 
 @WebServlet("/review/detail")
 public class ReviewDetailServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  String[] sub = {"C++", "Java", "Python", "Linux"};
-  String[] rate = {"★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
+  String[] SUB = {"C++", "Java", "Python", "Linux"};
+  String[] RATE = {"★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Review rev = InitServlet.reviewDao.findBy(Integer.parseInt(request.getParameter("no")));
-
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
+
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
+      return;
+    }
+
+    Review rev = InitServlet.reviewDao.findBy(Integer.parseInt(request.getParameter("no")));
+
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -30,28 +39,26 @@ public class ReviewDetailServlet extends HttpServlet {
     out.println("<title>강의평가</title>");
     out.println("</head>");
     out.println("<body>");
-    out.printf("<h1>%s 강의평가 상세</h1>\n", sub[rev.getSubjectId()-1]);
-
-    out.println("<form action='/review/update'>");
+    out.printf("<h1>%s 강의평가 상세</h1>\n", SUB[rev.getSubjectId()-1]);
+    out.printf("<h4>현재 사용자 : %s</h4>\n", loginUser.getEmail());
+    out.println("<form action='/review/update' method='post'>");
     out.println("<table border='1'>");
     out.printf("<input type='hidden' name='no' value='%d'>\n", rev.getNo());
     out.printf("<tr><th style='width:120px;'>번호</th>"
         + " <td style='width:300px;'><input type='text' value='%d' readonly></td></tr>\n", rev.getStudent().getNo());
     out.printf("<tr><th>작성자</th> <td>%s</td></tr>\n", rev.getStudent().getName());
     out.printf("<tr><th>과목</th>"
-        + " <td><input type='text' value='%s' readonly></td></tr>\n", sub[rev.getSubjectId()-1]);
+        + " <td><input type='text' value='%s' readonly></td></tr>\n", SUB[rev.getSubjectId()-1]);
     out.printf("<tr><th>평점</th>"
-        + " <td><select name='rate'>\n"
-        + " <option value=1 %s>★☆☆☆☆</option>\n"
-        + " <option value=2 %s>★★☆☆☆</option>\n"
-        + " <option value=3 %s>★★★☆☆</option>\n"
-        + " <option value=4 %s>★★★★☆</option>\n"
-        + " <option value=5 %s>★★★★★</option></select></td></tr>\n",
-        (rev.getRate() == 1 ? "selected" : ""),
-        (rev.getRate() == 2 ? "selected" : ""),
-        (rev.getRate() == 3 ? "selected" : ""),
-        (rev.getRate() == 4 ? "selected" : ""),
-        (rev.getRate() == 5 ? "selected" : ""));
+        + " <td><select name='rate'>\n");
+    for (int i = 0; i < RATE.length; i++) {
+      if (rev.getRate() == i+1) {
+        out.printf(" <option value=%d selected>%s</option>\n", i+1, RATE[i]);
+      } else {
+        out.printf(" <option value=%d>%s</option>\n", i+1, RATE[i]);
+      }
+    }
+
     out.printf("<tr><th>내용</th>"
         + " <td><textarea name='content' style='height:200px; width:400px;'>%s</textarea></td></tr>\n", rev.getContent());
     out.println("</table>");

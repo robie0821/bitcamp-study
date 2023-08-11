@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Review;
+import project.app.vo.Student;
 
 @WebServlet("/review/search")
 public class ReviewSearchServlet extends HttpServlet {
@@ -18,13 +19,21 @@ public class ReviewSearchServlet extends HttpServlet {
   String[] rate = {"★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = response.getWriter();
+
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
+      return;
+    }
+
     int subject = Integer.parseInt(request.getParameter("subject"));
     List<Review> list = InitServlet.reviewDao.findBySubject(subject);
 
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -33,6 +42,7 @@ public class ReviewSearchServlet extends HttpServlet {
     out.println("</head>");
     out.println("<body>");
     out.printf("<h1>%s 강의평가 목록</h1>\n", sub[subject-1]);
+    out.printf("<h4>현재 사용자 : %s</h4>\n", loginUser.getEmail());
     out.println("<div style='margin:5px;'>");
     out.println("<a href='/review/form.html'>강의평가 등록</a>");
     out.println("</div>");

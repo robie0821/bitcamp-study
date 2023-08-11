@@ -8,18 +8,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import project.app.vo.Score;
+import project.app.vo.Student;
 
 @WebServlet("/score/detail")
 public class ScoreDetailServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
-  @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    Score score = InitServlet.scoreDao.findBy(Integer.parseInt(request.getParameter("no")));
+  private static String[] SCORE = {"A+", "A", "B+", "B", "C+", "C", "D+", "D", "F"};
 
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
+
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
+      return;
+    }
+
+    Score score = InitServlet.scoreDao.findBy(Integer.parseInt(request.getParameter("no")));
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
@@ -29,98 +39,56 @@ public class ScoreDetailServlet extends HttpServlet {
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>학점 상세</h1>");
+    out.printf("<h4>현재 사용자 : %s</h4>\n", loginUser.getEmail());
 
     if (score == null) {
       out.println("<p>해당 학생이 없습니다!</p>");
     } else {
-      out.println("<form action='/score/update'>");
+      out.println("<form action='/score/update' method='post'>");
       out.println("<table border='1'>");
       out.printf("<input type='hidden' name='no' value='%d'>\n", score.getNo());
       out.printf("<tr><th style='width:120px;'>번호</th>"
-          + " <td style='width:300px;'><input type='text' name='studentNo' value='%d' readonly></td></tr>\n", score.getStudent().getNo());
+          + " <td style='width:300px;'><input type='text' name='student' value='%d' readonly></td></tr>\n", score.getStudent().getNo());
+
       out.printf("<tr><th>C++</th>"
-          + " <td><select name='sub1'>\n"
-          + " <option value='A+' %s>A+</option>\n"
-          + " <option value='A' %s>A</option>\n"
-          + " <option value='B+' %s>B+</option>\n"
-          + " <option value='B' %s>B</option>\n"
-          + " <option value='C+' %s>C+</option>\n"
-          + " <option value='C' %s>C</option>\n"
-          + " <option value='D+' %s>D+</option>\n"
-          + " <option value='D' %s>D</option>\n"
-          + " <option value='F' %s>F</option></select></td></tr>\n",
-          (score.getSub1().equals("A+") ? "selected" : ""),
-          (score.getSub1().equals("A") ? "selected" : ""),
-          (score.getSub1().equals("B+") ? "selected" : ""),
-          (score.getSub1().equals("B") ? "selected" : ""),
-          (score.getSub1().equals("C+") ? "selected" : ""),
-          (score.getSub1().equals("C") ? "selected" : ""),
-          (score.getSub1().equals("D+") ? "selected" : ""),
-          (score.getSub1().equals("D") ? "selected" : ""),
-          (score.getSub1().equals("F") ? "selected" : ""));
+          + " <td><select name='sub1'>\n");
+      for (int i = 0; i < SCORE.length; i++) {
+        if (score.getSub1().equals(SCORE[i])) {
+          out.printf(" <option value=%s selected>%s</option>\n", SCORE[i], SCORE[i]);
+        } else {
+          out.printf(" <option value=%s>%s</option>\n", SCORE[i], SCORE[i]);
+        }
+      }
 
       out.printf("<tr><th>Java</th>"
-          + " <td><select name='sub2'>\n"
-          + " <option value='A+' %s>A+</option>\n"
-          + " <option value='A' %s>A</option>\n"
-          + " <option value='B+' %s>B+</option>\n"
-          + " <option value='B' %s>B</option>\n"
-          + " <option value='C+' %s>C+</option>\n"
-          + " <option value='C' %s>C</option>\n"
-          + " <option value='D+' %s>D+</option>\n"
-          + " <option value='D' %s>D</option>\n"
-          + " <option value='F' %s>F</option></select></td></tr>\n",
-          (score.getSub2().equals("A+") ? "selected" : ""),
-          (score.getSub2().equals("A") ? "selected" : ""),
-          (score.getSub2().equals("B+") ? "selected" : ""),
-          (score.getSub2().equals("B") ? "selected" : ""),
-          (score.getSub2().equals("C+") ? "selected" : ""),
-          (score.getSub2().equals("C") ? "selected" : ""),
-          (score.getSub2().equals("D+") ? "selected" : ""),
-          (score.getSub2().equals("D") ? "selected" : ""),
-          (score.getSub2().equals("F") ? "selected" : ""));
+          + " <td><select name='sub2'>\n");
+      for (int i = 0; i < SCORE.length; i++) {
+        if (score.getSub2().equals(SCORE[i])) {
+          out.printf(" <option value=%s selected>%s</option>\n", SCORE[i], SCORE[i]);
+        } else {
+          out.printf(" <option value=%s>%s</option>\n", SCORE[i], SCORE[i]);
+        }
+      }
 
       out.printf("<tr><th>Python</th>"
-          + " <td><select name='sub3'>\n"
-          + " <option value='A+' %s>A+</option>\n"
-          + " <option value='A' %s>A</option>\n"
-          + " <option value='B+' %s>B+</option>\n"
-          + " <option value='B' %s>B</option>\n"
-          + " <option value='C+' %s>C+</option>\n"
-          + " <option value='C' %s>C</option>\n"
-          + " <option value='D+' %s>D+</option>\n"
-          + " <option value='D' %s>D</option>\n"
-          + " <option value='F' %s>F</option></select></td></tr>\n",
-          (score.getSub3().equals("A+") ? "selected" : ""),
-          (score.getSub3().equals("A") ? "selected" : ""),
-          (score.getSub3().equals("B+") ? "selected" : ""),
-          (score.getSub3().equals("B") ? "selected" : ""),
-          (score.getSub3().equals("C+") ? "selected" : ""),
-          (score.getSub3().equals("C") ? "selected" : ""),
-          (score.getSub3().equals("D+") ? "selected" : ""),
-          (score.getSub3().equals("D") ? "selected" : ""),
-          (score.getSub3().equals("F") ? "selected" : ""));
+          + " <td><select name='sub3'>\n");
+      for (int i = 0; i < SCORE.length; i++) {
+        if (score.getSub3().equals(SCORE[i])) {
+          out.printf(" <option value=%s selected>%s</option>\n", SCORE[i], SCORE[i]);
+        } else {
+          out.printf(" <option value=%s>%s</option>\n", SCORE[i], SCORE[i]);
+        }
+      }
 
       out.printf("<tr><th>Linux</th>"
-          + " <td><select name='sub4'>\n"
-          + " <option value='A+' %s>A+</option>\n"
-          + " <option value='A' %s>A</option>\n"
-          + " <option value='B+' %s>B+</option>\n"
-          + " <option value='B' %s>B</option>\n"
-          + " <option value='C+' %s>C+</option>\n"
-          + " <option value='C' %s>C</option>\n"
-          + " <option value='D+' %s>D+</option>\n"
-          + " <option value='D' %s>D</option>\n"
-          + " <option value='F' %s>F</option></select></td></tr>\n",
-          (score.getSub4().equals("A+") ? "selected" : ""),
-          (score.getSub4().equals("A") ? "selected" : ""),
-          (score.getSub4().equals("B+") ? "selected" : ""),
-          (score.getSub4().equals("B") ? "selected" : ""),
-          (score.getSub4().equals("C+") ? "selected" : ""),
-          (score.getSub4().equals("C") ? "selected" : ""),
-          (score.getSub4().equals("D+") ? "selected" : ""),
-          (score.getSub4().equals("D") ? "selected" : ""),
-          (score.getSub4().equals("F") ? "selected" : ""));
+          + " <td><select name='sub4'>\n");
+      for (int i = 0; i < SCORE.length; i++) {
+        if (score.getSub4().equals(SCORE[i])) {
+          out.printf(" <option value=%s selected>%s</option>\n", SCORE[i], SCORE[i]);
+        } else {
+          out.printf(" <option value=%s>%s</option>\n", SCORE[i], SCORE[i]);
+        }
+      }
 
       out.printf("<tr><th>학점 평균</th> <td>%s</td></tr>\n", score.getGrade());
       out.printf("<tr><th>장학금</th> <td>%s</td></tr>\n", score.isScholar() ? "O" : "X");

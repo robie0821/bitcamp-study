@@ -9,7 +9,7 @@ public class Student implements Serializable{
   private String name;
   private String email;
   private String password;
-  private boolean score;
+  private int privilege;
 
   public int getNo() {
     return no;
@@ -35,10 +35,10 @@ public class Student implements Serializable{
   public void setPassword(String password) {
     this.password = password;
   }
-  public boolean isScore() {
-    return score;
+  public int getPrivilege() {
+    return privilege;
   }
-  public void setScore(boolean score) {
-    this.score = score;
+  public void setPrivilege(int privilege) {
+    this.privilege = privilege;
   }
 }

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import project.app.vo.Student;
 
 @WebServlet("/review/list")
 public class ReviewListServlet extends HttpServlet {
@@ -17,10 +18,18 @@ public class ReviewListServlet extends HttpServlet {
   String[] sub = {"C++", "Java", "Python", "Linux"};
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
+
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
+      return;
+    }
+
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -29,6 +38,7 @@ public class ReviewListServlet extends HttpServlet {
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>과목 목록</h1>");
+    out.printf("<h4>현재 사용자 : %s</h4>\n", loginUser.getEmail());
     out.println("<div style='margin:5px;'>");
     out.println("<a href='/review/form.html'>강의평가 등록</a>");
     out.println("</div>");

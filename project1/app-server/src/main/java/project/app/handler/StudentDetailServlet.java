@@ -14,12 +14,20 @@ public class StudentDetailServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected void service(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    Student std = InitServlet.studentDao.findBy(Integer.parseInt(request.getParameter("no")));
-
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
+
+    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    if (loginUser == null) {
+      out.println("<p>로그인이 필요합니다.</p>");
+      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");
+      return;
+    }
+
+    Student std = InitServlet.studentDao.findBy(Integer.parseInt(request.getParameter("no")));
+
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -28,12 +36,13 @@ public class StudentDetailServlet extends HttpServlet {
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>학생</h1>");
+    out.printf("<h4>현재 사용자 : %s</h4>\n", loginUser.getEmail());
 
     if (std == null) {
-      out.println("<p>해당 번호의 회원이 없습니다!</p>");
+      out.println("<p>유효하지 않은 학번입니다!</p>");
 
     } else {
-      out.println("<form action='/student/update'>");
+      out.println("<form action='/student/update' method='post'>");
       out.println("<table border='1'>");
       out.printf("<tr><th style='width:120px;'>번호</th>"
           + " <td style='width:300px;'><input type='text' name='no' value='%d' readonly></td></tr>\n", std.getNo());
