@@ -25,7 +25,7 @@
       name,
       email
     from
-      myapp_member
+      myapp_member 
     order by
       name asc
   </select>
@@ -73,8 +73,3 @@
       member_no=#{no}
   </delete>
 </mapper>
-
-
-
-
-

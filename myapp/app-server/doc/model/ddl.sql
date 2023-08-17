@@ -109,21 +109,6 @@ ALTER TABLE edu_student
   sno -- 학생번호
   );
 
--- 학생 유니크 인덱스
-CREATE UNIQUE INDEX UIX_edu_student
-  ON edu_student ( -- 학생
-  );
-
--- 학생 인덱스
-CREATE INDEX IX_edu_student
-  ON edu_student( -- 학생
-  );
-
--- 학생 인덱스2
-CREATE INDEX IX_edu_student2
-  ON edu_student( -- 학생
-  );
-
 -- 강의실
 CREATE TABLE edu_classroom (
   crno     INTEGER     NOT NULL COMMENT '강의실번호', -- 강의실번호
@@ -260,11 +245,6 @@ ALTER TABLE edu_teacher
   tno -- 강사번호
   );
 
--- 강사 유니크 인덱스
-CREATE UNIQUE INDEX UIX_edu_teacher
-  ON edu_teacher ( -- 강사
-  );
-
 -- 매니저
 CREATE TABLE edu_manager (
   mrno INTEGER     NOT NULL COMMENT '매니저번호', -- 매니저번호
@@ -278,11 +258,6 @@ ALTER TABLE edu_manager
   ADD CONSTRAINT PK_edu_manager -- 매니저 기본키
   PRIMARY KEY (
   mrno -- 매니저번호
-  );
-
--- 매니저 유니크 인덱스
-CREATE UNIQUE INDEX UIX_edu_manager
-  ON edu_manager ( -- 매니저
   );
 
 -- 강의배정

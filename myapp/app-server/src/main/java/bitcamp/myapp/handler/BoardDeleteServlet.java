@@ -11,6 +11,7 @@ import bitcamp.myapp.vo.Member;
 
 @WebServlet("/board/delete")
 public class BoardDeleteServlet extends HttpServlet {
+
   private static final long serialVersionUID = 1L;
 
   @Override

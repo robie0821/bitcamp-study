@@ -13,8 +13,8 @@ import bitcamp.myapp.vo.Board;
 
 @WebServlet("/board/list")
 public class BoardListServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
 
+  private static final long serialVersionUID = 1L;
   SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
   @Override
@@ -66,5 +66,4 @@ public class BoardListServlet extends HttpServlet {
     out.println("</body>");
     out.println("</html>");
   }
-
 }

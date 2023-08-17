@@ -11,6 +11,7 @@ import bitcamp.myapp.vo.Member;
 
 @WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
+
   private static final long serialVersionUID = 1L;
 
   @Override
