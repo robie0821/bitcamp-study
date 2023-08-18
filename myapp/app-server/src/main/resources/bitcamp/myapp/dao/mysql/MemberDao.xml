@@ -65,7 +65,7 @@
 	  update myapp_member set
 	    name=#{name}
 	    ,email=#{email}
-	    ,password=sha1(#{password})
+        ,password=sha1(#{password})
 	    ,gender=#{gender}
 	    <if test="photo != null">
 	     ,photo=#{photo}

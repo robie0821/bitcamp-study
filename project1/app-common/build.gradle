@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id 'eclipse-wtp'
+    //id 'eclipse-wtp'
 }
 
 repositories {
@@ -11,7 +11,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
 
     implementation 'com.google.guava:guava:31.1-jre'
-
     implementation 'com.google.code.gson:gson:2.10.1'
 }
 
@@ -30,7 +29,7 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = '17'
     targetCompatibility = '17'
 }
-
+/*
 eclipse {
     project {
         name = "project1-common"
@@ -41,3 +40,4 @@ eclipse {
       javaRuntimeName = "JavaSE-17"
     }
 }
+*/

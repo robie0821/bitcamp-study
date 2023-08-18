@@ -9,7 +9,6 @@ import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
 public class App {
-  public class Main {
     public static void main(String[] args) throws Exception {
       System.out.println("서버 시작!");
 
@@ -40,7 +39,7 @@ public class App {
       resources.addPreResources(new DirResourceSet(
           resources, // 루트 웹 애플리케이션 정보
           "/WEB-INF/classes", // 서블릿 클래스 파일의 위치 정보
-          new File("bin/main").getAbsolutePath(), // 서블릿 클래스 파일이 있는 실제 경로
+          new File("build/classes/java/main").getAbsolutePath(), // 서블릿 클래스 파일이 있는 실제 경로
           "/" // 웹 애플리케이션 내부 경로
           ));
 
@@ -56,5 +55,4 @@ public class App {
 
       System.out.println("서버 종료!");
     }
-  }
 }

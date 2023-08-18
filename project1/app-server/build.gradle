@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'eclipse-wtp'
+    //id 'eclipse-wtp'
     id 'war'
 }
 
@@ -10,14 +10,18 @@ repositories {
 
 dependencies {
     implementation project(':app-common')
-
+    
     implementation 'mysql:mysql-connector-java:8.0.33'
-
+    
     //implementation 'com.google.code.gson:gson:2.10.1'
-
+  
     implementation 'org.mybatis:mybatis:3.5.13'
-
+  
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+        
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.79'
+    
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.530'
     
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
     implementation 'com.google.guava:guava:31.1-jre'
@@ -38,7 +42,7 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = '17'
     targetCompatibility = '17'
 }
-
+/*
 eclipse {
     project {
         name = "project1-server"
@@ -59,7 +63,7 @@ eclipse {
         }
     }
 }
-
+*/
 war {
     archiveBaseName = "project1"
 }

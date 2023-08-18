@@ -3,7 +3,6 @@ package project.app.dao;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import project.app.vo.Student;
 
 public class MySQLStudentDao implements StudentDao {
 

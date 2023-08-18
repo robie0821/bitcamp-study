@@ -14,9 +14,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import project.app.dao.MySQLReviewDao;
 import project.app.dao.MySQLScoreDao;
 import project.app.dao.MySQLStudentDao;
-import project.app.dao.ReviewDao;
-import project.app.dao.ScoreDao;
-import project.app.dao.StudentDao;
 import project.util.SqlSessionFactoryProxy;
 
 @WebServlet(

@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id 'eclipse-wtp'
+    //id 'eclipse-wtp'
 }
 
 repositories {
@@ -30,7 +30,7 @@ tasks.withType(JavaCompile) {
     sourceCompatibility = '17'
     targetCompatibility = '17'
 }
-
+/*
 eclipse {
     project {
         name = "myapp-common"
@@ -41,3 +41,4 @@ eclipse {
       javaRuntimeName = "JavaSE-17"
     }
 }
+*/

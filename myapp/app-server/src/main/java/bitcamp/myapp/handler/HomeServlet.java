@@ -28,7 +28,7 @@ public class HomeServlet extends HttpServlet {
     out.println("<title>비트캠프</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>MyApp4</h1>");
+    out.println("<h1>MyApp</h1>");
     out.println("<ul>");
     out.println("  <li><a href='/member/list'>회원</a></li>");
     out.println("  <li><a href='/board/list?category=1'>게시판</a></li>");
@@ -43,6 +43,5 @@ public class HomeServlet extends HttpServlet {
     out.println("</ul>");
     out.println("</body>");
     out.println("</html>");
-
   }
 }
