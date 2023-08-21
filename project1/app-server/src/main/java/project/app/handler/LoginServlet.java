@@ -1,5 +1,7 @@
 package project.app.handler;
 
+import project.app.vo.Member;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,11 +18,11 @@ public class LoginServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Student std = new Student();
-    std.setEmail(request.getParameter("email"));
-    std.setPassword(request.getParameter("password"));
+    Member member = new Member();
+    member.setEmail(request.getParameter("email"));
+    member.setPassword(request.getParameter("password"));
 
-    Student loginUser = InitServlet.studentDao.findByEmailAndPassword(std);
+    Member loginUser = InitServlet.memberDao.findByEmailAndPassword(member);
     if (loginUser != null) {
       request.getSession().setAttribute("loginUser", loginUser);
       response.sendRedirect("/");

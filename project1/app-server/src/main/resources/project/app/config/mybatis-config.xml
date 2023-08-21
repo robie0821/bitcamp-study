@@ -21,8 +21,8 @@
     </environment>
   </environments>
   <mappers>
-    <mapper resource="project/app/dao/mysql/StudentDao.xml"/>
-    <mapper resource="project/app/dao/mysql/ScoreDao.xml"/>
-    <mapper resource="project/app/dao/mysql/ReviewDao.xml"/>
+    <mapper resource="project/app/dao/mysql/MemberDao.xml"/>
+    <mapper resource="project/app/dao/mysql/LectureDao.xml"/>
+    <mapper resource="project/app/dao/mysql/SubjectDao.xml"/>
   </mappers>
 </configuration>

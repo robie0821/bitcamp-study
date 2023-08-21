@@ -41,7 +41,7 @@ public class ReviewUpdateServlet extends HttpServlet {
     out.println("<body>");
     out.println("<h1>강의평가 변경</h1>");
     try {
-      if (InitServlet.reviewDao.update(rev) == 0) {
+      if (InitServlet.subjectDao.update(rev) == 0) {
         out.println("<p>변경 권한이 없습니다.</p>");
       } else {
         out.println("<p>변경했습니다!</p>");

@@ -28,7 +28,7 @@ public class ReviewDetailServlet extends HttpServlet {
       return;
     }
 
-    Review rev = InitServlet.reviewDao.findBy(Integer.parseInt(request.getParameter("no")));
+    Review rev = InitServlet.subjectDao.findBy(Integer.parseInt(request.getParameter("no")));
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");

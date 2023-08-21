@@ -2,30 +2,33 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="project.app.dao.StudentDao">
+<mapper namespace="project.app.dao.MemberDao">
 
-  <resultMap type="student" id="studentMap">
+  <resultMap type="member" id="memberMap">
     <id     column="student_no"   property="no"/>
+    <result column="type"         property="type"/>
     <result column="name"         property="name"/>
     <result column="email"        property="email"/>
     <result column="password"     property="password"/>
   </resultMap>
 
-  <insert id="insert" parameterType="student">
-    insert into student(name,email,password)
-    values(#{name},#{email},sha1(#{password}))
+  <insert id="insert" parameterType="member">
+    insert into student(type,name,email,password)
+    values(#{type},#{name},#{email},sha1(#{password}))
   </insert>
   
-  <select id="findAll" resultMap="studentMap">
+  <select id="findAll" parameterType="int" resultMap="memberMap">
     select
       student_no,
       name,
       email
-    from 
-      student
+    from
+      member
+    where
+      type=#{type}
   </select>
   
-  <select id="findBy" parameterType="int" resultMap="studentMap">
+  <select id="findBy" parameterType="int" resultMap="memberMap">
     select 
       student_no,
       name,
@@ -35,7 +38,7 @@
       student_no=#{no}
   </select>
   
-  <select id="findByEmailAndPassword" parameterType="student" resultMap="studentMap">
+  <select id="findByEmailAndPassword" parameterType="member" resultMap="memberMap">
     select
       student_no,
       name,
@@ -46,7 +49,7 @@
       and password=sha1(#{password})
   </select>
   
-  <update id="update" parameterType="student">
+  <update id="update" parameterType="member">
 	  update student set
 	    name=#{name},
 	    email=#{email},

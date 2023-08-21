@@ -30,7 +30,7 @@ public class ReviewSearchServlet extends HttpServlet {
     }
 
     int subject = Integer.parseInt(request.getParameter("subject"));
-    List<Review> list = InitServlet.reviewDao.findBySubject(subject);
+    List<Review> list = InitServlet.subjectDao.findBySubject(subject);
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");

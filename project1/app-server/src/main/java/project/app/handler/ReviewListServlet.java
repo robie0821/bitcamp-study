@@ -47,7 +47,7 @@ public class ReviewListServlet extends HttpServlet {
     out.println("<tr><th style='width:80px;'>과목이름</th><th style='width:50px;'>평점</th><th style='width:50px;'>갯수</th></tr>");
     out.println("</thead>");
 
-    List<Map<String, Object>> list = InitServlet.reviewDao.list();
+    List<Map<String, Object>> list = InitServlet.subjectDao.list();
 
     out.println("<tbody>");
     for (Map<String, Object> rev : list) {

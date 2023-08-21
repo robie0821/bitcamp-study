@@ -15,7 +15,7 @@ public class ReviewDeleteServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-      if (InitServlet.reviewDao.delete(Integer.parseInt(request.getParameter("no"))) == 0) {
+      if (InitServlet.subjectDao.delete(Integer.parseInt(request.getParameter("no"))) == 0) {
         throw new Exception("해당 강의평가가 없습니다.");
       } else {
         response.sendRedirect("/review/list");

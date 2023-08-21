@@ -42,7 +42,7 @@ public class ReviewAddServlet extends HttpServlet {
 
 
     try {
-      InitServlet.reviewDao.insert(rev);
+      InitServlet.subjectDao.insert(rev);
       InitServlet.sqlSessionFactory.openSession(false).commit();
       out.println("<p>등록 성공입니다!</p>");
 

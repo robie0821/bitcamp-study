@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServlet;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import project.app.dao.MySQLReviewDao;
-import project.app.dao.MySQLScoreDao;
-import project.app.dao.MySQLStudentDao;
+import project.app.dao.*;
 import project.util.SqlSessionFactoryProxy;
 
 @WebServlet(
@@ -24,9 +22,9 @@ public class InitServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   public static SqlSessionFactory sqlSessionFactory;
-  public static StudentDao studentDao;
-  public static ScoreDao scoreDao;
-  public static ReviewDao reviewDao;
+  public static MemberDao memberDao;
+  public static LectureDao lectureDao;
+  public static SubjectDao subjectDao;
 
   @Override
   public void init(ServletConfig config) throws ServletException {
@@ -37,9 +35,9 @@ public class InitServlet extends HttpServlet {
           new SqlSessionFactoryBuilder().build(
               Resources.getResourceAsStream("project/app/config/mybatis-config.xml")));
 
-      studentDao = new MySQLStudentDao(sqlSessionFactory);
-      scoreDao = new MySQLScoreDao(sqlSessionFactory);
-      reviewDao = new MySQLReviewDao(sqlSessionFactory);
+      memberDao = new MySQLMemberDao(sqlSessionFactory);
+      lectureDao = new MySQLLectureDao(sqlSessionFactory);
+      subjectDao = new MySQLSubjectDao(sqlSessionFactory);
 
     } catch (Exception e) {
       System.out.println("InitServlet.init() 실행 중 오류 발생!");
