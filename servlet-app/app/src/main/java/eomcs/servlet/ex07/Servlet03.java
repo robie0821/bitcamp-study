@@ -1,5 +1,5 @@
 // 포워딩(forwarding) - 서블릿 실행을 위임하기
-package com.eomcs.web.ex07;
+package eomcs.servlet.ex07;
 
 import java.io.IOException;
 import java.io.PrintWriter;

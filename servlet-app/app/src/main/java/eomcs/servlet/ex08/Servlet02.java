@@ -1,5 +1,5 @@
 // 리프래시 II - 클라이언트에게 다른 URL을 요청하라는 명령
-package com.eomcs.web.ex08;
+package eomcs.servlet.ex08;
 
 import java.io.IOException;
 import java.io.PrintWriter;

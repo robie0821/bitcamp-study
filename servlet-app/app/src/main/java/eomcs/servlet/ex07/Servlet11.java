@@ -1,5 +1,5 @@
 // 인클루딩(including) - 다른 서블릿의 작업을 포함시키기
-package com.eomcs.web.ex07;
+package eomcs.servlet.ex07;
 
 import java.io.IOException;
 import java.io.PrintWriter;

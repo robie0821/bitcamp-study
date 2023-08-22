@@ -1,5 +1,5 @@
 // 리프래시 또는 리다이렉트 최종 요청 페이지
-package com.eomcs.web.ex08;
+package eomcs.servlet.ex08;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -33,6 +33,9 @@ public class BoardDetailServlet extends HttpServlet {
     out.println("<title>게시글</title>");
     out.println("</head>");
     out.println("<body>");
+
+    request.getRequestDispatcher("/header").include(request,response);
+
     out.println("<h1>게시글</h1>");
 
     if (board == null) {
@@ -80,8 +83,16 @@ public class BoardDetailServlet extends HttpServlet {
 
       } catch (Exception e) {
         InitServlet.sqlSessionFactory.openSession(false).rollback();
+
+        request.setAttribute("error", e);
+        request.setAttribute("message", "게시글 열람 오류!");
+        request.setAttribute("refresh", "2;url=list?category=" + request.getParameter("category"));
+
+        request.getRequestDispatcher("/error").forward(request, response);
       }
     }
+
+    request.getRequestDispatcher("/footer").include(request,response);
 
     out.println("</body>");
     out.println("</html>");

@@ -76,8 +76,12 @@ public class BoardUpdateServlet extends HttpServlet {
 
     } catch (Exception e) {
       InitServlet.sqlSessionFactory.openSession(false).rollback();
-      out.println("<p>게시글 변경 실패입니다!</p>");
-      e.printStackTrace();
+
+      request.setAttribute("error", e);
+      request.setAttribute("message", "게시글 수정 오류!");
+      request.setAttribute("refresh", "2;url=list?category=" + request.getParameter("category"));
+
+      request.getRequestDispatcher("/error").forward(request, response);
     }
     out.println("</body>");
     out.println("</html>");
