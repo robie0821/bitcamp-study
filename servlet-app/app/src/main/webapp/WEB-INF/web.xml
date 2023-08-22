@@ -6,6 +6,16 @@
   version="4.0"
   metadata-complete="false">
 
+  <!-- 필터 객체 등록 -->
+  <filter>
+    <filter-name>ex06.f1</filter-name>
+    <filter-class>eomcs.servlet.ex06.Filter01</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>ex06.f1</filter-name>
+    <url-pattern>/ex06/*</url-pattern>
+  </filter-mapping>
+
   <!-- 서블릿 객체 등록 -->
   <!--  
   <servlet>
@@ -20,4 +30,30 @@
     <url-pattern>/ex01/first</url-pattern>
   </servlet-mapping>
   -->
+
+  <servlet>
+    <servlet-name>ex06.s4</servlet-name>
+    <servlet-class>eomcs.servlet.ex06.Servlet04</servlet-class>
+    <init-param>
+      <param-name>jdbc.driver</param-name>
+      <param-value>aaa</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jdbc.url</param-name>
+      <param-value>bbb</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jdbc.username</param-name>
+      <param-value>ccc</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jdbc.password</param-name>
+      <param-value>ddd</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ex06.s4</servlet-name>
+    <url-pattern>/ex06/s4</url-pattern>
+  </servlet-mapping>
 </web-app>
