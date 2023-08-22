@@ -5,42 +5,46 @@
 <mapper namespace="project.app.dao.LectureDao">
 
   <resultMap type="lecture" id="lectureMap">
-    <result column="lecture_no"      property="no"/>
-    <result column="subject_id"     property="subjectNo"/>
-    <result column="room"           property="room"/>
+    <result column="lect_no"      property="no"/>
+    <result column="subj_no"      property="subjectNo"/>
+    <result column="room"         property="room"/>
 
+    <association property="subject" javaType="student">
+      <id     column="subj_no"      property="no"/>
+      <result column="type"         property="type"/>
+      <result column="name"         property="name"/>
+    </association>
   </resultMap>
 
+
   <insert id="insert" parameterType="review">
-    insert into review(student_id,subject_id,rate,content)
-    values(#{student.no},#{subjectId},#{rate},#{content})
+    insert into review(lect_no,subj_no,room)
+    values(#{no},#{subjectNo},#{room})
   </insert>
   
   <select id="list" resultType="Map">
     select
-      r.subject_id as sub,
-      avg(r.rate) as avg,
+      lec.subj_no as sub,
+      sub.type as type,
       count(*) as count
     from
-      review r inner join student t on r.student_id=t.student_no
+      lecture lec inner join subject sub on lec.subj_no=sub.subj_no
     group by
-      r.subject_id
-    order by 
-      r.subject_id
+      lec.subj_no
+    order by
+      lec.type
   </select>
   
-  <select id="findBySubject" parameterType="int" resultMap="reviewMap">
+  <select id="findBySubject" parameterType="int" resultMap="lectureMap">
     select
-      r.review_no,
-      r.subject_id,
+      lec.lect_no,
+      lec.subject_id,
       r.rate,
       r.content
     from
-      review r inner join student t on r.student_id=t.student_no
+      lecture lec inner join subject sub on lec.subj_no=sub.subj_no
     where
-      subject_id=#{subjectNo}
-    order by
-      r.rate
+      subj_no=#{subjectNo}
   </select>
   
   <select id="findBy" parameterType="int" resultMap="reviewMap">

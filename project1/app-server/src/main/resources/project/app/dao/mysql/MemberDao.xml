@@ -5,7 +5,7 @@
 <mapper namespace="project.app.dao.MemberDao">
 
   <resultMap type="member" id="memberMap">
-    <id     column="student_no"   property="no"/>
+    <id     column="no"           property="no"/>
     <result column="type"         property="type"/>
     <result column="name"         property="name"/>
     <result column="email"        property="email"/>
@@ -13,13 +13,13 @@
   </resultMap>
 
   <insert id="insert" parameterType="member">
-    insert into student(type,name,email,password)
+    insert into member(type,name,email,password)
     values(#{type},#{name},#{email},sha1(#{password}))
   </insert>
   
   <select id="findAll" parameterType="int" resultMap="memberMap">
     select
-      student_no,
+      no,
       name,
       email
     from
@@ -29,38 +29,40 @@
   </select>
   
   <select id="findBy" parameterType="int" resultMap="memberMap">
-    select 
-      student_no,
+    select
+      no,
       name,
       email
-    from student
+    from
+      member
     where
-      student_no=#{no}
+      no=#{no}
   </select>
   
   <select id="findByEmailAndPassword" parameterType="member" resultMap="memberMap">
     select
-      student_no,
+      no,
       name,
       email
-    from student
+    from
+      member
     where 
       email=#{email}
       and password=sha1(#{password})
   </select>
   
   <update id="update" parameterType="member">
-	  update student set
+	  update member set
 	    name=#{name},
 	    email=#{email},
 	    password=sha1(#{password})
 	  where
-	    student_no=#{no}
+        no=#{no}
   </update>
   
   <delete id="delete" parameterType="int">
-    delete from student
-    where 
-      student_no=#{no}
+    delete from member
+    where
+      no=#{no}
   </delete>
 </mapper>
