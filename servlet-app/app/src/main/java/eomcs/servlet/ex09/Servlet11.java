@@ -1,5 +1,5 @@
 // 보관소에 값 넣기 - forward/include 서블릿끼리 ServletRequest 공유하는 것 테스트
-package com.eomcs.web.ex09;
+package eomcs.servlet.ex09;
 
 import java.io.IOException;
 import javax.servlet.ServletContext;

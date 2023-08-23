@@ -1,5 +1,5 @@
 // 세션(session)의 활용 - 페이지2
-package com.eomcs.web.ex11;
+package eomcs.servlet.ex11;
 
 import java.io.IOException;
 import java.io.PrintWriter;

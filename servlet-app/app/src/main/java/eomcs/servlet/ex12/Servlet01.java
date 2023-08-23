@@ -1,5 +1,5 @@
 // 서블릿 배치: 1) web.xml 에 배치 정보를 등록
-package com.eomcs.web.ex12;
+package eomcs.servlet.ex12;
 
 import java.io.IOException;
 import java.io.PrintWriter;

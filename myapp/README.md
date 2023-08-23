@@ -377,3 +377,17 @@
 
 - 네이버 스토리지 서비스 사용법
 - 첨부파일을 스토리지 서비스에 업로드하는 방법
+
+## 61. 네이버 클라우드의 Image Optimizer를 이용하여 썸네일 이미지 다루기
+
+- 네이버 클라우드의 Image Optimizer 사용법
+
+## 62. forward/include/refresh/redirect 다루기
+
+- 오류 메시지 출력에 forward 및 refresh 사용하기
+- 상단 메뉴 및 하단 정보 출력에 include 사용하기
+- 등록 완료 후 목록 페이지로 이동할 때 redirect 사용하기
+
+## 63. JSP를 이용하여 콘텐트 출력문을 자동 생성하기
+
+- JSP 구동 원리 이해 및 사용법

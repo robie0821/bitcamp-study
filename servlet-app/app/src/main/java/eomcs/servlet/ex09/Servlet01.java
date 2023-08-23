@@ -1,5 +1,5 @@
 // 보관소에 값 넣기
-package com.eomcs.web.ex09;
+package eomcs.servlet.ex09;
 
 import java.io.IOException;
 import java.io.PrintWriter;

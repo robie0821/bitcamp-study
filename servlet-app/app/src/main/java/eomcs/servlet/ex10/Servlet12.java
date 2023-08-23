@@ -1,5 +1,5 @@
 // 쿠키(cookie) 읽기 - 유효기간이 설정된 쿠키 읽기
-package com.eomcs.web.ex10;
+package eomcs.servlet.ex10;
 
 import java.io.IOException;
 import java.io.PrintWriter;

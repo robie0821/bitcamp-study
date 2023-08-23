@@ -1,5 +1,5 @@
 // 쿠키(cookie) - 유효기간 설정하기
-package com.eomcs.web.ex10;
+package eomcs.servlet.ex10;
 
 import java.io.IOException;
 import java.io.PrintWriter;

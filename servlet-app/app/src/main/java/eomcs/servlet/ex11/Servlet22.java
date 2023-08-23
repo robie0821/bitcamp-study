@@ -1,5 +1,5 @@
 // 세션(session)의 타임아웃 설정 테스트
-package com.eomcs.web.ex11;
+package eomcs.servlet.ex11;
 
 import java.io.IOException;
 import java.io.PrintWriter;

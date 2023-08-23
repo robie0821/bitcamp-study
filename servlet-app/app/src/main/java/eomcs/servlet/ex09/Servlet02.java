@@ -1,5 +1,5 @@
 // 보관소에 저장된 값 꺼내기
-package com.eomcs.web.ex09;
+package eomcs.servlet.ex09;
 
 import java.io.IOException;
 import java.io.PrintWriter;

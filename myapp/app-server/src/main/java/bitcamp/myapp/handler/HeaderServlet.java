@@ -26,13 +26,19 @@ public class HeaderServlet extends HttpServlet {
     out.println("<a href='/member/list'>회원</a>");
     out.println("<a href='/board/list?category=1'>게시글</a>");
     out.println("<a href='/board/list?category=2'>독서록</a>");
+
     Member loginUser = (Member) request.getSession().getAttribute("loginUser");
     if (loginUser == null) {
-      out.println("<a href='/auth/form.html'>로그인</a>");
+      out.println("<a href='/auth/form'>로그인</a>");
     } else {
-      out.printf("<img src='http://fxnxwqenirtk19010936.cdn.ntruss.com/member/%s?type=f&w=30&h=40&faceopt=true&ttype=jpg'>", loginUser.getPhoto());
-      out.printf("%s <a href='/auth/logout'>로그아웃</a>", loginUser.getName());
+      out.printf("%s %s <a href='/auth/logout'>로그아웃</a>\n",
+              (loginUser.getPhoto() == null ?
+                      "<img style='height:40px' src='/images/avatar.png'>" :
+                      String.format("<img src='http://fxnxwqenirtk19010936.cdn.ntruss.com/member/%s?type=f&w=30&h=40&faceopt=true&ttype=jpg'>",
+                              loginUser.getPhoto())),
+              loginUser.getName());
     }
+
     out.println("</div>");
   }
 }

@@ -1,5 +1,5 @@
 // 세션(session) - 세션에서 값 꺼내기
-package com.eomcs.web.ex11;
+package eomcs.servlet.ex11;
 
 import java.io.IOException;
 import java.io.PrintWriter;

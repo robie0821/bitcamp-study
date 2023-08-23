@@ -1,4 +1,4 @@
-package com.eomcs.web.ex12;
+package eomcs.servlet.ex12;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

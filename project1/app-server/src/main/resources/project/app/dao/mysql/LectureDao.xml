@@ -14,6 +14,12 @@
       <result column="type"         property="type"/>
       <result column="name"         property="name"/>
     </association>
+
+    <association property="stud_lect" javaType="student">
+      <id     column="subj_no"      property="no"/>
+      <result column="type"         property="type"/>
+      <result column="name"         property="name"/>
+    </association>
   </resultMap>
 
 

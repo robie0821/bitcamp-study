@@ -1,4 +1,4 @@
-package com.eomcs.web.vo;
+package eomcs.servlet.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
