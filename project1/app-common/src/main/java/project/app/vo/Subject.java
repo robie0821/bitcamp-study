@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class Subject implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int no;
+    private int subjectNo;
     private int name;
 
-    public int getNo() {
-        return no;
+    public int getSubjectNo() {
+        return subjectNo;
     }
 
-    public void setNo(int no) {
-        this.no = no;
+    public void setSubjectNo(int subjectNo) {
+        this.subjectNo = subjectNo;
     }
 
     public int getName() {

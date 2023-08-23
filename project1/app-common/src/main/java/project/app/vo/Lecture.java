@@ -5,16 +5,16 @@ import java.io.Serializable;
 public class Lecture implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int no;
+    private int lectNo;
     private int subjectNo;
     private int room;
 
-    public int getNo() {
-        return no;
+    public int getLectNo() {
+        return lectNo;
     }
 
-    public void setNo(int no) {
-        this.no = no;
+    public void setLectNo(int lectNo) {
+        this.lectNo = lectNo;
     }
 
     public int getSubjectNo() {
