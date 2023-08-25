@@ -1,22 +1,17 @@
 <%@ page
     language="java"
     pageEncoding="UTF-8"
-    contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.io.IOException"%>
-<%@ page import="java.text.SimpleDateFormat"%>
-<%@ page import="java.util.List"%>
-<%@ page import="bitcamp.myapp.dao.BoardDao"%>
-<%@ page import="bitcamp.myapp.vo.Board"%>
-<%@ page import="bitcamp.util.NcpObjectStorageService"%>
-<%@ page import="org.apache.ibatis.session.SqlSessionFactory"%>
+    contentType="text/html;charset=UTF-8"
+    trimDirectiveWhitespaces="true"
+    errorPage="/error.jsp"%>
 
-<%!
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-%>
+<%@ page import="java.util.List"%>
+<%@ page import="bitcamp.myapp.vo.Board"%>
+
+<jsp:useBean id="boardDao" type="bitcamp.myapp.dao.BoardDao" scope="application"/>
 
 <%
-  // scriptlet (scripting element)
-  int category = Integer.parseInt(request.getParameter("category"));
+  request.setAttribute("refresh", "2;url=list.jsp?category=" + request.getParameter("category"));
 %>
 
 <!DOCTYPE html>
@@ -31,7 +26,7 @@
 
 <h1>게시글 목록(JSP)</h1>
 <div style='margin:5px;'>
-<a href='/board/form.jsp?category=<%=category%>'>새 글</a>
+<a href='/board/form.jsp?category='>새 글</a>
 </div>
 <table border='1'>
 <thead>
@@ -39,25 +34,24 @@
 </thead>
 
 <%
-    BoardDao boardDao = (BoardDao) this.getServletContext().getAttribute("boardDao");
-    List<Board> list = boardDao.findAll(category);
-
-    out.println("<tbody>");
-    for (Board board : list) {
-      out.println(String.format("<tr>"
-                      + " <td>%d</td>"
-                      + " <td><a href='/board/detail?category=%d&no=%d'>%s</a></td>"
-                      + " <td>%s</td>"
-                      + " <td>%d</td>"
-                      + " <td>%s</td></tr>\n",
-              board.getNo(),
-              board.getCategory(),
-              board.getNo(),
-              (board.getTitle().length() > 0 ? board.getTitle() : "제목없음"),
-              board.getWriter().getName(),
-              board.getViewCount(),
-              dateFormatter.format(board.getCreatedDate())
-              ));
+    List<Board> list = boardDao.findAll(Integer.parseInt(request.getParameter("category")));
+%>
+<tbody>
+<%
+  for (Board board : list) {
+  pageContext.setAttribute("board",board);
+%>
+<tr>
+<td>${board.no}</td>
+<td>
+<a href='/board/detail.jsp?category=${board.category}&no=${board.no}'>
+${board.title.length() > 0 ? board.title : "제목없음"}
+</a>
+</td>
+<td>${board.writer.name}</td>
+<td>${board.viewCount}</td>
+<td><%=String.format("%tY-%1$tm-%1$td", board.getCreatedDate())%></td></tr>
+<%
     }
 %>
 

@@ -8,5 +8,5 @@ public interface SubjectDao {
     void insert(Subject subject);
     List<Subject> findAll();
     int update(Subject subject);
-    int delete(int no);
+    int delete(int subjectNo);
 }

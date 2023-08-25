@@ -10,6 +10,11 @@
     <result column="name"         property="name"/>
     <result column="email"        property="email"/>
     <result column="password"     property="password"/>
+
+    <association property="subject" javaType="subject">
+      <id     column="student_id"   property="subjectno"/>
+      <result column="name"         property="name"/>
+    </association>
   </resultMap>
 
   <insert id="insert" parameterType="member">

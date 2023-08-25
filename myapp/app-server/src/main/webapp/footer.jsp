@@ -1,7 +1,7 @@
 <%@ page 
-    language="java" 
-    pageEncoding="UTF-8" 
-    contentType="text/html; charset=UTF-8"%>
+  language="java"
+  pageEncoding="UTF-8"
+  contentType="text/html; charset=UTF-8"%>
 
 <div style='text-align:center;background-color:gray;color:white;padding:10px;'>
     <p style='font-size:90%;margin:0px;'>비트캠프 + 매직에꼴 + 네이버클라우드@2023</p>

@@ -20,15 +20,21 @@ public class MySQLLectureDao implements LectureDao {
   }
 
   @Override
-  public List<Lecture> findAll(int subject) {
+  public List<Lecture> findAll() {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectList("project.app.dao.LectureDao.findAll", subject);
+    return sqlSession.selectList("project.app.dao.LectureDao.findAll");
   }
 
   @Override
-  public Lecture findBy(int no) {
+  public List<Lecture> findBySubject(int subjectNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectOne("project.app.dao.LectureDao.findBy", no);
+    return sqlSession.selectOne("project.app.dao.LectureDao.findBySubject", subjectNo);
+  }
+
+  @Override
+  public Lecture findByNo(int lectNo) {
+    SqlSession sqlSession = sqlSessionFactory.openSession(false);
+    return sqlSession.selectOne("project.app.dao.LectureDao.findByNo", lectNo);
   }
 
   @Override

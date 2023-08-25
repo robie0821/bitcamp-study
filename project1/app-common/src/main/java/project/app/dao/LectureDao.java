@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface LectureDao {
     void insert(Lecture lecture);
-    List<Lecture> findAll(int subject);
-    Lecture findBy(int no);
+    List<Lecture> findAll();
+    List<Lecture> findBySubject(int subjectNo);
+    Lecture findByNo(int lectNo);
     int update (Lecture lecture);
-    int delete (int no);
+    int delete (int lectNo);
 }
