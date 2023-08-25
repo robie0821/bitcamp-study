@@ -6,7 +6,8 @@ public class Lecture implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int lectNo;
-    private int subjectNo;
+    private Subject subject;
+    private String name;
     private int room;
 
     public int getLectNo() {
@@ -17,12 +18,20 @@ public class Lecture implements Serializable {
         this.lectNo = lectNo;
     }
 
-    public int getSubjectNo() {
-        return subjectNo;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjectNo(int subjectNo) {
-        this.subjectNo = subjectNo;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getRoom() {

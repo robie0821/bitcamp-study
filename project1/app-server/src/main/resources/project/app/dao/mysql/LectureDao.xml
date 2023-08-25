@@ -7,6 +7,7 @@
   <resultMap type="lecture" id="lectureMap">
     <result column="lect_no"      property="no"/>
     <result column="subj_no"      property="subjectNo"/>
+    <result column="name"         property="name"/>
     <result column="room"         property="room"/>
 
     <association property="subject" javaType="student">
@@ -14,29 +15,17 @@
       <result column="type"         property="type"/>
       <result column="name"         property="name"/>
     </association>
-
-    <association property="stud_lect" javaType="studentlecture">
-      <id     column="subj_no"      property="no"/>
-      <result column="type"         property="type"/>
-      <result column="name"         property="name"/>
-    </association>
-
-    <association property="prof_lect" javaType="professorlecture">
-      <id     column="subj_no"      property="no"/>
-      <result column="type"         property="type"/>
-      <result column="name"         property="name"/>
-    </association>
   </resultMap>
 
-
   <insert id="insert" parameterType="review">
-    insert into review(lect_no,subj_no,room)
-    values(#{no},#{subjectNo},#{room})
+    insert into review(lect_no,subj_no,name,room)
+    values(#{no},#{subjectNo},#{name},#{room})
   </insert>
   
-  <select id="list" resultType="Map">
+  <select id="findAll" resultType="Map">
     select
-      lec.subj_no as sub,
+      sub.subj_no as no,
+      sub.name as name,
       sub.type as type,
       count(*) as count
     from
@@ -44,22 +33,22 @@
     group by
       lec.subj_no
     order by
-      lec.type
+      lec.subj_no
   </select>
   
   <select id="findBySubject" parameterType="int" resultMap="lectureMap">
     select
       lec.lect_no,
-      lec.subject_id,
-      r.rate,
-      r.content
+      lec.name,
+      sub.name,
+      sub.type
     from
       lecture lec inner join subject sub on lec.subj_no=sub.subj_no
     where
       subj_no=#{subjectNo}
   </select>
   
-  <select id="findBy" parameterType="int" resultMap="reviewMap">
+  <select id="findByNo" resultMap="reviewMap">
     select
       r.review_no,
       r.student_id,

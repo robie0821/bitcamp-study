@@ -21,9 +21,15 @@ public class MySQLSubjectDao implements SubjectDao {
   }
 
   @Override
-  public List<Subject> findAll() {
+  public List<Subject> list() {
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    return sqlSession.selectList("project.app.dao.SubjectDao.findBySubject");
+    return sqlSession.selectList("project.app.dao.SubjectDao.list");
+  }
+
+  @Override
+  public Subject detail(int subjectNo) {
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    return sqlSession.selectOne("project.app.dao.SubjectDao.detail", subjectNo);
   }
 
   @Override
@@ -33,8 +39,8 @@ public class MySQLSubjectDao implements SubjectDao {
   }
 
   @Override
-  public int delete(int no) {
+  public int delete(int subjectNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.delete("project.app.dao.SubjectDao.delete", no);
+    return sqlSession.delete("project.app.dao.SubjectDao.delete", subjectNo);
   }
 }

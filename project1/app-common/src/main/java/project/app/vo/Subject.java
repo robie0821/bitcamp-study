@@ -7,6 +7,7 @@ public class Subject implements Serializable {
 
     private int subjectNo;
     private int name;
+    private int type;
 
     public int getSubjectNo() {
         return subjectNo;
@@ -22,5 +23,13 @@ public class Subject implements Serializable {
 
     public void setName(int name) {
         this.name = name;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
