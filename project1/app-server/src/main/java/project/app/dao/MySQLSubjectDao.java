@@ -21,15 +21,15 @@ public class MySQLSubjectDao implements SubjectDao {
   }
 
   @Override
-  public List<Subject> list() {
+  public List<Subject> findAll() {
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    return sqlSession.selectList("project.app.dao.SubjectDao.list");
+    return sqlSession.selectList("project.app.dao.SubjectDao.findAll");
   }
 
   @Override
-  public Subject detail(int subjectNo) {
+  public Subject findBy(int subjectNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    return sqlSession.selectOne("project.app.dao.SubjectDao.detail", subjectNo);
+    return sqlSession.selectOne("project.app.dao.SubjectDao.findBy", subjectNo);
   }
 
   @Override

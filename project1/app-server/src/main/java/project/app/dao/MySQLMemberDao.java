@@ -21,20 +21,20 @@ public class MySQLMemberDao implements MemberDao {
 
   @Override
   public List<Member> findAll(int type) {
-    SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectList("project.app.dao.MemberDao.findAll", type);
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    return sqlSession.selectList("project.app.dao.MemberDao.list", type);
   }
 
   @Override
-  public Member findBy(int no) {
+  public Member findBy(int memberNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    return sqlSession.selectOne("project.app.dao.MemberDao.findBy", no);
+    return sqlSession.selectOne("project.app.dao.MemberDao.detail", memberNo);
   }
 
   @Override
-  public Member findByEmailAndPassword(Member member) {
+  public Member signIn(Member member) {
     SqlSession sqlSession = sqlSessionFactory.openSession();
-    return sqlSession.selectOne("project.app.dao.MemberDao.findByEmailAndPassword", member);
+    return sqlSession.selectOne("project.app.dao.MemberDao.signIn", member);
   }
 
   @Override
@@ -44,8 +44,8 @@ public class MySQLMemberDao implements MemberDao {
   }
 
   @Override
-  public int delete(int no) {
+  public int delete(int memberNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.delete("project.app.dao.MemberDao.delete", no);
+    return sqlSession.delete("project.app.dao.MemberDao.delete", memberNo);
   }
 }

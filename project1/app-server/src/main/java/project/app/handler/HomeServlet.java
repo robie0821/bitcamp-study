@@ -1,5 +1,7 @@
 package project.app.handler;
 
+import project.app.vo.Member;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,11 +18,10 @@ public class HomeServlet extends HttpServlet{
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+    Member loginUser = (Member) request.getSession().getAttribute("loginUser");
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
-    out.println("<!DOCTYPE html>");
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -29,19 +30,12 @@ public class HomeServlet extends HttpServlet{
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>**대학교 행정시스템</h1>");
-    if (loginUser == null) {
-      out.printf("<h4>비로그인</h4>\n");
-    } else {
-      out.printf("<h4>현재 사용자 : %s</h4>\n", loginUser.getEmail());
-    }
     out.println("<ul>");
-    out.println("  <li><a href='/student/list'>학생</a></li>");
-    out.println("  <li><a href='/score/list'>성적</a></li>");
-    out.println("  <li><a href='/review/list'>강의평가</a></li>");
+    out.println("<li/><a href='/lecture/list'/>수강신청");
     if (loginUser == null) {
-      out.println("  <li><a href='/auth/form.html'>로그인</a></li>");
+      out.println("<li/><a href='/auth/form.html'/>로그인");
     } else {
-      out.printf("  <li><a href='/auth/logout'>로그아웃</a></li>", loginUser.getName());
+      out.printf("<li/><a href='/auth/logout'/>로그아웃", loginUser.getName());
     }
     out.println("</ul>");
     out.println("</body>");

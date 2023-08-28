@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  <properties resource="project/app/config/jdbc.properties"></properties>
+  <properties resource="project/app/config/ncloud/jdbc.properties"></properties>
 
   <typeAliases>
     <package name="project.app.vo"/>
@@ -21,8 +21,6 @@
     </environment>
   </environments>
   <mappers>
-    <mapper resource="project/app/dao/mysql/MemberDao.xml"/>
     <mapper resource="project/app/dao/mysql/LectureDao.xml"/>
-    <mapper resource="project/app/dao/mysql/SubjectDao.xml"/>
   </mappers>
 </configuration>

@@ -23,8 +23,8 @@ public class InitServlet extends HttpServlet {
 
   public static SqlSessionFactory sqlSessionFactory;
   public static MemberDao memberDao;
-  public static LectureDao lectureDao;
   public static SubjectDao subjectDao;
+  public static LectureDao lectureDao;
 
   @Override
   public void init(ServletConfig config) throws ServletException {
@@ -36,8 +36,9 @@ public class InitServlet extends HttpServlet {
               Resources.getResourceAsStream("project/app/config/mybatis-config.xml")));
 
       memberDao = new MySQLMemberDao(sqlSessionFactory);
-      lectureDao = new MySQLLectureDao(sqlSessionFactory);
       subjectDao = new MySQLSubjectDao(sqlSessionFactory);
+      lectureDao = new MySQLLectureDao(sqlSessionFactory);
+
 
     } catch (Exception e) {
       System.out.println("InitServlet.init() 실행 중 오류 발생!");

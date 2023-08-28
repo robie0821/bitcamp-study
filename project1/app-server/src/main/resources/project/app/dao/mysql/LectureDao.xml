@@ -1,79 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.app.dao.LectureDao">
+    <resultMap id="lectureMap" type="lecture">
+        <id column="lect_no" property="lectNo"/>
+        <result column="name" property="name"/>
+        <result column="room" property="room"/>
+        
+        <association property="subject" javaType="subject">
+            <id column="subj_no" property="subjectNo"/>
+            <result column="name" property="name"/>
+            <result column="type" property="type"/>
+        </association>
+    </resultMap>
 
-  <resultMap type="lecture" id="lectureMap">
-    <result column="lect_no"      property="no"/>
-    <result column="subj_no"      property="subjectNo"/>
-    <result column="name"         property="name"/>
-    <result column="room"         property="room"/>
+    <insert id="insert" parameterType="lecture">
+        insert into lecture(subj_no,name,room)
+        values(#{subject.subjectNo},#{name},#{room})
+    </insert>
 
-    <association property="subject" javaType="student">
-      <id     column="subj_no"      property="no"/>
-      <result column="type"         property="type"/>
-      <result column="name"         property="name"/>
-    </association>
-  </resultMap>
+    <select id="findAll" resultType="Map">
+        select
+            S.subj_no as no,
+            S.name as name,
+            S.type as type,
+            count(*) as count
+        from
+            lecture L inner join subject S on L.subj_no=S.subj_no
+        group by
+            S.subj_no
+        order by
+            S.subj_no
+    </select>
+    
+    <select id="findBySubject" parameterType="int" resultMap="lectureMap">
+        select
+            L.lect_no,
+            L.name,
+            L.room,
+            S.subj_no,
+            S.name,
+            S.type
+        from
+            lecture L inner join subject S on L.subj_no=S.subj_no
+        where
+            L.subj_no=#{subjNo}
+        order by
+            L.lect_no
+    </select>
 
-  <insert id="insert" parameterType="review">
-    insert into review(lect_no,subj_no,name,room)
-    values(#{no},#{subjectNo},#{name},#{room})
-  </insert>
-  
-  <select id="findAll" resultType="Map">
-    select
-      sub.subj_no as no,
-      sub.name as name,
-      sub.type as type,
-      count(*) as count
-    from
-      lecture lec inner join subject sub on lec.subj_no=sub.subj_no
-    group by
-      lec.subj_no
-    order by
-      lec.subj_no
-  </select>
-  
-  <select id="findBySubject" parameterType="int" resultMap="lectureMap">
-    select
-      lec.lect_no,
-      lec.name,
-      sub.name,
-      sub.type
-    from
-      lecture lec inner join subject sub on lec.subj_no=sub.subj_no
-    where
-      subj_no=#{subjectNo}
-  </select>
-  
-  <select id="findByNo" resultMap="reviewMap">
-    select
-      r.review_no,
-      r.student_id,
-      t.name,
-      r.subject_id,
-      r.rate,
-      r.content
-    from
-      review r inner join student t on r.student_id=t.student_no
-    where
-      review_no=#{reviewNo}
-  </select>
-  
-  <update id="update" parameterType="review">
-	  update review set
-	    rate=#{rate},
-	    content=#{content}
-	  where 
-	    review_no=#{no}
-	    and student_id=#{student.no}
-  </update>
-  
-  <delete id="delete" parameterType="int">
-    delete from review
-    where 
-      review_no=#{no}
-  </delete>
+    <select id="findByNo" parameterType="int" resultType="lecture">
+        select
+            L.lect_no,
+            L.name,
+            L.room,
+            S.subj_no,
+            S.name,
+            S.type
+        from
+            lecture L inner join subject S on L.subj_no=S.subj_no
+        where
+            L.lect_no=#{lectNo}
+    </select>
+
+    <update id="update" parameterType="lecture">
+        update lecture set
+            subj_no=#{subject.subjNo},
+            name=#{name},
+            room=#{room}
+        where
+            lect_no=#{lectNo}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from lecture
+        where
+            lect_no=#{lectNo}
+    </delete>
 </mapper>

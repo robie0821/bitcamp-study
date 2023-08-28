@@ -7,7 +7,6 @@ public class StudentLecture implements Serializable {
 
     private int studentNo;
     private int lectureNo;
-    private boolean state;
     private double grade;
     private int rate;
     private String content;
@@ -26,14 +25,6 @@ public class StudentLecture implements Serializable {
 
     public void setLectureNo(int lectureNo) {
         this.lectureNo = lectureNo;
-    }
-
-    public boolean isState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
     }
 
     public double getGrade() {

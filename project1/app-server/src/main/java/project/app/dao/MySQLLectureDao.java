@@ -1,6 +1,8 @@
 package project.app.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import project.app.vo.Lecture;
@@ -20,7 +22,7 @@ public class MySQLLectureDao implements LectureDao {
   }
 
   @Override
-  public List<Lecture> findAll() {
+  public List<Map<String,Object>> findAll() {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
     return sqlSession.selectList("project.app.dao.LectureDao.findAll");
   }
@@ -28,7 +30,7 @@ public class MySQLLectureDao implements LectureDao {
   @Override
   public List<Lecture> findBySubject(int subjectNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.selectOne("project.app.dao.LectureDao.findBySubject", subjectNo);
+    return sqlSession.selectList("project.app.dao.LectureDao.findBySubject", subjectNo);
   }
 
   @Override
@@ -44,8 +46,8 @@ public class MySQLLectureDao implements LectureDao {
   }
 
   @Override
-  public int delete(int no) {
+  public int delete(int lectNo) {
     SqlSession sqlSession = sqlSessionFactory.openSession(false);
-    return sqlSession.delete("project.app.dao.LectureDao.delete", no);
+    return sqlSession.delete("project.app.dao.LectureDao.delete", lectNo);
   }
 }
