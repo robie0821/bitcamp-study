@@ -36,7 +36,7 @@ public class HeaderServlet extends HttpServlet {
                       "<img style='height:40px' src='/images/avatar.png'>" :
                       String.format("<img src='http://mvsenqskbqzl19010704.cdn.ntruss.com/member/%s?type=f&w=30&h=40&faceopt=true&ttype=jpg'>",
                               loginUser.getPhoto())),
-              loginUser.getName());
+              loginUser.getMemberName());
     }
 
     out.println("</div>");

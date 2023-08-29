@@ -7,7 +7,7 @@ public class Lecture implements Serializable {
 
     private int lectNo;
     private Subject subject;
-    private String name;
+    private String lectName;
     private int room;
 
     public int getLectNo() {
@@ -26,12 +26,12 @@ public class Lecture implements Serializable {
         this.subject = subject;
     }
 
-    public String getName() {
-        return name;
+    public String getLectName() {
+        return lectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLectName(String lectName) {
+        this.lectName = lectName;
     }
 
     public int getRoom() {

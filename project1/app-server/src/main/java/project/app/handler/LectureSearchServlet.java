@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet("/lecture/search")
 public class LectureSearchServlet extends HttpServlet {
@@ -39,8 +38,7 @@ public class LectureSearchServlet extends HttpServlet {
     out.println("<table border='1'>");
     out.println("<thead>");
 
-    out.println("<tr><th/>번호" +
-            "<th style='width:50px;'/>번호" +
+    out.println("<tr><th/>번호"+
             "<th style='width:100px;'/>이름" +
             "<th style='width:50px;'/>과목" +
             "<th style='width:50px;'/>타입" +
@@ -54,17 +52,15 @@ public class LectureSearchServlet extends HttpServlet {
     for(Lecture lecture : list) {
       out.printf("<tr>" +
               "<td/><center/>%d" +
-              "<td/>" +
-                      //"<a href='/lecture/detail?lectNo=%d'/>" +
-                      "%s" +
+              "<td/><a href='/lecture/detail?lectNo=%d'/>%s" +
               "<td/><center/>%s" +
               "<td/><center/>%s" +
               "<td/><center/>%d\n",
               lecture.getLectNo(),
-              //lecture.getLectNo(),
-              lecture.getName(),
-              lecture.getSubject().getName(),
-              lecture.getSubject().getType(),
+              lecture.getLectNo(),
+              lecture.getLectName(),
+              lecture.getSubject().getSubjName(),
+              lecture.getSubject().getSubjType(),
               lecture.getRoom());
     }
     out.println("</tbody>");

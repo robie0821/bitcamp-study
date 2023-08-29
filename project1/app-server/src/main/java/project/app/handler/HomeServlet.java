@@ -35,7 +35,7 @@ public class HomeServlet extends HttpServlet{
     if (loginUser == null) {
       out.println("<li/><a href='/auth/form.html'/>로그인");
     } else {
-      out.printf("<li/><a href='/auth/logout'/>로그아웃", loginUser.getName());
+      out.printf("<li/><a href='/auth/logout'/>로그아웃", loginUser.getMemberName());
     }
     out.println("</ul>");
     out.println("</body>");

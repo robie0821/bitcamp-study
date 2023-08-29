@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Department implements Serializable {
   private static final long serialVersionUID = 1L;
   private int deptNo;
-  private String name;
+  private String deptName;
 
   public int getDeptNo() {
     return deptNo;
@@ -15,11 +15,11 @@ public class Department implements Serializable {
     this.deptNo = deptNo;
   }
 
-  public String getName() {
-    return name;
+  public String getDeptName() {
+    return deptName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setDeptName(String deptName) {
+    this.deptName = deptName;
   }
 }

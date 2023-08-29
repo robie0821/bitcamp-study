@@ -49,8 +49,8 @@ ALTER TABLE member
 
 -- 학과
 CREATE TABLE department (
-	dept_no INTEGER     NOT NULL COMMENT '학과번호', -- 학과번호
-	name    VARCHAR(50) NOT NULL COMMENT '이름' -- 이름
+	dept_no   INTEGER     NOT NULL COMMENT '학과번호', -- 학과번호
+	dept_name VARCHAR(50) NOT NULL COMMENT '이름' -- 이름
 )
 COMMENT '학과';
 
@@ -64,7 +64,7 @@ ALTER TABLE department
 -- 학과 유니크 인덱스
 CREATE UNIQUE INDEX UIX_department
 	ON department ( -- 학과
-		name ASC -- 이름
+		dept_name ASC -- 이름
 	);
 
 ALTER TABLE department
@@ -75,9 +75,9 @@ ALTER TABLE department
 
 -- 과목
 CREATE TABLE subject (
-	subj_no INTEGER     NOT NULL COMMENT '과목코드', -- 과목코드
-	name    VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
-	type    INTEGER     NOT NULL COMMENT '분류' -- 분류
+	subj_no   INTEGER     NOT NULL COMMENT '과목코드', -- 과목코드
+	subj_name VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
+	subj_type INTEGER     NOT NULL COMMENT '분류' -- 분류
 )
 COMMENT '과목';
 
@@ -91,7 +91,7 @@ ALTER TABLE subject
 -- 과목 유니크 인덱스
 CREATE UNIQUE INDEX UIX_subject
 	ON subject ( -- 과목
-		name ASC -- 이름
+		subj_name ASC -- 이름
 	);
 
 ALTER TABLE subject
@@ -102,10 +102,10 @@ ALTER TABLE subject
 
 -- 강의
 CREATE TABLE lecture (
-	lect_no INTEGER     NOT NULL COMMENT '강의번호', -- 강의번호
-	subj_no INTEGER     NOT NULL COMMENT '과목코드', -- 과목코드
-	name    VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
-	room    INTEGER     NULL     COMMENT '강의실' -- 강의실
+	lect_no   INTEGER     NOT NULL COMMENT '강의번호', -- 강의번호
+	subj_no   INTEGER     NOT NULL COMMENT '과목코드', -- 과목코드
+	lect_name VARCHAR(50) NOT NULL COMMENT '이름', -- 이름
+	room      INTEGER     NULL     COMMENT '강의실' -- 강의실
 )
 COMMENT '강의';
 
@@ -119,7 +119,7 @@ ALTER TABLE lecture
 -- 강의 유니크 인덱스
 CREATE UNIQUE INDEX UIX_lecture
 	ON lecture ( -- 강의
-		name ASC -- 이름
+		lect_name ASC -- 이름
 	);
 
 ALTER TABLE lecture

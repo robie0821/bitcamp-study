@@ -54,10 +54,10 @@ public class LectureListServlet extends HttpServlet {
                       "<td/><a href='/lecture/search?subjNo=%d'/>%s" +
                       "<td/><center/>%s" +
                       "<td/><center/>%d\n",
-              Integer.parseInt(lect.get("no").toString()),
-              Integer.parseInt(lect.get("no").toString()),
-              lect.get("name").toString(),
-              lect.get("type").toString(),
+              Integer.parseInt(lect.get("subjNo").toString()),
+              Integer.parseInt(lect.get("subjNo").toString()),
+              lect.get("subjName").toString(),
+              lect.get("subjType").toString(),
               Integer.parseInt(lect.get("count").toString()));
     }
     out.println("</tbody>");

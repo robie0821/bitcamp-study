@@ -7,8 +7,8 @@ public class Member implements Serializable {
 
     private int memberNo;
     private Department dept;
-    private int type;
-    private String name;
+    private int memberType;
+    private String memberName;
     private String email;
     private String password;
     private String photo;
@@ -29,20 +29,20 @@ public class Member implements Serializable {
         this.dept = dept;
     }
 
-    public int getType() {
-        return type;
+    public int getMemberType() {
+        return memberType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setMemberType(int memberType) {
+        this.memberType = memberType;
     }
 
-    public String getName() {
-        return name;
+    public String getMemberName() {
+        return memberName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
     public String getEmail() {

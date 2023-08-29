@@ -5,31 +5,31 @@ import java.io.Serializable;
 public class Subject implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int subjectNo;
-    private int name;
-    private int type;
+    private int subjNo;
+    private String subjName;
+    private int subjType;
 
-    public int getSubjectNo() {
-        return subjectNo;
+    public int getSubjNo() {
+        return subjNo;
     }
 
-    public void setSubjectNo(int subjectNo) {
-        this.subjectNo = subjectNo;
+    public void setSubjNo(int subjNo) {
+        this.subjNo = subjNo;
     }
 
-    public int getName() {
-        return name;
+    public String getSubjName() {
+        return subjName;
     }
 
-    public void setName(int name) {
-        this.name = name;
+    public void setSubjName(String subjName) {
+        this.subjName = subjName;
     }
 
-    public int getType() {
-        return type;
+    public int getSubjType() {
+        return subjType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setSubjType(int subjType) {
+        this.subjType = subjType;
     }
 }
