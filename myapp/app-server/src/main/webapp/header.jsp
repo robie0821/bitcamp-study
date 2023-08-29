@@ -6,13 +6,13 @@
 
 <div style='height:50px;background-color:orange;'>
   <a href='/'><img src='https://www.ncloud.com/public/img/logo-m.png' style='height:40px'></a>
-  <a href='/member/list.jsp'>회원</a>
-  <a href='/board/list.jsp?category=1'>게시글</a>
-  <a href='/board/list.jsp?category=2'>독서록</a>
+  <a href='/member/list'>회원</a>
+  <a href='/board/list?category=1'>게시글</a>
+  <a href='/board/list?category=2'>독서록</a>
 
 <c:choose>
   <c:when test="${empty sessionScope.loginUser}">
-    <a href='/auth/form.jsp'>로그인</a>
+    <a href='/auth/login'>로그인</a>
   </c:when>
 
   <c:otherwise>
@@ -24,7 +24,7 @@
       <img src='http://fxnxwqenirtk19010936.cdn.ntruss.com/member/${loginUser.photo}?type=f&w=30&h=40&faceopt=true&ttype=jpg'>
     </c:if>
 
-    ${loginUser.name} <a href='/auth/logout.jsp'>로그아웃</a>
+    ${loginUser.name} <a href='/auth/logout'>로그아웃</a>
   </c:otherwise>
 </c:choose>
 </div>

@@ -2,25 +2,23 @@
   language="java"
   pageEncoding="UTF-8"
   contentType="text/html;charset=UTF-8"
-  trimDirectiveWhitespaces="true"
-  errorPage="/error.jsp"%>
-
+  trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>비트캠프</title>
+  <meta charset="UTF-8">
+  <title>비트캠프</title>
 </head>
 <body>
 
 <jsp:include page="../header.jsp"/>
 
-<h1>게시글(JSP + Action Tag + Scriptlet)</h1>
-<form action="/board/add.jsp" method="post" enctype="multipart/form-data">
+<h1>게시글()</h1>
+<form action="/board/add" method="post" enctype="multipart/form-data">
 제목 <input type="text" name="title"><br>
 내용 <textarea name="content"></textarea><br>
 파일 <input type="file" name="files" multiple><br>
-<input type="hidden" name="category" value='1'>
+<input type="hidden" name="category" value='${param.category}'>
 <button>등록</button>
 </form>
 
