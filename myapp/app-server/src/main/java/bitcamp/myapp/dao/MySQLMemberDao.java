@@ -1,10 +1,13 @@
 package bitcamp.myapp.dao;
 
-import java.util.List;
+import bitcamp.myapp.vo.Member;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import bitcamp.myapp.vo.Member;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Component
 public class MySQLMemberDao implements MemberDao {
 
   SqlSessionFactory sqlSessionFactory;

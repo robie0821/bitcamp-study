@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.app.dao.SubjectDao">
+    <resultMap id="subjectMap" type="subject">
+        <id column="subj_no" property="subjNo"/>
+        <result column="subj_name" property="subjName"/>
+        <result column="subj_type" property="subjType"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="subject">
+        insert into subject(subj_name,subj_type)
+        values(#{subjName},#{subjType})
+    </insert>
+
+    <select id="findAll" resultMap="subjectMap">
+        select
+            subj_no,
+            subj_name,
+            subj_type
+        from
+            subject
+        order by
+            subj_no
+    </select>
+
+    <select id="findByType" parameterType="int" resultMap="subjectMap">
+        select
+            subj_no,
+            subj_name,
+            subj_type
+        from
+            subject
+        where
+            type=${subjType}
+        order by
+            subj_no
+    </select>
+
+    <select id="findByNo" parameterType="int" resultMap="subjectMap">
+        select
+            subj_no,
+            subj_name,
+            subj_type
+        from
+            subject
+        where
+            type=${subjNo}
+        order by
+            subj_no
+    </select>
+
+    <update id="update" parameterType="subject">
+        update subject set
+            subj_name=${subjName}
+            subj_type=${subjType}
+        where
+            subj_no=${subjNo}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from subject
+        where subj_no=${subjNo}
+    </delete>
+</mapper>

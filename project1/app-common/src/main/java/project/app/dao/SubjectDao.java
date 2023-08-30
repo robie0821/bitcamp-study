@@ -7,7 +7,8 @@ import java.util.List;
 public interface SubjectDao {
     void insert(Subject subject);
     List<Subject> findAll();
-    Subject findBy(int subjectNo);
+    List<Subject> findByType(int subjectType);
+    Subject findByNo(int subjectNo);
     int update(Subject subject);
     int delete(int subjectNo);
 }

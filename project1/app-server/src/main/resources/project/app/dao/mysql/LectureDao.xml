@@ -50,7 +50,7 @@
             L.lect_no
     </select>
 
-    <select id="findByNo" parameterType="int" resultType="lecture">
+    <select id="findByNo" parameterType="int" resultMap="lectureMap">
         select
             L.lect_no
             ,L.lect_name
