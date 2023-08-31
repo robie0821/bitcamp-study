@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.app.dao.ProfLectDao">
+    <resultMap id="professorLectureMap" type="professorlecture">
+        <association property="professor" javaType="member">
+            <id     column="member_no"   property="memberNo"/>
+            <result column="member_type" property="memberType"/>
+            <result column="member_name" property="memberName"/>
+            <result column="email"       property="email"/>
+            <result column="password"    property="password"/>
+            <result column="photo"       property="photo"/>
+        </association>
+        <association property="lecture" javaType="lecture">
+            <id     column="subj_no"    property="subjNo"/>
+            <result column="subj_name"  property="subjName"/>
+            <result column="subj_type"  property="subjType"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

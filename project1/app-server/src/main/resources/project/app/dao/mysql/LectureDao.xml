@@ -4,14 +4,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.app.dao.LectureDao">
     <resultMap id="lectureMap" type="lecture">
-        <id     column="lect_no"   property="lectNo"/>
-        <result column="lect_name" property="lectName"/>
-        <result column="room"      property="room"/>
+        <id     column="lect_no"    property="lectNo"/>
+        <result column="lect_name"  property="lectName"/>
+        <result column="room"       property="room"/>
         
         <association property="subject" javaType="subject">
-            <id     column="subj_no"   property="subjNo"/>
-            <result column="subj_name" property="subjName"/>
-            <result column="subj_type" property="subjType"/>
+            <id     column="subj_no"    property="subjNo"/>
+            <result column="subj_name"  property="subjName"/>
+            <result column="subj_type"  property="subjType"/>
         </association>
     </resultMap>
 

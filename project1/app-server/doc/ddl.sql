@@ -18,13 +18,13 @@ DROP TABLE IF EXISTS prof_lect RESTRICT;
 
 -- 멤버
 CREATE TABLE member (
-	member_no INTEGER      NOT NULL COMMENT '멤버번호', -- 멤버번호
-	dept_no   INTEGER      NOT NULL COMMENT '학과번호', -- 학과번호
-	type      INTEGER      NOT NULL COMMENT '분류', -- 분류
-	name      VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
-	email     VARCHAR(40)  NOT NULL COMMENT '이메일', -- 이메일
-	password  VARCHAR(100) NOT NULL COMMENT '비밀번호', -- 비밀번호
-	photo     VARCHAR(255) NULL     COMMENT '사진' -- 사진
+	member_no   INTEGER      NOT NULL COMMENT '멤버번호', -- 멤버번호
+	dept_no     INTEGER      NOT NULL COMMENT '학과번호', -- 학과번호
+	member_type INTEGER      NOT NULL COMMENT '분류', -- 분류
+	member_name VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
+	email       VARCHAR(40)  NOT NULL COMMENT '이메일', -- 이메일
+	password    VARCHAR(100) NOT NULL COMMENT '비밀번호', -- 비밀번호
+	photo       VARCHAR(255) NULL     COMMENT '사진' -- 사진
 )
 COMMENT '멤버';
 
@@ -134,7 +134,7 @@ CREATE TABLE stud_lect (
 	lect_no   INTEGER    NOT NULL COMMENT '강의번호', -- 강의번호
 	grade     DOUBLE     NULL     COMMENT '학점', -- 학점
 	rate      INTEGER    NULL     COMMENT '평가', -- 평가
-	contnet   MEDIUMTEXT NULL     COMMENT '내용' -- 내용
+	content   MEDIUMTEXT NULL     COMMENT '내용' -- 내용
 )
 COMMENT '수강신청';
 

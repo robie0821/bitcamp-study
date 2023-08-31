@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.app.dao.MemberDao">
+    <resultMap id="memberMap" type="member">
+        <id     column="member_no"   property="memberNo"/>
+        <result column="member_type" property="memberType"/>
+        <result column="member_name" property="memberName"/>
+        <result column="email"       property="email"/>
+        <result column="password"    property="password"/>
+        <result column="photo"       property="photo"/>
+        <association property="department" javaType="department">
+            <id     column="dept_no"    property="deptNo"/>
+            <result column="dept_name"  property="deptName"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="member">
+        insert into member(dept_no,type,name,email,password,photo)
+        values(#{department.deptNo},#{memberType},#{memberName},#{email},#{password},#{photo})
+    </insert>
+
+    <select id="findAll" resultMap="memberMap">
+        select
+            M.member_no
+            ,M.member_type
+            ,M.member_name
+            ,M.email
+            ,M.password
+            ,M.photo
+            ,D.dept_no
+            ,D.dept_name
+        from
+            member M join department D on M.dept_no=D.dept_no
+        order by
+            M.member_no
+    </select>
+
+    <select id="findBy" parameterType="int" resultMap="memberMap">
+        select
+            M.member_no
+            ,M.member_type
+            ,M.member_name
+            ,M.email
+            ,M.password
+            ,M.photo
+            ,D.dept_no
+            ,D.dept_name
+        from
+            member M join department D on M.dept_no=D.dept_no
+        where
+            M.member_no=#{memberNo}
+    </select>
+
+    <update id="update" parameterType="member">
+        update member set
+            dept_no=#{deptNo}
+            ,member_type=#{memberType}
+            ,member_name=#{memberName}
+            ,email=#{email}
+            ,password=#{password}
+            ,photo=#{photo}
+        where
+            member_no=#{memberNo}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from member
+        where
+            member_no=#{memberNo}
+    </delete>
+</mapper>

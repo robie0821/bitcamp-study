@@ -3,11 +3,11 @@ insert into department(dept_no,dept_name) values(2, 'B학과');
 insert into department(dept_no,dept_name) values(3, 'C학과');
 insert into department(dept_no,dept_name) values(4, 'D학과');
 
-insert into member(member_no, dept_no, type, name, email, password)
+insert into member(member_no, dept_no, member_type, member_name, email, password)
   values(1000, 1, 0, 'root', 'root@test.com', sha1('1111'));
-insert into member(member_no, dept_no, type, name, email, password)
+insert into member(member_no, dept_no, member_type, member_name, email, password)
   values(1001, 1, 1, 'stud', 'stud@test.com', sha1('1111'));
-insert into member(member_no, dept_no, type, name, email, password)
+insert into member(member_no, dept_no, member_type, member_name, email, password)
   values(1002, 1, 2, 'prof', 'prof@test.com', sha1('1111'));
 
 insert into subject(subj_no, subj_name, subj_type)

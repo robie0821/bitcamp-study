@@ -4,9 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.app.dao.SubjectDao">
     <resultMap id="subjectMap" type="subject">
-        <id column="subj_no" property="subjNo"/>
-        <result column="subj_name" property="subjName"/>
-        <result column="subj_type" property="subjType"/>
+        <id     column="subj_no"    property="subjNo"/>
+        <result column="subj_name"  property="subjName"/>
+        <result column="subj_type"  property="subjType"/>
     </resultMap>
 
     <insert id="insert" parameterType="subject">
