@@ -3,7 +3,6 @@ package bitcamp.myapp.servlet;
 import bitcamp.myapp.config.AppConfig;
 import bitcamp.myapp.config.NcpConfig;
 import bitcamp.myapp.controller.PageController;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.ServletException;
@@ -18,7 +17,6 @@ import java.io.IOException;
         loadOnStartup = 1)
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 public class DispatcherServlet extends HttpServlet {
-
   private static final long serialVersionUID = 1L;
 
   AnnotationConfigApplicationContext iocContainer;
@@ -27,9 +25,6 @@ public class DispatcherServlet extends HttpServlet {
   @Override
   public void init() throws ServletException {
     iocContainer = new AnnotationConfigApplicationContext(AppConfig.class, NcpConfig.class);
-
-    SqlSessionFactory sqlSessionFactory = iocContainer.getBean(SqlSessionFactory.class);
-    this.getServletContext().setAttribute("sqlSessionFactory", sqlSessionFactory);
   }
 
   @Override
@@ -40,9 +35,6 @@ public class DispatcherServlet extends HttpServlet {
     response.setContentType("text/html;charset=UTF-8");
 
     PageController pageController = (PageController) iocContainer.getBean(pageControllerPath);
-    if (pageController == null) {
-      throw new ServletException("해당 요청을 처리할 수 없습니다!");
-    }
 
     try {
       String viewUrl = pageController.execute(request, response);

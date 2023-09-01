@@ -8,6 +8,10 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 //
 public class LogBeanPostProcessor implements BeanPostProcessor {
 
+  static {
+    System.out.println("LogBeanPostProcessor loading");
+  }
+
   public LogBeanPostProcessor() {
     System.out.println("LogBeanPostProcessor()");
   }
