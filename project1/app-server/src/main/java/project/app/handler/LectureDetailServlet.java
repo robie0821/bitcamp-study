@@ -30,9 +30,7 @@ public class LectureDetailServlet extends HttpServlet {
     out.println("<h1>수업 정보</h1>");
 
     Lecture lecture = InitServlet.lectureDao.findByNo(Integer.parseInt(request.getParameter("lectNo")));
-    List<List<Subject>> list = new ArrayList<>();
-    list.add(InitServlet.subjectDao.findByType(0));
-    list.add(InitServlet.subjectDao.findByType(1));
+    List<Subject> subjects = InitServlet.subjectDao.findAll();
 
     if (lecture == null) {
       out.println("<p>해당 번호의 수업이 없습니다!</p>");
@@ -43,15 +41,9 @@ public class LectureDetailServlet extends HttpServlet {
               + " <td style='width:200px;'><input type='text' name='no' value='%d' readonly></td></tr>\n", lecture.getLectNo());
       out.printf("<tr><th>이름</th>"
               + " <td><input type='text' name='lectName' value='%s'></td></tr>\n", lecture.getLectName());
-      out.printf("<tr><th>과목타입</th>\n"
-                      + " <td><select id='type'name='subjType'>\n"
-                      + " <option value='0' %s>교양</option>\n"
-                      + " <option value='1' %s>전공</option></select></td></tr>\n",
-              (lecture.getSubject().getSubjType() == 0 ? "selected" : ""),
-              (lecture.getSubject().getSubjType() == 1 ? "selected" : ""));
       out.printf("<tr><th>과목</th>\n" +
               " <td><select name='subjName'>\n");
-      for (Subject subject : list.get(type)) {
+      for (Subject subject : subjects) {
         out.printf(" <option value='0' %s>%s</option>\n",
                 (subject.getSubjName().equals(lecture.getSubject().getSubjName()) ? "selected" : ""),
                 subject.getSubjName());

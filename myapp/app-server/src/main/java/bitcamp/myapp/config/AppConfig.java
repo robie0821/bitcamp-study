@@ -1,6 +1,13 @@
 package bitcamp.myapp.config;
 
 
+import bitcamp.myapp.dao.BoardDao;
+import bitcamp.myapp.dao.MemberDao;
+import bitcamp.myapp.service.BoardService;
+import bitcamp.myapp.service.DefaultBoardService;
+import bitcamp.myapp.service.DefaultMemberService;
+import bitcamp.myapp.service.MemberService;
+import bitcamp.util.TransactionProxyBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -38,7 +45,6 @@ public class AppConfig {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
     factoryBean.setDataSource(dataSource);
     factoryBean.setTypeAliasesPackage("bitcamp.myapp.vo");
-
     factoryBean.setMapperLocations(appCtx.getResources("classpath:bitcamp/myapp/dao/mysql/*Dao.xml"));
 
     return factoryBean.getObject();
@@ -62,5 +68,20 @@ public class AppConfig {
   @Bean
   public PlatformTransactionManager transactionManager(DataSource dataSource) {
     return new DataSourceTransactionManager(dataSource);
+  }
+
+  @Bean
+  public TransactionProxyBuilder txProxyBuilder(PlatformTransactionManager txManager) {
+    return new TransactionProxyBuilder(txManager);
+  }
+
+  @Bean
+  public BoardService boardService(TransactionProxyBuilder txProxyBuilder, BoardDao boardDao) {
+    return (BoardService) txProxyBuilder.build(new DefaultBoardService(boardDao));
+  }
+
+  @Bean
+  public MemberService memberService(TransactionProxyBuilder txProxyBuilder, MemberDao memberDao) {
+    return (MemberService) txProxyBuilder.build(new DefaultMemberService(memberDao));
   }
 }

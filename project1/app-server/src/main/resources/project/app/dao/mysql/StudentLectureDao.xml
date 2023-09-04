@@ -3,22 +3,111 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project.app.dao.StudLectDao">
-    <resultMap id="studentLectureMap" type="studentlecture">
-        <result column=""
-        <association property="professor" javaType="member">
+    <resultMap id="studLectMap" type="studlect">
+        <result column="grade"      property="grade"/>
+        <result column="rate"       property="rate"/>
+        <result column="content"    property="content"/>
+        <association property="student" javaType="member">
             <id     column="member_no"   property="memberNo"/>
             <result column="member_type" property="memberType"/>
             <result column="member_name" property="memberName"/>
             <result column="email"       property="email"/>
             <result column="password"    property="password"/>
             <result column="photo"       property="photo"/>
+            <association property="dept" javaType="department">
+                <id     column="dept_no"    property="deptNo"/>
+                <result column="dept_name"  property="deptName"/>
+            </association>
         </association>
         <association property="lecture" javaType="lecture">
-            <id     column="subj_no"    property="subjNo"/>
-            <result column="subj_name"  property="subjName"/>
-            <result column="subj_type"  property="subjType"/>
+            <id     column="lect_no"    property="lectNo"/>
+            <result column="lect_name"  property="lectName"/>
+            <result column="room"       property="room"/>
+            <association property="subject" javaType="subject">
+                <id     column="subj_no"    property="subjNo"/>
+                <result column="subj_name"  property="subjName"/>
+                <result column="subj_type"  property="subjType"/>
+            </association>
         </association>
     </resultMap>
 
+    <insert id="insert" parameterType="studlect">
+        insert into stud_lect(member_no,lect_no)
+        values(#{student.memberNo},#{lecture.lectNo}
+    </insert>
 
+    <select id="findAll" parameterType="int" resultMap="studLectMap">
+        select
+            M.member_no
+            ,M.member_name
+            ,M.email
+            ,M.password
+            ,M.photo
+            ,D.dept_no
+            ,D.dept_name
+            ,L.lect_no
+            ,L.lect_name
+            ,L.room
+            ,S.subj_no
+            ,S.subj_name
+            ,S.subj_type
+        from
+            stud_lect SL
+            join member M join department D on M.dept_no=D.dept_no
+            on SL.member_no=M.member_no
+            join lecture L join subject S on L.subj_no=S.subj_no
+            on SL.lect_no=L.lect_no
+        where
+            SL.member_no=#{memberNo}
+    </select>
+
+    <select id="findBy" parameterType="studlect" resultMap="studLectMap">
+        select
+            M.member_no
+            ,M.member_name
+            ,M.email
+            ,M.password
+            ,M.photo
+            ,D.dept_no
+            ,D.dept_name
+            ,L.lect_no
+            ,L.lect_name
+            ,L.room
+            ,S.subj_no
+            ,S.subj_name
+            ,S.subj_type
+        from
+            stud_lect SL
+            join member M join department D on M.dept_no=D.dept_no
+            on SL.member_no=M.member_no
+            join lecture L join subject S on L.subj_no=S.subj_no
+            on SL.lect_no=L.lect_no
+        where
+            SL.member_no=#{memberNo}
+            and SL.lect_no=#{lectNo}
+    </select>
+
+    <update id="updateScore" parameterType="studlect">
+        update stud_lect set
+            grade=#{grade}
+        where
+            member_no=#{memberNo}
+            and lect_no=#{lectNo}
+    </update>
+
+    <update id="updateReview" parameterType="studlect">
+        update stud_lect set
+            rate=#{rate}
+            ,content=#{content}
+        where
+            member_no=#{memberNo}
+            and lect_no=#{lectNo}
+    </update>
+
+    <delete id="delete" parameterType="studlect">
+        delete from stud_lect
+        where
+            member_no=#{memberNo}
+            and lect_no=#{lectNo}
+    </delete>
 </mapper>
