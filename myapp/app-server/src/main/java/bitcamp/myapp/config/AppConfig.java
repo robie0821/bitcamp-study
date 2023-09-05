@@ -1,13 +1,6 @@
 package bitcamp.myapp.config;
 
 
-import bitcamp.myapp.dao.BoardDao;
-import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.service.BoardService;
-import bitcamp.myapp.service.DefaultBoardService;
-import bitcamp.myapp.service.DefaultMemberService;
-import bitcamp.myapp.service.MemberService;
-import bitcamp.util.TransactionProxyBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -19,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -28,14 +22,8 @@ import javax.sql.DataSource;
         "bitcamp.myapp.service"})
 @PropertySource({"classpath:bitcamp/myapp/config/ncloud/jdbc.properties"})
 @MapperScan("bitcamp.myapp.dao")
+@EnableTransactionManagement
 public class AppConfig {
-
-//  @Bean
-//  public SqlSessionFactory sqlSessionFactory() throws Exception {
-//    return new SqlSessionFactoryProxy(
-//            new SqlSessionFactoryBuilder().build(
-//                    Resources.getResourceAsStream("bitcamp/myapp/config/mybatis-config.xml")));
-//  }
 
   @Bean
   public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ApplicationContext appCtx) throws Exception {
@@ -68,20 +56,5 @@ public class AppConfig {
   @Bean
   public PlatformTransactionManager transactionManager(DataSource dataSource) {
     return new DataSourceTransactionManager(dataSource);
-  }
-
-  @Bean
-  public TransactionProxyBuilder txProxyBuilder(PlatformTransactionManager txManager) {
-    return new TransactionProxyBuilder(txManager);
-  }
-
-  @Bean
-  public BoardService boardService(TransactionProxyBuilder txProxyBuilder, BoardDao boardDao) {
-    return (BoardService) txProxyBuilder.build(new DefaultBoardService(boardDao));
-  }
-
-  @Bean
-  public MemberService memberService(TransactionProxyBuilder txProxyBuilder, MemberDao memberDao) {
-    return (MemberService) txProxyBuilder.build(new DefaultMemberService(memberDao));
   }
 }

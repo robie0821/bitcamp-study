@@ -32,7 +32,7 @@
           <img src='http://fxnxwqenirtk19010936.cdn.ntruss.com/member/${member.photo}?type=f&w=60&h=80&faceopt=true&ttype=jpg'>
         </a>
       </c:if>
-      <input type='file' name='photo'>
+      <input type='file' name='photofile'>
     </td>
   </tr>
   <tr>
