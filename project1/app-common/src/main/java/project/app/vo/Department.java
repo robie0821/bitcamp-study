@@ -7,6 +7,13 @@ public class Department implements Serializable {
   private int deptNo;
   private String deptName;
 
+  public Department() {
+  }
+
+  public Department(int deptNo) {
+    this.deptNo = deptNo;
+  }
+
   public int getDeptNo() {
     return deptNo;
   }

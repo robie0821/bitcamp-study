@@ -9,6 +9,13 @@ public class Subject implements Serializable {
     private String subjName;
     private int subjType;
 
+    public Subject() {
+    }
+
+    public Subject(int subjNo) {
+        this.subjNo = subjNo;
+    }
+
     public int getSubjNo() {
         return subjNo;
     }

@@ -1,6 +1,7 @@
 package project.app.handler;
 
 import project.app.vo.Lecture;
+import project.app.vo.Member;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,13 +14,15 @@ import java.util.List;
 
 @WebServlet("/lecture/search")
 public class LectureSearchServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
-//    Student loginUser = (Student) request.getSession().getAttribute("loginUser");
+//    Member loginUser = (Member) request.getSession().getAttribute("loginUser");
 //    if (loginUser == null) {
 //      out.println("<p>로그인이 필요합니다.</p>");
 //      out.println("<meta http-equiv='refresh' content='1;url=/auth/form.html'>");

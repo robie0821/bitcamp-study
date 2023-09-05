@@ -21,7 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@WebServlet(value = "/app/*",
+@WebServlet(
+        value = "/app/*",
         loadOnStartup = 1)
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)
 public class DispatcherServlet extends HttpServlet {
@@ -67,8 +68,8 @@ public class DispatcherServlet extends HttpServlet {
       throw new ServletException("요청을 처리할 Handler가 없습니다.");
     }
 
+    Map<String, Object> model = new HashMap<>();
     try {
-      Map<String, Object> model = new HashMap<>();
       Object[] arguments = prepareArguments(requestHandlerMapping.handler, request, response, model);
 
       String viewUrl = (String) requestHandlerMapping.handler.invoke(requestHandlerMapping.controller, arguments);
@@ -85,6 +86,10 @@ public class DispatcherServlet extends HttpServlet {
       }
 
     } catch (Exception e) {
+      Set<Map.Entry<String, Object>> entrySet = model.entrySet();
+      for (Map.Entry<String, Object> entry : entrySet) {
+        request.setAttribute(entry.getKey(), entry.getValue());
+      }
       throw new ServletException("요청 처리 중 오류 발생", e);
     }
   }

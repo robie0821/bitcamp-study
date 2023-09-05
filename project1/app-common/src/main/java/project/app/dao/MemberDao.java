@@ -8,7 +8,7 @@ public interface MemberDao {
     void insert(Member member);
     List<Member> findAll(int type);
     Member findBy(int memberNo);
-    Member signIn(Member member);
+    Member findByEmailAndPassword(Member member);
     int update(Member member);
     int delete(int memberNo);
 }

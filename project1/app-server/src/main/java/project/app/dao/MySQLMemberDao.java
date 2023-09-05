@@ -32,7 +32,7 @@ public class MySQLMemberDao implements MemberDao {
   }
 
   @Override
-  public Member signIn(Member member) {
+  public Member findByEmailAndPassword(Member member) {
     SqlSession sqlSession = sqlSessionFactory.openSession();
     return sqlSession.selectOne("project.app.dao.MemberDao.signIn", member);
   }
