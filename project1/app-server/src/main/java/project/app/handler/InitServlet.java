@@ -12,6 +12,8 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import project.app.dao.*;
+import project.util.NcpConfig;
+import project.util.NcpObjectStorageService;
 import project.util.SqlSessionFactoryProxy;
 
 @WebServlet(
@@ -25,6 +27,7 @@ public class InitServlet extends HttpServlet {
   public static MemberDao memberDao;
   public static SubjectDao subjectDao;
   public static LectureDao lectureDao;
+  public static NcpObjectStorageService ncpObjectStorageService;
 
   @Override
   public void init(ServletConfig config) throws ServletException {
@@ -38,6 +41,8 @@ public class InitServlet extends HttpServlet {
       memberDao = new MySQLMemberDao(sqlSessionFactory);
       subjectDao = new MySQLSubjectDao(sqlSessionFactory);
       lectureDao = new MySQLLectureDao(sqlSessionFactory);
+
+      ncpObjectStorageService = new NcpObjectStorageService(new NcpConfig());
 
 
     } catch (Exception e) {
