@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 
 @WebServlet("/footer")
 public class FooterServlet extends HttpServlet {
-
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -30,14 +29,3 @@ public class FooterServlet extends HttpServlet {
     doGet(req, resp);
   }
 }
-
-
-
-
-
-
-
-
-
-
-

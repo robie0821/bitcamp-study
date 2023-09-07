@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 
 @WebServlet("/header")
 public class HeaderServlet extends HttpServlet {
-
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -42,14 +41,3 @@ public class HeaderServlet extends HttpServlet {
     out.println("</div>");
   }
 }
-
-
-
-
-
-
-
-
-
-
-

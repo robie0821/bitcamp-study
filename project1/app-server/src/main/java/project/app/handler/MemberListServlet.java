@@ -3,13 +3,14 @@ package project.app.handler;
 import project.app.vo.Member;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
+@WebServlet("/member/list")
 public class MemberListServlet extends HeaderServlet {
   private static final long serialVersionUID = 1L;
 
