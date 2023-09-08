@@ -1,5 +1,6 @@
 package project.app.handler;
 
+import project.app.vo.Department;
 import project.app.vo.Member;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @WebServlet("/member/detail")
 public class MemberDetailServlet extends HttpServlet {
@@ -30,6 +32,7 @@ public class MemberDetailServlet extends HttpServlet {
     out.println("<h1>멤버 정보</h1>");
 
     Member member = InitServlet.memberDao.findBy(Integer.parseInt(request.getParameter("memberNo")));
+    List<Department> departments = InitServlet.departmentDao.findAll();
 
     if (member == null) {
       out.println("<p>해당 번호의 회원이 없습니다!</p>");
@@ -42,9 +45,20 @@ public class MemberDetailServlet extends HttpServlet {
       out.printf("<tr><th>이름</th>" +
               "<td><input type='text' name='memberName' value='%s'></td></tr>\n"
               , member.getMemberName());
+      out.printf("<tr><th>이메일</th>" +
+                      "<td><input type='text' name='email' value='%s'></td></tr>\n"
+              , member.getEmail());
+      out.printf("<tr><th>비밀번호</th>" +
+                      "<td><input type='password' name='password'></td></tr>\n");
+      out.printf("<tr><th>학과</th>\n" +
+              " <td><select name='deptNo'>\n");
+      for (Department department : departments){
+        out.printf(" <option value='%d' %s>%s</option>\n",
+                department.getDeptNo(),
+                (department.getDeptName().equals(member.getDept().getDeptName()) ? "selected" : ""),
+                department.getDeptName());
+      }
 
     }
-    
-    
   }
 }

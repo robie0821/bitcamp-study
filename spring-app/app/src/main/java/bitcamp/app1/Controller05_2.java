@@ -52,6 +52,8 @@ public class Controller05_2 {
     System.out.println("===> /app1/c05_2/h4");
     ModelAndView mv = new ModelAndView();
     mv.setViewName("/WEB-INF/jsp/c05_2.jsp");
+    mv.addObject("name", "홍");
+    mv.addObject("age", "20");
     return mv;
   }
 
@@ -79,5 +81,3 @@ public class Controller05_2 {
     return "forward:h4";
   }
 }
-
-

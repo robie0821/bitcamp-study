@@ -1,13 +1,5 @@
 package project.app.handler;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -15,6 +7,15 @@ import project.app.dao.*;
 import project.util.NcpConfig;
 import project.util.NcpObjectStorageService;
 import project.util.SqlSessionFactoryProxy;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(
     value="/init",
@@ -27,6 +28,7 @@ public class InitServlet extends HttpServlet {
   public static MemberDao memberDao;
   public static SubjectDao subjectDao;
   public static LectureDao lectureDao;
+  public static DepartmentDao departmentDao;
   public static NcpObjectStorageService ncpObjectStorageService;
 
   @Override
@@ -41,6 +43,8 @@ public class InitServlet extends HttpServlet {
       memberDao = new MySQLMemberDao(sqlSessionFactory);
       subjectDao = new MySQLSubjectDao(sqlSessionFactory);
       lectureDao = new MySQLLectureDao(sqlSessionFactory);
+      departmentDao = new MySQLDepartmentDao(sqlSessionFactory);
+
 
       ncpObjectStorageService = new NcpObjectStorageService(new NcpConfig());
 
