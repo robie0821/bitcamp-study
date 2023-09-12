@@ -1,37 +1,51 @@
 package bitcamp.myapp;
 
-import org.apache.catalina.WebResourceRoot;
-import org.apache.catalina.connector.Connector;
-import org.apache.catalina.core.StandardContext;
-import org.apache.catalina.startup.Tomcat;
-import org.apache.catalina.webresources.DirResourceSet;
-import org.apache.catalina.webresources.StandardRoot;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
-import java.io.File;
-
-public class App {
+@EnableTransactionManagement
+@SpringBootApplication
+public class App implements WebMvcConfigurer {
   public static void main(String[] args) throws Exception {
-    Tomcat tomcat = new Tomcat();
-
-    tomcat.setPort(8888);
-
-    tomcat.setBaseDir("temp");
-
-    Connector connector = tomcat.getConnector();
-    connector.setURIEncoding("UTF-8");
-
-    StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File("src/main/webapp").getAbsolutePath());
-    ctx.setReloadable(true);
-
-    WebResourceRoot resources = new StandardRoot(ctx);
-
-    resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes",
-            new File("build/classes/java/main").getAbsolutePath(), "/"));
-
-    ctx.setResources(resources);
-
-    tomcat.start();
-
-    tomcat.getServer().await();
+    SpringApplication.run(App.class, args);
   }
+
+//  @Bean
+//  public MultipartResolver multipartResolver() {
+//    return new StandardServletMultipartResolver();
+//  }
+
+  @Bean
+  public ViewResolver viewResolver() {
+    InternalResourceViewResolver vr = new InternalResourceViewResolver();
+    vr.setViewClass(JstlView.class);
+    vr.setPrefix("/WEB-INF/jsp/");
+    vr.setSuffix(".jsp");
+    return vr;
+  }
+
+//  @Override
+//  public void configurePathMatch(PathMatchConfigurer configurer) {
+//
+//    UrlPathHelper pathHelper = new UrlPathHelper();
+//
+//    // @MatrixVariable 기능 활성화
+//    pathHelper.setRemoveSemicolonContent(false);
+//
+//    // DispatcherServlet의 MVC Path 관련 설정을 변경한다.
+//    configurer.setUrlPathHelper(pathHelper);
+//  }
+
+//  @Override
+//  public void addInterceptors(InterceptorRegistry registry) {
+////    registry
+////            .addInterceptor(new MyInterceptor())
+////            .addPathPatterns("");
+//  }
 }

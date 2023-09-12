@@ -1,14 +1,15 @@
 // JSON 콘텐트 출력하기
 package bitcamp.app2;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.google.gson.Gson;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/c05_1")
