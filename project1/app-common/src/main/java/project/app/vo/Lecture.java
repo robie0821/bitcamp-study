@@ -10,6 +10,13 @@ public class Lecture implements Serializable {
     private String lectName;
     private int room;
 
+    public Lecture() {
+    }
+
+    public Lecture(int lectNo) {
+        this.lectNo = lectNo;
+    }
+
     public int getLectNo() {
         return lectNo;
     }

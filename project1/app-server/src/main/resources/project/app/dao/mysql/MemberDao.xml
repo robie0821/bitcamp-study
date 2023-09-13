@@ -10,7 +10,7 @@
         <result column="email"       property="email"/>
         <result column="password"    property="password"/>
         <result column="photo"       property="photo"/>
-        <association property="department" javaType="department">
+        <association property="dept" javaType="department">
             <id     column="dept_no"    property="deptNo"/>
             <result column="dept_name"  property="deptName"/>
         </association>
@@ -53,6 +53,23 @@
             member M join department D on M.dept_no=D.dept_no
         where
             M.member_no=#{memberNo}
+    </select>
+
+    <select id="signIn" parameterType="member" resultMap="memberMap">
+        select
+        M.member_no
+        ,M.member_type
+        ,M.member_name
+        ,M.email
+        ,M.password
+        ,M.photo
+        ,D.dept_no
+        ,D.dept_name
+        from
+        member M join department D on M.dept_no=D.dept_no
+        where
+        M.email=#{email}
+        and M.password=sha1(#{password})
     </select>
 
     <update id="update" parameterType="member">

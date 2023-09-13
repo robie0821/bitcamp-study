@@ -29,6 +29,8 @@ public class InitServlet extends HttpServlet {
   public static SubjectDao subjectDao;
   public static LectureDao lectureDao;
   public static DepartmentDao departmentDao;
+  public static StudLectDao studLectDao;
+  public static ProfLectDao profLectDao;
   public static NcpObjectStorageService ncpObjectStorageService;
 
   @Override
@@ -44,7 +46,8 @@ public class InitServlet extends HttpServlet {
       subjectDao = new MySQLSubjectDao(sqlSessionFactory);
       lectureDao = new MySQLLectureDao(sqlSessionFactory);
       departmentDao = new MySQLDepartmentDao(sqlSessionFactory);
-
+      studLectDao = new MySQLStudLectDao(sqlSessionFactory);
+      profLectDao = new MySQLProfLectDao(sqlSessionFactory);
 
       ncpObjectStorageService = new NcpObjectStorageService(new NcpConfig());
 

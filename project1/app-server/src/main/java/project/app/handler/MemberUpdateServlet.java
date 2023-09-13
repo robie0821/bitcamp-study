@@ -1,5 +1,8 @@
 package project.app.handler;
 
+import project.app.vo.Department;
+import project.app.vo.Member;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,5 +37,28 @@ public class MemberUpdateServlet extends HttpServlet {
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>회원 정보 변경</h1>");
+
+    try {
+      Member member = new Member();
+      member.setMemberType(Integer.parseInt(request.getParameter("memberType")));
+      member.setMemberName(request.getParameter("memberName"));
+      member.setDept(new Department(Integer.parseInt(request.getParameter("deptNo"))));
+      member.setEmail(request.getParameter("email"));
+      member.setPassword(request.getParameter("password"));
+      member.setPhoto(request.getParameter("photo"));
+
+      if (InitServlet.memberDao.update(member) == 0) {
+        out.println("<p>회원 정보 변경 오류</p>");
+      } else {
+        InitServlet.sqlSessionFactory.openSession(false).commit();
+        out.println("<p>변경했습니다!</p>");
+      }
+    } catch (Exception e) {
+      InitServlet.sqlSessionFactory.openSession(false).rollback();
+      out.println("<p>변경 실패입니다!</p>");
+      e.printStackTrace();
+    }
+    out.println("</body>");
+    out.println("</html>");
   }
 }
