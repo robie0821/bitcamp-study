@@ -23,14 +23,7 @@
 
     <select id="findAll" parameterType="int" resultMap="memberMap">
         select
-            M.member_no
-            ,M.member_type
-            ,M.member_name
-            ,M.email
-            ,M.password
-            ,M.photo
-            ,D.dept_no
-            ,D.dept_name
+            M.*, D.*
         from
             member M join department D on M.dept_no=D.dept_no
         where
@@ -41,14 +34,7 @@
 
     <select id="findBy" parameterType="int" resultMap="memberMap">
         select
-            M.member_no
-            ,M.member_type
-            ,M.member_name
-            ,M.email
-            ,M.password
-            ,M.photo
-            ,D.dept_no
-            ,D.dept_name
+            M.*, D.*
         from
             member M join department D on M.dept_no=D.dept_no
         where

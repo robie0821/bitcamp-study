@@ -35,19 +35,7 @@
 
     <select id="findAll" parameterType="int" resultMap="profLectMap">
         select
-            M.member_no
-            ,M.member_name
-            ,M.email
-            ,M.password
-            ,M.photo
-            ,D.dept_no
-            ,D.dept_name
-            ,L.lect_no
-            ,L.lect_name
-            ,L.room
-            ,S.subj_no
-            ,S.subj_name
-            ,S.subj_type
+            M.*, D.*, L.*, S.*
         from
         prof_lect PL
             join member M join department D on M.dept_no=D.dept_no
@@ -60,19 +48,7 @@
 
     <select id="findBy" parameterType="proflect" resultMap="profLectMap">
         select
-            M.member_no
-            ,M.member_name
-            ,M.email
-            ,M.password
-            ,M.photo
-            ,D.dept_no
-            ,D.dept_name
-            ,L.lect_no
-            ,L.lect_name
-            ,L.room
-            ,S.subj_no
-            ,S.subj_name
-            ,S.subj_type
+            M.*, D.*, L.*, S.*
         from
             prof_lect PL
             join member M join department D on M.dept_no=D.dept_no

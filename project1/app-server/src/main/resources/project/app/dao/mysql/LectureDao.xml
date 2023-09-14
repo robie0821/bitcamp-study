@@ -36,12 +36,7 @@
     
     <select id="findBySubject" parameterType="int" resultMap="lectureMap">
         select
-            L.lect_no
-            ,L.lect_name
-            ,L.room
-            ,S.subj_no
-            ,S.subj_name
-            ,S.subj_type
+            L.*, S.*
         from
             lecture L inner join subject S on L.subj_no=S.subj_no
         where
@@ -52,12 +47,7 @@
 
     <select id="findByNo" parameterType="int" resultMap="lectureMap">
         select
-            L.lect_no
-            ,L.lect_name
-            ,L.room
-            ,S.subj_no
-            ,S.subj_name
-            ,S.subj_type
+            L.*, S.*
         from
             lecture L inner join subject S on L.subj_no=S.subj_no
         where

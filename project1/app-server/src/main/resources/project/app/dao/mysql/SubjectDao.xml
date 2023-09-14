@@ -16,9 +16,7 @@
 
     <select id="findAll" resultMap="subjectMap">
         select
-            subj_no,
-            subj_name,
-            subj_type
+            *
         from
             subject
         order by
@@ -27,9 +25,7 @@
 
     <select id="findByType" parameterType="int" resultMap="subjectMap">
         select
-            subj_no,
-            subj_name,
-            subj_type
+            *
         from
             subject
         where
@@ -40,9 +36,7 @@
 
     <select id="findByNo" parameterType="int" resultMap="subjectMap">
         select
-            subj_no,
-            subj_name,
-            subj_type
+            *
         from
             subject
         where

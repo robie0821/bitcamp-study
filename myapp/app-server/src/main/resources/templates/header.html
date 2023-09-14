@@ -5,17 +5,18 @@
     <title>비트캠프</title>
 </head>
 <body>
-<div data-th-fragment="header" style='height:50px;background-color:orange;'>
+<div data-th-fragment="header" style='height:50px; lineheight:50px; background-color:orange;'>
     <a href='/'><img src='https://www.ncloud.com/public/img/logo-m.png' style='height:40px'></a>
     <a href='/member/list'>회원</a>
     <a href='/board/list?category=1'>게시글</a>
     <a href='/board/list?category=2'>독서록</a>
-    <a data-th-if="${session.loginUser == null}" href='/auth/form'>로그인</a>
-    <div data-th-if="${session.loginUser != null}" style="display:inline;">
-        <img data-th-if="${session.loginUser.photo == null}" src='/images/avatar.png'
-             style='height:40px'>
-        <img data-th-if="${session.loginUser.photo != null}"
-             data-th-src="${'http://fxnxwqenirtk19010936.cdn.ntruss.com/member/' + ${session.loginUser.photo} + '?type=f&w=30&h=40&faceopt=true&ttype=jpg'}">
+    <a data-th-unless="${session.loginUser}" href='/auth/form'>로그인</a>
+    <div data-th-if="${session.loginUser}" style="display:inline;">
+        <img data-th-unless="${session.loginUser.photo}" src='/images/avatar.png'
+             style='height:40px; vertical-align:middle;'>
+        <img data-th-if="${session.loginUser.photo}"
+             data-th-src="|http://fxnxwqenirtk19010936.cdn.ntruss.com/member/${session.loginUser.photo}?type=f&w=30&h=40&faceopt=true&ttype=jpg|"
+             style="vertical-align:middle">
         <span data-th-text="${session.loginUser.name}"></span>
         <a href='/auth/logout'>로그아웃</a>
     </div>
