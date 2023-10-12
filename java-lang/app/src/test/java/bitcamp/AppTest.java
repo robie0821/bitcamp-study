@@ -1,4 +1,0 @@
-package bitcamp;
-
-class AppTest {
-}
