@@ -75,6 +75,7 @@ public class BoardController {
   public String detail(@PathVariable int category, @PathVariable int no, Model model)
           throws Exception {
     Board board = boardService.get(no);
+    System.out.println(board.toString());
     if (board != null) {
       boardService.increaseViewCount(no);
       model.addAttribute("board", board);
